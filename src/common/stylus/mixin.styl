@@ -8,7 +8,8 @@ title()
     font-size $font-size-medium
     padding 15px 20px
     border-bottom 1px solid  $color-border
-.select-wrapper
+    
+select-wrapper()
     height 18px
     line-height 18px
     padding 15px 20px
@@ -27,7 +28,7 @@ title()
         color $color-icon-right
         font-size $font-size-medium-x
 
-.input-wrapper
+input-wrapper()
     height 18px
     line-height 18px
     padding 15px 20px
@@ -39,4 +40,14 @@ title()
     input 
         flex 1
         outline none
-            
+normal-wrapper()
+    display flex
+    height 20px
+    line-height 20px
+    padding 15px 20px
+    font-size $font-size-medium
+    border-bottom 1px solid $color-border
+    .text
+        flex 0 0 100px
+    .val
+        flex 1

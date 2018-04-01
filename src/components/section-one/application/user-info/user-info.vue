@@ -1,6 +1,6 @@
 <template>
     <div class="user-info">
-        <Scroll  ref="scroll">
+        <Scroll  ref="scroll" >
             <div class="select-wrapper">
                 <span class="text">申请日期</span>
                 <span class="desc">选择申请日期</span>
@@ -82,9 +82,7 @@
                 </div>
             </div>    
         </Scroll>
-        <div class="pop">
-            <popUp :options="options" ref="pop" @choosed="choosed"></popUp>  
-        </div>  
+        <popUp :options="options" ref="pop" @choosed="choosed"></popUp>  
     </div>
 </template>
 <script>
@@ -140,8 +138,14 @@ export default {
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
 @import '~common/stylus/mixin'
-.title
-    title() 
+.user-info
+    .title
+        title() 
+    .select-wrapper
+        select-wrapper()
+    .input-wrapper
+        input-wrapper()
+
 </style>
 
 

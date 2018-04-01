@@ -6,3 +6,10 @@ export function getSignContent() {
         return Promise.resolve(res.data)
     })
 }
+
+export function getSignDetail() {
+    const url = '/api/signDetail'
+    return axios.get(url).then((res) => {
+        return Promise.resolve(res.data)
+    })
+}

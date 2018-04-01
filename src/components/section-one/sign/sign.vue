@@ -2,8 +2,9 @@
   <div class="sign">
     <app-title :title="title" @back="back"></app-title>
     <Scroll class="scroll" :data="list">
-      <detail-list :list='list'></detail-list>
+      <detail-list :list='list' @itemHandle='selectItem'></detail-list>
     </Scroll>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -35,12 +36,15 @@ import appTitle from 'base/header/header'
      },
      back(){
        this.$router.back()
+     },
+     selectItem(){
+       this.$router.push({path:'/sign/signDetail'})
      }
    }
  }
 </script>
 
-<style lang='stylus' scope>
+<style lang='stylus' scoped>
 .scroll
   position absolute 
   top 54px

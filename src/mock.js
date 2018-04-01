@@ -16,3 +16,13 @@ Mock.mock('/api/sign', {
     }]
 
 })
+
+Mock.mock('/api/signDetail', {
+    "data": {
+        'id': '@increment(1000000)',
+        'name|1': '@cname',
+        'phone': '13567845212',
+        'type': '抵押消费'
+    }
+
+})

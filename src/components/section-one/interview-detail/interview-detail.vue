@@ -2,21 +2,21 @@
   <div class="interview-detail">
       <app-title :title="title" :next="next" @back="back"></app-title>
       <div class="info">
-          <div class="number-wrapper">
-              <span class="number">贷款编号</span>
-              <span class="text"></span>
+          <div class="normal-wrapper">
+              <span class="text">贷款编号</span>
+              <span class="val"></span>
           </div>
-          <div class="name-wrapper">
-              <span class="name">客户姓名</span>
-              <span class="text"></span>
+          <div class="normal-wrapper">
+              <span class="text">客户姓名</span>
+              <span class="val"></span>
           </div>
-          <div class="phone-wrapper">
-              <span class="phone">联系方式</span>
-              <span class="text"></span>
+          <div class="normal-wrapper">
+              <span class="text">联系方式</span>
+              <span class="val"></span>
           </div>
-          <div class="type-wrapper">
-              <span class="type">借款品种</span>
-              <span class="text"></span>
+          <div class="normal-wrapper">
+              <span class="text">借款品种</span>
+              <span class="val"></span>
           </div>
       </div>
       <div class="table-wrapper">
@@ -69,6 +69,7 @@ export default {
 </script>
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
+@import '~common/stylus/mixin'
     .interview-detail
         position fixed
         top 0
@@ -79,17 +80,8 @@ export default {
         background #fff
         .info
             margin-bottom 20px
-            .number-wrapper,.name-wrapper,.phone-wrapper,.type-wrapper
-                display flex
-                height 20px
-                line-height 20px
-                padding 15px 20px
-                font-size $font-size-medium
-                border-bottom 1px solid $color-border
-                .number,.name,.phone,.type
-                    flex 0 0 100px
-                .text
-                    flex 1
+            .normal-wrapper
+                normal-wrapper()
         .table-wrapper
             border-top 1px solid $color-border
             .table

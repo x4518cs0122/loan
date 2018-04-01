@@ -1,13 +1,13 @@
 <template>
   <div class="application">
         <app-title title="个人贷款申请表" :next="nextTxt" @back="back" @submit="next"></app-title>
-        <Scroll class="item-wrapper">
+        <div class="item-wrapper">
             <user-info v-show="currentIndex === 1"></user-info>
             <partner-info v-show="currentIndex === 2"></partner-info>
             <job-info v-show="currentIndex === 3"></job-info>
             <loan-info v-show="currentIndex === 4"></loan-info>
             <emergency-contact v-show="currentIndex === 5"></emergency-contact>
-        </Scroll>
+        </div>
   </div>
 </template>
 <script>
@@ -72,7 +72,7 @@ export default {
         background #ffffff
         overflow hidden
         .item-wrapper
-            position fixed
+            position absolute
             top 52px
             bottom 0
             left 0

@@ -32,6 +32,10 @@ export default {
 @import '~common/stylus/mixin'
 .title
     title()
+.select-wrapper
+    select-wrapper()
+.input-wrapper
+    input-wrapper()
 </style>
 
 
