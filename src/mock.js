@@ -2,9 +2,13 @@ const Mock = require('mockjs')
 const Random = Mock.Random
 
 Random.extend({
-        state: function(date) {
+        state: function() {
             var state = ['待约定签约时间', '待确定签约状态']
             return this.pick(state)
+        },
+        p_state: function() {
+            var p_state = ["待下单", "待出报告"]
+            return this.pick(p_state)
         }
     })
     //使用mockjs模拟数据
@@ -24,5 +28,14 @@ Mock.mock('/api/signDetail', {
         'phone': '13567845212',
         'type': '抵押消费'
     }
+
+})
+
+Mock.mock('/api/getEvaluate', {
+    "data|10-15": [{
+        'name|1': '@cname',
+        'phone': '13567845212',
+        state: '@P_STATE'
+    }]
 
 })

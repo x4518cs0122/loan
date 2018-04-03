@@ -1,7 +1,7 @@
 <template>
   <Scroll class="detail-list">
       <ul>
-          <li class="list-item" v-for="(item,index) in list" :key="index" @click="itemHandle">
+          <li class="list-item" v-for="(item,index) in list" :key="index" @click="itemHandle(index)">
               <div class="state-wrapper">
                   <span class="id">{{index+1}}.</span>
                   <span class="state">{{item.state}}</span>
@@ -24,8 +24,8 @@ export default {
         }
     },
     methods:{
-        itemHandle(){
-            this.$emit('itemHandle')
+        itemHandle(index){
+            this.$emit('itemHandle',index)
         }
     },
     components:{

@@ -26,7 +26,7 @@ export default {
           detail:false
       }
   },
-  created () {
+  created() {
       this._getInterview()
   },
   methods:{
