@@ -11,23 +11,23 @@
                 <li class="list-item" v-for="item in notices" :key="item.index">
                     <div class="item-wrapper">
                         <div class="item-left">
-                            <h2 class="title">公告标题</h2>
+                            <h2 class="title">{{item.title}}</h2>
                             <div class="text">
-                                <p class="detail">今天是农历初五，街上喜气洋洋，好运来祝你好运来，好运来祝你喜和彩</p>
+                                <p class="detail">{{item.text}}</p>
                             </div>   
                         </div>
                         <div class="item-right">
                             <img :src="item.icon" width="50" height="50" /> 
                         </div>
                     </div>
-                    <p class="time">发表于2017-7-7</p>
+                    <p class="time">发表于{{item.date}}</p>
                 </li>
             </ul>
         </Scroll>
   </div>
 </template>
 <script>
-import {getNotice} from 'api/notice'
+import {getNotice} from 'api/api'
 import {ERR_OK} from 'api/config'
 import Scroll from 'base/scroll/scroll'
 export default {
@@ -45,10 +45,7 @@ export default {
       },
        _getNotice(){
           getNotice().then((res)=>{
-              if(res.errno === ERR_OK){
-                  console.log(res)
-                  this.notices = res.data
-              }
+            this.notices = res.data
           })
       },
       

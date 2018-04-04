@@ -1,10 +1,11 @@
 <template>
-  <Scroll class="detail-list">
+  <Scroll class="detail-list" :data="list">
       <ul>
           <li class="list-item" v-for="(item,index) in list" :key="index" @click="itemHandle(index)">
               <div class="state-wrapper">
                   <span class="id">{{index+1}}.</span>
                   <span class="state">{{item.state}}</span>
+                  <span class="state" v-if="item.substate">{{item.substate}}</span>
               </div>
               <div class="info">
                   <span class="name">客户:{{item.name}}</span>
@@ -48,6 +49,8 @@ export default {
                 color $color-text-l    
                 margin-bottom 10px
                 .id
+                    margin-right 5px
+                .state
                     margin-right 5px
             .info
                 font-size $font-size-small

@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import {getSignDetail} from 'api/sign'
+import {getSignDetail} from 'api/api'
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
  export default {

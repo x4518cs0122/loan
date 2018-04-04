@@ -2,7 +2,7 @@
   <div class="todo">
       <Nav :title="待办事项"></Nav>
       <div class="content">
-          <detaiLList :list="todos"></detaiLList>
+          <detai-list :list="todos"></detai-list>
       </div>
       <tab></tab>
   </div>
@@ -12,7 +12,7 @@ import {getTodo} from 'api/todo'
 import {ERR_OK} from 'api/config'
 import Nav from 'components/nav/nav'
 import tab from 'components/tab/tab'
-import detaiLList from 'base/detail-list/detail-list'
+import detaiList from 'base/detail-list/detail-list'
 
 export default {
   data(){
@@ -25,15 +25,13 @@ export default {
   },
   methods:{
       _getTodo(){
-          getTodo().then((res)=>{
-              if(res.errno === ERR_OK){
-                  this.todos = res.data
-              }
+          getTodo().then((res)=>{          
+            this.todos = res.data
           })
       }
   },
   components: {
-      detaiLList,
+      detaiList,
       tab,
       Nav
   }

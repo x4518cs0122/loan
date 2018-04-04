@@ -1,5 +1,6 @@
 const state = {
-    userName: ''
+    username: '',
+    customer: {}
 }
 
 export default state

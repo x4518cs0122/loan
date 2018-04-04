@@ -4,15 +4,15 @@
       <div class="info">
           <div class="normal-wrapper">
               <span class="text">贷款编号</span>
-              <span class="val"></span>
+              <span class="val">{{customer.id}}</span>
           </div>
           <div class="normal-wrapper">
               <span class="text">客户姓名</span>
-              <span class="val"></span>
+              <span class="val">{{customer.name}}</span>
           </div>
           <div class="normal-wrapper">
               <span class="text">联系方式</span>
-              <span class="val"></span>
+              <span class="val">{{customer.phone}}</span>
           </div>
           <div class="normal-wrapper">
               <span class="text">借款品种</span>
@@ -42,27 +42,33 @@
                 </span>         
           </div>
       </div>
-    
+      <router-view></router-view>
   </div>
 </template>
 <script>
 import appTitle from 'base/header/header'
+import {mapGetters} from 'vuex'
 export default {
   data(){
       return{
           title:'抵押面谈',
-          next:'提交'
+          next:'提交'     
       }
   },
   components: {
       appTitle
   },
+  computed:{
+      ...mapGetters([
+          'customer'
+      ])
+  },
   methods:{
       back(){
-          this.$emit('hiddenDetail')
+          this.$router.back()
       },
       editForm(form){
-          this.$emit('showForm',form)
+          this.$router.push({path:`/interview/${this.customer.id}/sqForms`})
       }
   }
 }

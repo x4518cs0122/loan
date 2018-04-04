@@ -2,7 +2,9 @@
   <div class="sign">
     <app-title :title="title" @back="back"></app-title>
     <Scroll class="scroll" :data="list">
-      <detail-list :list='list' @itemHandle='selectItem'></detail-list>
+      <div>
+        <detail-list :list='list' @itemHandle='selectItem'></detail-list>
+      </div>
     </Scroll>
     <router-view></router-view>
   </div>
@@ -10,7 +12,7 @@
 
 <script>
 import detailList from 'base/detail-list/detail-list'
-import {getSignContent} from 'api/sign'
+import {getSignList} from 'api/api'
 import Scroll from 'base/scroll/scroll'
 import appTitle from 'base/header/header'
  export default {
@@ -26,19 +28,19 @@ import appTitle from 'base/header/header'
      appTitle
    },
    mounted(){
-     this.get()
+     this._getSignList()
    },
    methods:{
-     get(){
-       getSignContent().then((res)=>{
+     _getSignList(){
+       getSignList().then((res)=>{
          this.list = res.data
        })
      },
      back(){
        this.$router.back()
      },
-     selectItem(state){
-       if(state === '待约定签约时间'){
+     selectItem(index){
+       if(this.list[index].state === '待约定签约时间'){
          this.$router.push({path:'/sign/reschedule'})
        }else{
          this.$router.push({path:'/sign/confirmState'})

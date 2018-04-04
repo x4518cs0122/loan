@@ -8,7 +8,7 @@
 
 <script>
 import detailList from 'base/detail-list/detail-list'
-import {getEvaluate} from 'api/evaluate'
+import {getEvaluate} from 'api/api'
 import vHeader from 'base/header/header'
  export default {
      data(){

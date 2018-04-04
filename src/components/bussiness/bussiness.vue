@@ -23,7 +23,6 @@
 <script>
 import Nav from 'components/nav/nav'
 import tab from 'components/tab/tab'
-import collapse from 'base/collapse/collapse'
 import Scroll from 'base/scroll/scroll'
 import {itemGroup,itemGroupTwo} from 'common/js/config'
 export default {
@@ -121,7 +120,6 @@ export default {
       }
   },
   components:{
-      collapse,
       Scroll,
       Nav,
       tab
