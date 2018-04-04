@@ -37,8 +37,13 @@ import appTitle from 'base/header/header'
      back(){
        this.$router.back()
      },
-     selectItem(){
-       this.$router.push({path:'/sign/signDetail'})
+     selectItem(state){
+       if(state === '待约定签约时间'){
+         this.$router.push({path:'/sign/reschedule'})
+       }else{
+         this.$router.push({path:'/sign/confirmState'})
+       }
+       
      }
    }
  }

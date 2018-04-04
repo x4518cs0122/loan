@@ -77,7 +77,6 @@ export default {
                 transition all .3s              
             &.meng-enter-to, &.meng-leave
                 background rgba(7,17,27,0.6)
-                opacity 1
     
 
 </style>

@@ -17,7 +17,7 @@ import {ERR_OK} from 'api/config'
 import appTitle from 'base/header/header'
 import Scroll from 'base/scroll/scroll'
 import application from 'components/section-one/application/application'
-import interviewDetail from 'components/section-one/interview-detail/interview-detail'
+import interviewDetail from 'components/section-one/interview/interview-detail'
 export default {
   data(){
       return{

@@ -5,8 +5,8 @@ import todo from '@/components/todo/todo'
 import order from '@/components/section-one/order/order'
 import interview from '@/components/section-one/interview/interview'
 import sign from '@/components/section-one/sign/sign'
-import signDetail from '@/components/section-one/sign/sign-detail'
-
+import reschedule from '@/components/section-one/sign/reschedule'
+import confirmState from '@/components/section-one/sign/confirmState'
 Vue.use(Router)
 
 export default new Router({
@@ -37,8 +37,11 @@ export default new Router({
             name: 'sign',
             component: sign,
             children: [{
-                path: 'signDetail',
-                component: signDetail
+                path: 'reschedule',
+                component: reschedule
+            },{
+                path: 'confirmState',
+                component: confirmState
             }]
         }
     ]

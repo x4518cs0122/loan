@@ -1,6 +1,6 @@
 <template>
  <div class="sign-detail">
-     <v-header :next="next"></v-header>
+     <v-header :next="next" @back="back"></v-header>
      <ul>
          <li class="normal-wrapper" v-for="item in items" :key="item.name">
              <span class="text">{{item.text}}</span>
@@ -10,43 +10,47 @@
      <h2 class="title">约定签约时间</h2>
      <div class="select-wrapper">
         <span class="text">约定时间</span>
-        <span class="desc">选择约定的签约时间</span>
+        <span class="desc">选择签约时间</span>
         <span class="icon">
             <span class="fa fa-chevron-right" aria-hidden="true"></span>
         </span>
     </div>
-    <div class="select-wrapper">
+    <div class="select-wrapper" @click="pop">
         <span class="text">约定地点</span>
+        <span class="desc" id="position"></span>
         <span class="icon">
             <span class="fa fa-chevron-right" aria-hidden="true"></span>
         </span>
     </div>
+    <pop :options="options" ref='pop' @choosed="choosed"></pop>
  </div>
 </template>
 
 <script>
 import {getSignDetail} from 'api/sign'
 import vHeader from 'base/header/header'
+import pop from 'base/pop-up/pop-up'
  export default {
    data () {
      return {
          data:{},
          items:[
             {
-                val:'id',
+                val:'',
                 text:'贷款编号'
             },{
-                val:'name',
+                val:'',
                 text:'客户姓名'
             },{
-                val:'phone',
+                val:'',
                 text:'联系方式'
             },{
-                val:'type',
+                val:'',
                 text:'借款品种'
             }
         ],
-        next:'下一步'
+        next:'下一步',
+        options:['儿童乐园','鬼屋','你说去哪儿']
      }
    },
    created(){
@@ -63,10 +67,20 @@ import vHeader from 'base/header/header'
            this.items.map((item,index)=>{
                item.val = list[index]
            })         
+       },
+       pop(){
+           this.$refs.pop.show()
+       },
+       choosed(item){
+           document.getElementById('position').innerText = item
+       },
+       back(){
+           this.$router.back()
        }
    },
    components:{
-       vHeader
+       vHeader,
+       pop
    }
  }
 </script>
