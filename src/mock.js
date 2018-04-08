@@ -27,6 +27,10 @@ Random.extend({
         SA_state: function() {
             var SA_state = ["待收齐资料", "待支行审批", "待分行审批"]
             return this.pick(SA_state)
+        },
+        M_state: function() {
+            var M_state = ["待确定抵押时间", "待确定抵押状态"]
+            return this.pick(M_state)
         }
     })
     //使用mockjs模拟数据
@@ -59,14 +63,14 @@ Mock.mock('/api/signList', {
 })
 
 Mock.mock('/api/signDetail', {
-    "data": {
-        'name|1': '@cname',
-        'phone': '13567845212',
-        'type': '抵押消费'
-    }
+        "data": {
+            'name|1': '@cname',
+            'phone': '13567845212',
+            'type': '抵押消费'
+        }
 
-})
-//评估列表数据
+    })
+    //评估列表数据
 Mock.mock('/api/getEvaluate', {
         "data|10-15": [{
             'id': /\d{7,8}/,
@@ -77,11 +81,20 @@ Mock.mock('/api/getEvaluate', {
     })
     //审批列表数据
 Mock.mock('/api/getApprove', {
+        "data|10-15": [{
+            'id': /\d{7,8}/,
+            'name|1': '@cname',
+            'phone': '13567845212',
+            state: '@A_STATE',
+            substate: '@SA_STATE'
+        }]
+    })
+    //抵押列表数据
+Mock.mock('/api/getMortgage', {
     "data|10-15": [{
         'id': /\d{7,8}/,
         'name|1': '@cname',
         'phone': '13567845212',
-        state: '@A_STATE',
-        substate: '@SA_STATE'
+        state: '@M_state',
     }]
 })

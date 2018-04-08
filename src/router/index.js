@@ -15,6 +15,12 @@ import unreported from '@/components/section-one/evaluate/unreported'
 import approve from '@/components/section-one/approve/approve'
 import approveDetail from '@/components/section-one/approve/approve-detail'
 import mulu from '@/components/section-one/approve/mulu'
+import subbranch from '@/components/section-one/approve/subbranch'
+import branch from '@/components/section-one/approve/branch'
+import zhengping from '@/components/section-one/approve/zhengping'
+import mortgage from '@/components/section-one/mortgage/mortgage'
+import mortgageTime from '@/components/section-one/mortgage/mortgage-time'
+import mortgageStatus from '@/components/section-one/mortgage/mortgage-status'
 
 Vue.use(Router)
 
@@ -85,10 +91,31 @@ export default new Router({
             children: [{
                 path: ':id',
                 component: approveDetail,
-                children:[{
+                children: [{
                     path: 'mulu',
                     component: mulu,
+                }, {
+                    path: 'subbranch',
+                    component: subbranch,
+                }, {
+                    path: 'branch',
+                    component: branch,
+                }, {
+                    path: 'zhengping',
+                    component: zhengping,
                 }]
+            }]
+        }, {
+            //审批
+            path: '/mortgage',
+            name: 'mortgage',
+            component: mortgage,
+            children: [{
+                path: 'timePicker',
+                component: mortgageTime,
+            }, {
+                path: 'statusPicker',
+                component: mortgageStatus,
             }]
         }
     ]

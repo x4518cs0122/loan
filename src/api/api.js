@@ -36,3 +36,8 @@ export function getApprove() {
     const url = '/getApprove'
     return get(url)
 }
+
+export function getMortgage() {
+    const url = '/getMortgage'
+    return get(url)
+}

@@ -20,7 +20,7 @@
           </div>
       </div>
       <ul class="table-wrapper" @click="editForm($event)">
-          <li class="select-wrapper" v-for="(item,index) in formlist" :key="index" data-index="index"> 
+          <li class="select-wrapper" v-for="(item,index) in formlist" :key="index" :data-index="index"> 
               <span class="text">{{item}}</span>
               <span class="desc" id="sex">点击编辑</span>
               <span class="icon">
@@ -56,18 +56,28 @@ export default {
       },
       editForm(e){
           let target = e.target
-          console.log(target.parentNode.nodeName.toLowerCase())
+          
           while(target.nodeName.toLowerCase() != 'li'){
               target = target.parentNode
           }    
           let formIndex = target.getAttribute("data-index")
-          switch (formIndex){
+          console.log(formIndex)
+          switch (parseInt(formIndex)){
               case 0:
                 this.$router.push({path:`/approve/${this.customer.id}/mulu`})
-                break;
+                break
+              case 1:
+                this.$router.push({path:`/approve/${this.customer.id}/subbranch`})
+                break
+              case 2:
+                this.$router.push({path:`/approve/${this.customer.id}/branch`})
+                break
+              case 3:
+                this.$router.push({path:`/approve/${this.customer.id}/zhengping`})
+                break
               default:
                 console.log('nothing!')
-                break;
+                break
           }
 
       }

@@ -10,9 +10,7 @@
 <script>
 import detailList from 'base/detail-list/detail-list'
 import {getInterview} from 'api/api'
-import {ERR_OK} from 'api/config'
 import appTitle from 'base/header/header'
-import Scroll from 'base/scroll/scroll'
 import {mapMutations} from 'vuex'
 export default {
   data(){
@@ -46,7 +44,6 @@ export default {
   components: {
       detailList,
       appTitle,
-      Scroll,
   }
 }
 </script>

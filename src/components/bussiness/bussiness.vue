@@ -113,7 +113,7 @@ export default {
                         }
                     ]
                 }
-          ],
+            ],
           show:true,
           activeNames:['1']
       }
