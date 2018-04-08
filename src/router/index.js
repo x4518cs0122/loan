@@ -5,6 +5,7 @@ import todo from '@/components/todo/todo'
 import order from '@/components/section-one/order/order'
 import interview from '@/components/section-one/interview/interview'
 import inDetail from '@/components/section-one/interview/interview-detail'
+import sqForms from '@/components/section-one/interview/application'
 import sign from '@/components/section-one/sign/sign'
 import reschedule from '@/components/section-one/sign/reschedule'
 import confirmState from '@/components/section-one/sign/confirmState'
@@ -12,7 +13,8 @@ import evaluate from '@/components/section-one/evaluate/evaluate'
 import placeOrder from '@/components/section-one/evaluate/placeOrder'
 import unreported from '@/components/section-one/evaluate/unreported'
 import approve from '@/components/section-one/approve/approve'
-import sqForms from '@/components/section-one/application/application'
+import approveDetail from '@/components/section-one/approve/approve-detail'
+import mulu from '@/components/section-one/approve/mulu'
 
 Vue.use(Router)
 
@@ -80,13 +82,14 @@ export default new Router({
             path: '/approve',
             name: 'approve',
             component: approve,
-            // children: [{
-            //     path: 'placeOrder',
-            //     component: placeOrder
-            // }, {
-            //     path: 'unreported',
-            //     component: unreported
-            // }]
+            children: [{
+                path: ':id',
+                component: approveDetail,
+                children:[{
+                    path: 'mulu',
+                    component: mulu,
+                }]
+            }]
         }
     ]
 })

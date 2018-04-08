@@ -24,7 +24,6 @@
 import Nav from 'components/nav/nav'
 import tab from 'components/tab/tab'
 import Scroll from 'base/scroll/scroll'
-import {itemGroup,itemGroupTwo} from 'common/js/config'
 export default {
   data(){
       return{
@@ -67,54 +66,54 @@ export default {
                     'icon': 'fa-money',
                     'router': 'getmoney'
                 }
-            ], 
-          },{
-            title:'二手房贷款',
-            id:'2', 
-            items:[
-                {
-                    'item': '接单',
-                    'icon': 'fa-handshake-o'
-                },
-                {
-                    'item': '面签',
-                    'icon': 'fa-files-o'
-                },
-                {
-                    'item': '评估下单',
-                    'icon': 'fa-calculator'
-                },
-                {
-                    'item': '整件输机',
-                    'icon': 'fa-laptop'
-                },
-                {
-                    'item': '审批',
-                    'icon': 'fa-pencil'
-                },
-                {
-                    'item': '过户',
-                    'icon': 'fa-building-o'
-                },
-                {
-                    'item': '抵押',
-                    'icon': 'fa-university'
-                },
-                {
-                    'item': '收费',
-                    'icon': 'fa-newspaper-o'
-                },
-                {
-                    'item': '担保',
-                    'icon': 'fa-gavel'
-                },
-                {
-                    'item': '放款',
-                    'icon': 'fa-money'
+                ], 
+                },{
+                    title:'二手房贷款',
+                    id:'2', 
+                    items:[
+                        {
+                            'item': '接单',
+                            'icon': 'fa-handshake-o'
+                        },
+                        {
+                            'item': '面签',
+                            'icon': 'fa-files-o'
+                        },
+                        {
+                            'item': '评估下单',
+                            'icon': 'fa-calculator'
+                        },
+                        {
+                            'item': '整件输机',
+                            'icon': 'fa-laptop'
+                        },
+                        {
+                            'item': '审批',
+                            'icon': 'fa-pencil'
+                        },
+                        {
+                            'item': '过户',
+                            'icon': 'fa-building-o'
+                        },
+                        {
+                            'item': '抵押',
+                            'icon': 'fa-university'
+                        },
+                        {
+                            'item': '收费',
+                            'icon': 'fa-newspaper-o'
+                        },
+                        {
+                            'item': '担保',
+                            'icon': 'fa-gavel'
+                        },
+                        {
+                            'item': '放款',
+                            'icon': 'fa-money'
+                        }
+                    ]
                 }
-            ]
-          }],
-          itemGroupTwo:itemGroupTwo,
+          ],
           show:true,
           activeNames:['1']
       }

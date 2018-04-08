@@ -50,6 +50,7 @@ Mock.mock('/api/interview', {
 
 Mock.mock('/api/signList', {
     "data|10-15": [{
+        'id': /\d{7,8}/,
         state: '@SIGN_STATE',
         'name|1': '@cname',
         'phone': '12345678910'
@@ -59,16 +60,16 @@ Mock.mock('/api/signList', {
 
 Mock.mock('/api/signDetail', {
     "data": {
-        'id': '@increment(1000000)',
         'name|1': '@cname',
         'phone': '13567845212',
         'type': '抵押消费'
     }
 
 })
-
+//评估列表数据
 Mock.mock('/api/getEvaluate', {
         "data|10-15": [{
+            'id': /\d{7,8}/,
             'name|1': '@cname',
             'phone': '13567845212',
             state: '@P_STATE'
@@ -77,10 +78,10 @@ Mock.mock('/api/getEvaluate', {
     //审批列表数据
 Mock.mock('/api/getApprove', {
     "data|10-15": [{
+        'id': /\d{7,8}/,
         'name|1': '@cname',
         'phone': '13567845212',
         state: '@A_STATE',
         substate: '@SA_STATE'
     }]
-
 })

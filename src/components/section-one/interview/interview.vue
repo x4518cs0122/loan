@@ -13,14 +13,11 @@ import {getInterview} from 'api/api'
 import {ERR_OK} from 'api/config'
 import appTitle from 'base/header/header'
 import Scroll from 'base/scroll/scroll'
-import application from 'components/section-one/application/application'
-import interviewDetail from 'components/section-one/interview/interview-detail'
 import {mapMutations} from 'vuex'
 export default {
   data(){
       return{
           list:[],
-          application:false,
           detail:false
       }
   },
@@ -50,8 +47,6 @@ export default {
       detailList,
       appTitle,
       Scroll,
-      application,
-      interviewDetail
   }
 }
 </script>

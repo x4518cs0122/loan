@@ -131,7 +131,7 @@ import pop from 'base/pop-up/pop-up'
                      return i.value
                  })
              })
-             console.log(result)
+             return result
          }
      },
      components:{

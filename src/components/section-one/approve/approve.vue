@@ -1,7 +1,10 @@
 <template>
     <div class="approve">
-        <v-header :title="title"></v-header>
-        <detail-list :list="list"></detail-list> 
+        <v-header :title="title" @back="back"></v-header>
+        <div class="list-wrapper">
+            <detail-list :list="list" @itemHandle="itemHandle"></detail-list> 
+        </div>
+        <router-view></router-view>
     </div>
 </template>
 
@@ -10,12 +13,12 @@ import vHeader from 'base/header/header'
 import detailList from 'base/detail-list/detail-list'
 import Scroll from 'base/scroll/scroll'
 import {getApprove} from 'api/api'
+import {mapMutations} from 'vuex'
  export default {
      data(){
          return{
              title:'抵押审批列表',
-             list:[],
-             
+             list:[],        
          }
      },
      created(){
@@ -26,7 +29,19 @@ import {getApprove} from 'api/api'
              getApprove().then((res)=>{
                  this.list = res.data
              })
-         }
+         },
+         back(){
+             this.$router.back()
+         },
+         itemHandle(index){
+             let customer = this.list[index]
+             this.setCustomer(customer)
+             this.$router.push({path:`/approve/${customer.id}`})
+             
+         },
+         ...mapMutations({
+             setCustomer:'SET_CUSTOMER'
+         })
      },
      components: {
          vHeader,
@@ -43,6 +58,11 @@ import {getApprove} from 'api/api'
     bottom 0
     right 0
     left 0
-    overflow hidden
- 
+    .list-wrapper
+        position fixed 
+        top 52px
+        bottom 0
+        right 0
+        left 0
+        overflow hidden
 </style>
