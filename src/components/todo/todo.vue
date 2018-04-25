@@ -1,6 +1,6 @@
 <template>
   <div class="todo">
-      <Nav :title="待办事项"></Nav>
+      <Nav :title="title"></Nav>
       <div class="content">
           <detai-list :list="todos"></detai-list>
       </div>
@@ -17,7 +17,8 @@ import detaiList from 'base/detail-list/detail-list'
 export default {
   data(){
       return{
-          todos:[]
+          todos:[],
+          title:'待办事项'
       }
   },
   created () {
@@ -25,7 +26,8 @@ export default {
   },
   methods:{
       _getTodo(){
-          getTodo().then((res)=>{          
+          getTodo().then((res)=>{     
+            console.log(res)     
             this.todos = res.data
           })
       }

@@ -31,6 +31,10 @@ Random.extend({
         M_state: function() {
             var M_state = ["待确定抵押时间", "待确定抵押状态"]
             return this.pick(M_state)
+        },
+        GM_state: function() {
+            var GM_state = ["待提交担保函与收费明细", "待确定放款状态"]
+            return this.pick(GM_state)
         }
     })
     //使用mockjs模拟数据
@@ -91,10 +95,19 @@ Mock.mock('/api/getApprove', {
     })
     //抵押列表数据
 Mock.mock('/api/getMortgage', {
+        "data|10-15": [{
+            'id': /\d{7,8}/,
+            'name|1': '@cname',
+            'phone': '13567845212',
+            state: '@M_state',
+        }]
+    })
+    //放款列表数据
+Mock.mock('/api/getMoney', {
     "data|10-15": [{
         'id': /\d{7,8}/,
         'name|1': '@cname',
-        'phone': '13567845212',
-        state: '@M_state',
+        'phone': /\d{11}/,
+        state: '@GM_state',
     }]
 })

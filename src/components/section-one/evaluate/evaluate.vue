@@ -1,7 +1,9 @@
 <template>
     <div class="evaluate">
         <v-header @back="back" :title="title"></v-header>
-        <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+        <div class="list-wrapper">
+            <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+        </div>
         <router-view></router-view>
     </div>
 </template>
@@ -55,5 +57,12 @@ import vHeader from 'base/header/header'
     right 0
     overflow hidden
     background $color-background
+    .list-wrapper
+        position fixed 
+        top 52px
+        bottom 0
+        right 0
+        left 0
+        overflow hidden
  
 </style>

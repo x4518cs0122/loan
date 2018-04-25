@@ -41,3 +41,8 @@ export function getMortgage() {
     const url = '/getMortgage'
     return get(url)
 }
+
+export function getMoney() {
+    const url = '/getMoney'
+    return get(url)
+}

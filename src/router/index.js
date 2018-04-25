@@ -1,26 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import bussiness from '@/components/bussiness/bussiness'
-import todo from '@/components/todo/todo'
-import order from '@/components/section-one/order/order'
-import interview from '@/components/section-one/interview/interview'
-import inDetail from '@/components/section-one/interview/interview-detail'
-import sqForms from '@/components/section-one/interview/application'
-import sign from '@/components/section-one/sign/sign'
-import reschedule from '@/components/section-one/sign/reschedule'
-import confirmState from '@/components/section-one/sign/confirmState'
-import evaluate from '@/components/section-one/evaluate/evaluate'
-import placeOrder from '@/components/section-one/evaluate/placeOrder'
-import unreported from '@/components/section-one/evaluate/unreported'
-import approve from '@/components/section-one/approve/approve'
-import approveDetail from '@/components/section-one/approve/approve-detail'
-import mulu from '@/components/section-one/approve/mulu'
-import subbranch from '@/components/section-one/approve/subbranch'
-import branch from '@/components/section-one/approve/branch'
-import zhengping from '@/components/section-one/approve/zhengping'
-import mortgage from '@/components/section-one/mortgage/mortgage'
-import mortgageTime from '@/components/section-one/mortgage/mortgage-time'
-import mortgageStatus from '@/components/section-one/mortgage/mortgage-status'
+
 
 Vue.use(Router)
 
@@ -31,91 +11,104 @@ export default new Router({
         }, {
             path: '/bussiness',
             name: 'bussiness',
-            component: bussiness,
+            component: resolve => require(['../components/bussiness/bussiness'], resolve)
         },
         {
             //tab下的待办
             path: '/todo',
-            component: todo
+            component: resolve => require(['../components/todo/todo'], resolve)
         },
         {
             //接单
             path: '/order',
             name: 'order',
-            component: order
+            component: resolve => require(['../components/section-one/order/order'], resolve)
         },
         {
             //面谈
             path: '/interview',
             name: 'interview',
-            component: interview,
+            component: resolve => require(['../components/section-one/interview/interview'], resolve),
             children: [{
                 path: ':id',
-                component: inDetail,
+                component: resolve => require(['../components/section-one/interview/interview-detail'], resolve),
                 children: [{
                     path: 'sqForms',
-                    component: sqForms
+                    component: resolve => require(['../components/section-one/interview/application'], resolve)
                 }]
             }]
-        },
-        {
+        }, {
             //面签
             path: '/sign',
             name: 'sign',
-            component: sign,
+            component: resolve => require(['../components/section-one/sign/sign'], resolve),
             children: [{
                 path: 'reschedule',
-                component: reschedule
+                component: resolve => require(['../components/section-one/sign/reschedule'], resolve),
             }, {
                 path: 'confirmState',
-                component: confirmState
+                component: resolve => require(['../components/section-one/sign/confirmState'], resolve),
             }]
-        },
-        {
+        }, {
             //评估下单
             path: '/evaluate',
             name: 'evaluate',
-            component: evaluate,
+            component: resolve => require(['../components/section-one/evaluate/evaluate'], resolve),
             children: [{
                 path: 'placeOrder',
-                component: placeOrder
+                component: resolve => require(['../components/section-one/evaluate/placeOrder'], resolve)
             }, {
                 path: 'unreported',
-                component: unreported
+                component: resolve => require(['../components/section-one/evaluate/unreported'], resolve)
             }]
-        }, {
+        },
+        {
             //审批
             path: '/approve',
             name: 'approve',
-            component: approve,
+            component: resolve => require(['../components/section-one/approve/approve'], resolve),
             children: [{
                 path: ':id',
-                component: approveDetail,
+                component: resolve => require(['../components/section-one/approve/approve-detail'], resolve),
                 children: [{
                     path: 'mulu',
-                    component: mulu,
+                    component: resolve => require(['../components/section-one/approve/mulu'], resolve),
                 }, {
                     path: 'subbranch',
-                    component: subbranch,
+                    component: resolve => require(['../components/section-one/approve/subbranch'], resolve),
                 }, {
                     path: 'branch',
-                    component: branch,
+                    component: resolve => require(['../components/section-one/approve/branch'], resolve),
                 }, {
                     path: 'zhengping',
-                    component: zhengping,
+                    component: resolve => require(['../components/section-one/approve/zhengping'], resolve),
                 }]
             }]
-        }, {
+        },
+        {
             //审批
             path: '/mortgage',
             name: 'mortgage',
-            component: mortgage,
+            component: resolve => require(['../components/section-one/mortgage/mortgage'], resolve),
             children: [{
                 path: 'timePicker',
-                component: mortgageTime,
+                component: resolve => require(['../components/section-one/mortgage/mortgage-time'], resolve),
             }, {
                 path: 'statusPicker',
-                component: mortgageStatus,
+                component: resolve => require(['../components/section-one/mortgage/mortgage-status'], resolve),
+            }]
+        },
+        {
+            //接单
+            path: '/getmoney',
+            name: 'getmoney',
+            component: resolve => require(['../components/section-one/getmoney/getmoney'], resolve),
+            children: [{
+                path: 'fangkuan',
+                component: resolve => require(['../components/section-one/getmoney/fangkuan'], resolve)
+            }, {
+                path: 'danbao',
+                component: resolve => require(['../components/section-one/getmoney/danbao'], resolve)
             }]
         }
     ]
