@@ -58,7 +58,6 @@ export default {
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
 @import '~common/stylus/mixin'
-
     .notice
         position fixed
         top 0

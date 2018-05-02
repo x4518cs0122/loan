@@ -1,6 +1,6 @@
 <template>
   <div class="bussiness" >
-        <Nav></Nav> 
+        <v-header :title="title" :icon="icon"></v-header> 
         <Scroll ref="scroll" class="scroll">
             <el-collapse v-model="activeNames" @change="handleChange" >
                 <el-collapse-item v-for="item in group" :key="item.title" :name="item.id" class="item-wrapper">
@@ -22,6 +22,7 @@
 </template>
 <script>
 import Nav from 'components/nav/nav'
+import vHeader from 'base/header/header'
 import tab from 'components/tab/tab'
 import Scroll from 'base/scroll/scroll'
 export default {
@@ -115,13 +116,16 @@ export default {
                 }
             ],
           show:true,
+          icon:'fa-bell-o',
+          title:'业务办理',
           activeNames:['1']
       }
   },
   components:{
       Scroll,
       Nav,
-      tab
+      tab,
+      vHeader
   },
   methods:{
       handleChange(val){

@@ -1,6 +1,6 @@
 <template>
     <div class="fangkuan">
-        <v-header :title="title" :next="next" @back="back"></v-header>
+        <v-header :title="title" :next="next" @back="back" @submit="submit"></v-header>
         <div class="select-wrapper" @click="pop(item)">
             <span class="text">{{item.text}}</span>
             <span class="desc">{{item.status}}</span>
@@ -36,6 +36,9 @@ import vHeader from 'base/header/header'
          },
          back(){
              this.$router.back()
+         },
+         submit(){
+             console.log(this.item.status+' has commited!')
          }
      },
      components:{
