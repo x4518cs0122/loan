@@ -1,57 +1,47 @@
 <template>
     <div class="confirm-state">
         <v-header :next="next" :title="title" @submit="submit" @back="back"></v-header>
-        <ul>
-            <li v-for="(item,index) in items" :key="item.name" >
-                <div :class="item.class" v-if="item.class === 'normal-wrapper'">
-                    <span class="text">{{item.text}}</span>
-                    <span class="val">{{item.val}}</span>
-                </div>
-                <div :class="item.class" v-else @click="pop(index)">
-                    <span class="text">{{item.text}}</span>
-                    <span class="desc" :id="item.id">{{item.val}}</span>
-                    <span class="icon">
-                        <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                    </span>
-                </div>
-            </li>
-        </ul>
+        <form-list :list="list" @pop="pop" ref="formList" @choosed="choosed"></form-list>  
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
 </template>
 <script>
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
+import formList from 'components/form-list/form-list'
 export default {
   data(){
       return{
           next:'提交',
           title:'确定签约状态',
-          items:[{
-              class:'normal-wrapper',
-              text:'约定时间',
-              val:'',
-          },{
-              class:'normal-wrapper',
-              text:'约定地点',
-              val:'',
-          },{
-              class:'select-wrapper',
-              text:'签约状态',
-              val:'',
-              id:'state'
+          list:[{
+              title:'',
+              items:[{
+                class:'normal-wrapper',
+                text:'约定时间',
+                value:'',
+            },{
+                class:'normal-wrapper',
+                text:'约定地点',
+                value:'',
+            },{
+                class:'select-wrapper',
+                text:'签约状态',
+                value:'',
+                options:['已签约','未签约']
+            }]
           }],
-          options:['已完成','未完成'],
+          options:[],
           currentIndex:-1
       }
   },
   methods:{
-      pop(index){
+      pop(option){
+          this.options = option
           this.$refs.pop.show()
-          this.currentIndex = index
       },
-      choosed(item){
-          this.items[this.currentIndex].val = item
+      choosed(option){
+          this.$refs.formList.choosed(option)
       },
       back(){
           this.$router.back()
@@ -62,7 +52,8 @@ export default {
   },
   components:{
       vHeader,
-      pop
+      pop,
+      formList
   }
 }
 </script>

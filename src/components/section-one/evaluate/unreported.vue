@@ -1,29 +1,7 @@
 <template>
     <div class="unreported">
         <v-header :title="title" @submit="submit" :next="next"></v-header>
-        <ul>
-            <li v-for="(type,index) in reports" :key="index">
-                <h2 class="title" v-if="type.title">{{type.title}}</h2>
-                <ul>
-                    <li v-for="(item,index) in type.items" :key="index">
-                        <div v-if="item.class==='select-wrapper'" :class="item.class" @click="pop(item)">
-                            <span class="text">{{item.text}}</span>
-                            <span class="desc">{{item.value}}</span>
-                            <span class="icon">
-                                <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                            </span>
-                        </div>
-                        <div :class="item.class" v-else>
-                            <label class="text" for="name">{{item.text}}</label>
-                            <input  type="text" 
-                                :placeholder="item.placeholder" 
-                                id="name" 
-                                v-model="item.value">
-                        </div>
-                    </li>
-                </ul>
-            </li>
-        </ul>
+        <form-list :list="reports" @pop="pop" @choosed="choosed" ref="formList"></form-list>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
 </template>
@@ -31,6 +9,7 @@
 <script>
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
+import formList from 'components/form-list/form-list'
  export default {
      data(){
          return{
@@ -114,29 +93,21 @@ import pop from 'base/pop-up/pop-up'
          }
      },
      methods:{
-         pop(item){
-             this.options = item.options
-             this.currentItem = item
+         pop(option){
+             this.options = option
              this.$refs.pop.show()
          },
          choosed(option){
-             this.currentItem.value = option
+             this.$refs.formList.choosed(option)
          },
          submit(){
-             this.normalize()
-         },
-         normalize(){
-             let result = this.reports.map((item)=>{
-                 return item.items.map((i)=>{
-                     return i.value
-                 })
-             })
-             return result
+             console.log('you did!')
          }
      },
      components:{
          vHeader,
-         pop
+         pop,
+         formList
      }
  }
 </script>
@@ -152,12 +123,6 @@ import pop from 'base/pop-up/pop-up'
     right 0
     overflow hidden
     background $color-background
-    .title
-        title()
-    .select-wrapper
-        select-wrapper()
-    .input-wrapper
-        input-wrapper()
         
  
 </style>

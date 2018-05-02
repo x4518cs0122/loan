@@ -2,7 +2,7 @@
     <Scroll class="form-list">
         <ul>
             <li v-for="(items,index) in list" :key="index">
-                <h2 class="title">{{items.title}}</h2>
+                <h2 class="title" v-if="items.title">{{items.title}}</h2>
                 <ul>
                     <li v-for="(item,index) in items.items" :key="index">
                         <div v-if="item.class==='select-wrapper'" :class="item.class" @click="pop(item)">
@@ -48,11 +48,11 @@ export default {
   },
   methods:{
       pop(item){
-          if(item.type === selectType.option){
+          if(item.type === selectType.estate){
+            this.$emit('estate')          
+          }else{
             this.currentItem = item
-            this.$emit('pop',item.options) 
-          }else if(item.type === selectType.estate){
-            this.$emit('estate')
+            this.$emit('pop',item.options)
           }
           
       },

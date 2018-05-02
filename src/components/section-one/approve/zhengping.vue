@@ -1,7 +1,7 @@
 <template>
     <div class="zhengping">
         <v-header :title="title" @submit="submit" :next="next"></v-header>
-        <Scroll class="scroll">
+        <!-- <Scroll class="scroll">
             <ul>
                 <li v-for="(info,index) in infos" :key="index">
                     <h2 class="title" v-if="info.title">{{info.title}}</h2>
@@ -25,7 +25,8 @@
                     </ul>
                 </li>
             </ul>
-        </Scroll>
+        </Scroll> -->
+        <form-list :list="infos" @pop="pop" ref="formList" choosed="choosed"></form-list> 
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
 </template>
@@ -33,6 +34,7 @@
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
 import Scroll from 'base/scroll/scroll'
+import formList from 'components/form-list/form-list'
 export default {
   data(){
     return{
@@ -115,13 +117,12 @@ export default {
     back(){
       this.$router.back()
     },
-    pop(item){
-      this.currentItem = item
-      this.options = item.options
+    pop(option){
+      this.options = option
       this.$refs.pop.show()
     },
-    choosed(item){
-      this.currentItem.value = item
+    choosed(option){
+      this.$refs.formList.choosed(option)
     },
     submit(){
       console.log("status:"+this.status)
@@ -131,7 +132,8 @@ export default {
   components:{
     vHeader,
     pop,
-    Scroll
+    Scroll,
+    formList
   }
 }
 </script>
