@@ -100,7 +100,7 @@ export default {
                         {
                             'item': '过户',
                             'icon': 'fa-building-o',
-                            'router':'erTransfer'
+                            'router':'erGuohu'
                         },
                         {
                             'item': '抵押',

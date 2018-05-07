@@ -1,4 +1,4 @@
-import {get, post } from 'common/js/axios'
+import {get, post, userLogin } from 'common/js/axios'
 
 //通知api
 export function getNotice() {
@@ -45,4 +45,14 @@ export function getMortgage() {
 export function getMoney() {
     const url = '/getMoney'
     return get(url)
+}
+
+export function getGuohu() {
+    const url = '/getGuohu'
+    return get(url)
+}
+
+export function login(data) {
+    const url = '/login'
+    return userLogin(url, data)
 }

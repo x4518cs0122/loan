@@ -7,7 +7,11 @@ Vue.use(Router)
 export default new Router({
     routes: [{
             path: '/',
-            redirect: '/bussiness'
+            redirect: '/login'
+        }, {
+            path: '/login',
+            name: 'login',
+            component: resolve => require(['../base/login/login'], resolve)
         }, {
             path: '/bussiness',
             name: 'bussiness',
@@ -110,38 +114,46 @@ export default new Router({
                 path: 'danbao',
                 component: resolve => require(['../components/section-one/getmoney/danbao'], resolve)
             }]
-        },{
-            path:'/erOrder',
-            name:'erOrder',
+        }, {
+            path: '/erOrder',
+            name: 'erOrder',
             component: resolve => require(['../components/section-two/er-order/er-order'], resolve),
-        },{
-            path:'/erSign',
-            name:'erSign',
+        }, {
+            path: '/erSign',
+            name: 'erSign',
             component: resolve => require(['../components/section-two/er-sign/er-sign'], resolve),
             children: [{
                 path: 'dataGather',
                 component: resolve => require(['../components/section-two/er-sign/dataGather'], resolve)
             }]
-        },{
-            path:'/erEvaluate',
-            name:'erEvaluate',
+        }, {
+            path: '/erEvaluate',
+            name: 'erEvaluate',
             component: resolve => require(['../components/section-two/er-evaluate/er-evaluate'], resolve),
-        },{
-            path:'/erWrite',
-            name:'erWrite',
+        }, {
+            path: '/erWrite',
+            name: 'erWrite',
             component: resolve => require(['../components/section-two/er-write/er-write'], resolve),
             children: [{
                 path: 'progress',
                 component: resolve => require(['../components/section-two/er-write/progress'], resolve)
             }]
-        },{
-            path:'/erApprove',
-            name:'erApprove',
+        }, {
+            path: '/erApprove',
+            name: 'erApprove',
             component: resolve => require(['../components/section-two/er-approve/er-approve'], resolve),
-            children:[{
-                path:':id',
+            children: [{
+                path: ':id',
                 component: resolve => require(['../components/section-two/er-approve/apprData'], resolve)
             }]
+        }, {
+            path: '/erGuohu',
+            name: 'erGuohu',
+            component: resolve => require(['../components/section-two/er-guohu/er-guohu'], resolve),
+            // children:[{
+            //     path:':id',
+            //     component: resolve => require(['../components/section-two/er-approve/apprData'], resolve)
+            // }]
         }
     ]
 })
