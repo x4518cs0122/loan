@@ -266,14 +266,19 @@ export default {
           switch(this.currentIndex){
               case 1:
                 this.$refs.formList1.choosed(option)
+                break;
               case 2:
                 this.$refs.formList2.choosed(option)
+                break;
               case 3:
                 this.$refs.formList3.choosed(option)
+                break;
               case 4:
                 this.$refs.formList4.choosed(option)
+                break;
               case 5:
                 this.$refs.formList5.choosed(option)
+                break;
           }
       },
       submit(){

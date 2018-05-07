@@ -74,43 +74,53 @@ export default {
                     items:[
                         {
                             'item': '接单',
-                            'icon': 'fa-handshake-o'
+                            'icon': 'fa-handshake-o',
+                            'router':'erOrder'
                         },
                         {
                             'item': '面签',
-                            'icon': 'fa-files-o'
+                            'icon': 'fa-files-o',
+                            'router':'erSign'
                         },
                         {
                             'item': '评估下单',
-                            'icon': 'fa-calculator'
+                            'icon': 'fa-calculator',
+                            'router':'erEvaluate'
                         },
                         {
                             'item': '整件输机',
-                            'icon': 'fa-laptop'
+                            'icon': 'fa-laptop',
+                            'router':'erWrite'
                         },
                         {
                             'item': '审批',
-                            'icon': 'fa-pencil'
+                            'icon': 'fa-pencil',
+                            'router':'erApprove'
                         },
                         {
                             'item': '过户',
-                            'icon': 'fa-building-o'
+                            'icon': 'fa-building-o',
+                            'router':'erTransfer'
                         },
                         {
                             'item': '抵押',
-                            'icon': 'fa-university'
+                            'icon': 'fa-university',
+                            'router':'erMortgage'
                         },
                         {
                             'item': '收费',
-                            'icon': 'fa-newspaper-o'
+                            'icon': 'fa-newspaper-o',
+                            'router':'erCharge'
                         },
                         {
                             'item': '担保',
-                            'icon': 'fa-gavel'
+                            'icon': 'fa-gavel',
+                            'router':'erGuarantee'
                         },
                         {
                             'item': '放款',
-                            'icon': 'fa-money'
+                            'icon': 'fa-money',
+                            'router':'erMoney'
                         }
                     ]
                 }

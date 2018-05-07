@@ -1,5 +1,5 @@
 <template>
-    <div class="evaluate">
+    <div class="er-evaluate">
         <evaluate-list title="抵押评估下单列表" :list="list" @select="select"></evaluate-list>
         <router-view></router-view>
     </div>
@@ -8,7 +8,6 @@
 <script>
 import evaluateList from 'components/evaluate-list/evaluate-list'
 import {getEvaluate} from 'api/api'
-import { mapMutations } from 'vuex';
  export default {
      data(){
          return{
@@ -25,17 +24,12 @@ import { mapMutations } from 'vuex';
              })
          },
          select(index){
-             let customer = this.list[index]
-             this.setCustomer(customer)
              if(this.list[index].state === '待下单'){
                 this.$router.push({path:'/evaluate/placeOrder'})
              }else{
                 this.$router.push({path:'/evaluate/unreported'})
              }           
-         },
-         ...mapMutations({
-             setCustomer:'SET_CUSTOMER'
-         })
+         }
      },
      components:{
         evaluateList
@@ -45,7 +39,7 @@ import { mapMutations } from 'vuex';
 
 <style lang='stylus' scoped>
 @import '~common/stylus/variable'
-.evaluate
+.er-evaluate
     position absolute 
     top 0
     bottom 0

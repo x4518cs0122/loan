@@ -1,6 +1,6 @@
 <template>
     <div class="approve">
-        <approve-list title="抵押审批列表" :list="list" @select="select"></approve-list>
+        <approve-list title="二手房审批列表" :list="list" @select="select"></approve-list>
         <router-view></router-view>
     </div>
 </template>
@@ -30,7 +30,7 @@ import {mapMutations} from 'vuex'
          select(index){
              let customer = this.list[index]
              this.setCustomer(customer)
-             this.$router.push({path:`/approve/${customer.id}`}) 
+             this.$router.push({path:`/erApprove/${customer.id}`}) 
          },
          ...mapMutations({
              setCustomer:'SET_CUSTOMER'

@@ -1,6 +1,6 @@
 <template>
     <div class="unreported">
-        <v-header :title="title" @submit="submit" :next="next"></v-header>
+        <v-header :title="title" @submit="submit" :next="next" @back="back"></v-header>
         <form-list :list="reports" @pop="pop" @choosed="choosed" ref="formList"></form-list>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
@@ -102,6 +102,9 @@ import formList from 'components/form-list/form-list'
          },
          submit(){
              console.log('you did!')
+         },
+         back(){
+             this.$router.back()
          }
      },
      components:{

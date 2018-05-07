@@ -1,6 +1,6 @@
 <template>
  <div class="sign-detail">
-     <v-header :next="next" @back="back"></v-header>
+     <v-header :next="next" @back="back" @submit='submit'></v-header>
      <ul>
          <li class="normal-wrapper" v-for="item in items" :key="item.name">
              <span class="text">{{item.text}}</span>
@@ -49,7 +49,7 @@ import pop from 'base/pop-up/pop-up'
                 text:'借款品种'
             }
         ],
-        next:'下一步',
+        next:'提交',
         options:['儿童乐园','鬼屋','你说去哪儿']
      }
    },
@@ -76,6 +76,9 @@ import pop from 'base/pop-up/pop-up'
        },
        back(){
            this.$router.back()
+       },
+       submit(){
+           console.log('yes!')
        }
    },
    components:{

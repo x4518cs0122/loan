@@ -35,6 +35,14 @@ Random.extend({
         GM_state: function() {
             var GM_state = ["待提交担保函与收费明细", "待确定放款状态"]
             return this.pick(GM_state)
+        },
+        GUOHU_state: function() {
+            var GUOHU_state = ["客户过户", "权证部过户"]
+            return this.pick(GUOHU_state)
+        },
+        GUOHU_subState: function() {
+            var GUOHU_subState = ["待确定回证时间", "待约定过户时间","待确定过户状态"]
+            return this.pick(GUOHU_subState)
         }
     })
     //使用mockjs模拟数据
@@ -109,5 +117,15 @@ Mock.mock('/api/getMoney', {
         'name|1': '@cname',
         'phone': /\d{11}/,
         state: '@GM_state',
+    }]
+})
+
+Mock.mock('/api/getGuohu', {
+    "data|10-15": [{
+        'id': /\d{7,8}/,
+        'name|1': '@cname',
+        'phone': /\d{11}/,
+        state: '@GUOHU_state',
+        substate:'@GUOHU_subState'
     }]
 })

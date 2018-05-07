@@ -55,13 +55,11 @@ export default {
           this.$router.back()
       },
       editForm(e){
-          let target = e.target
-          
+          let target = e.target    
           while(target.nodeName.toLowerCase() != 'li'){
               target = target.parentNode
           }    
           let formIndex = target.getAttribute("data-index")
-          console.log(formIndex)
           switch (parseInt(formIndex)){
               case 0:
                 this.$router.push({path:`/approve/${this.customer.id}/mulu`})

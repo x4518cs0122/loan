@@ -1,20 +1,13 @@
 <template>
   <div class="sign">
-    <app-title :title="title" @back="back"></app-title>
-    <Scroll class="scroll" :data="list">
-      <div>
-        <detail-list :list='list' @itemHandle='selectItem'></detail-list>
-      </div>
-    </Scroll>
+    <sign-list :list="list" :title="title" @select='selectItem'></sign-list>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import detailList from 'base/detail-list/detail-list'
+import signList from 'components/sign-list/sign-list'
 import {getSignList} from 'api/api'
-import Scroll from 'base/scroll/scroll'
-import appTitle from 'base/header/header'
  export default {
    data(){
      return{
@@ -23,11 +16,9 @@ import appTitle from 'base/header/header'
      }
    },
    components: {
-     detailList,
-     Scroll,
-     appTitle
+     signList
    },
-   mounted(){
+   created(){
      this._getSignList()
    },
    methods:{
@@ -36,28 +27,17 @@ import appTitle from 'base/header/header'
          this.list = res.data
        })
      },
-     back(){
-       this.$router.back()
-     },
      selectItem(index){
        if(this.list[index].state === '待约定签约时间'){
          this.$router.push({path:'/sign/reschedule'})
        }else{
          this.$router.push({path:'/sign/confirmState'})
-       }
-       
+       }  
      }
    }
  }
 </script>
 
 <style lang='stylus' scoped>
-.scroll
-  position absolute 
-  top 54px
-  bottom 0
-  left 0
-  right 0
-  overflow hidden
  
 </style>
