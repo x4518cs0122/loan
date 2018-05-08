@@ -140,6 +140,7 @@ export default {
   methods:{
       handleChange(val){
           this.$refs.scroll.refresh()
+          console.log(sessionStorage.getItem("token"))
       },
       push(router) {
         this.$router.push({path:`/${router}`})
