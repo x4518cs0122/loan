@@ -1,6 +1,6 @@
 <template>
-    <div class="er-guohu">
-        <v-header title="二手房过户列表" @back="back"></v-header>
+    <div class="er-mortgage">
+        <v-header title="二手房抵押列表" @back="back"></v-header>
         <div class="scroll">
             <detail-list :list='list' @itemHandle='select'></detail-list>
         </div> 
@@ -34,11 +34,7 @@ import {mapMutations} from 'vuex'
          select(index){
              let customer = this.list[index]
              this.setCustomer(customer)
-             if(customer.state === '客户过户'){
-                 this.$router.push({path:`/erGuohu/customer`}) 
-             }else{
-                 this.$router.push({path:`/erGuohu/quanzheng`}) 
-             }    
+             this.$router.push({path:`/erMortgage/erMortDetail`})    
          },
          ...mapMutations({
              setCustomer:'SET_CUSTOMER'
@@ -52,7 +48,7 @@ import {mapMutations} from 'vuex'
 </script>
 
 <style lang='stylus' scoped>
-.er-guohu
+.er-mortgage
     position fixed 
     top 0
     bottom 0

@@ -1,7 +1,9 @@
 <template>
   <div class="interview">
         <app-title title="抵押面谈列表" @back="back"></app-title>
-        <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+        <div class="scroll">
+            <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+        </div>
         <router-view></router-view>
         <!-- <interview-detail v-show="detail" @hiddenDetail="hiddenDetail" @showForm="showForm"></interview-detail>
         <application v-if="application" @goBack="hiddenForm"></application> -->
@@ -57,6 +59,13 @@ export default {
         right 0
         background #fff
         overflow hidden
+        .scroll
+            position absolute 
+            top 54px
+            bottom 0
+            left 0
+            right 0
+            overflow hidden
 </style>
 
 

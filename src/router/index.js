@@ -7,7 +7,7 @@ Vue.use(Router)
 export default new Router({
     routes: [{
             path: '/',
-            redirect: '/login'
+            redirect: '/bussiness'
         }, {
             path: '/login',
             name: 'login',
@@ -150,10 +150,21 @@ export default new Router({
             path: '/erGuohu',
             name: 'erGuohu',
             component: resolve => require(['../components/section-two/er-guohu/er-guohu'], resolve),
-            // children:[{
-            //     path:':id',
-            //     component: resolve => require(['../components/section-two/er-approve/apprData'], resolve)
-            // }]
+            children: [{
+                path: 'customer',
+                component: resolve => require(['../components/section-two/er-guohu/customer'], resolve)
+            }, {
+                path: 'quanzheng',
+                component: resolve => require(['../components/section-two/er-guohu/quanzheng'], resolve)
+            }]
+        }, {
+            path: '/erMortgage',
+            name: 'erMortgage',
+            component: resolve => require(['../components/section-two/er-mortgage/er-mortgage'], resolve),
+            children: [{
+                path: 'erMortDetail',
+                component: resolve => require(['../components/section-two/er-mortgage/er-mort-detail'], resolve)
+            }]
         }
     ]
 })

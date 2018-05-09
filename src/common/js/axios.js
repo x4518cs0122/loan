@@ -1,8 +1,16 @@
 import axios from 'axios'
 import qs from 'qs'
 
-// axios.defaults.baseURL = '/api'
-axios.defaults.baseURL = 'http://192.168.10.225:3000'
+axios.defaults.baseURL = '/api'
+    // axios.defaults.baseURL = 'http://192.168.10.225:3000'
+
+axios.interceptors.request.use(function(config) {
+    // config.headers['token'] = '111';
+    return config;
+}, function(error) {
+    // 对请求错误做些什么
+    return Promise.reject(error);
+});
 
 export function get(url, params) {
     return new Promise((resolve, reject) => {
