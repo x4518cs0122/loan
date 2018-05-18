@@ -1,6 +1,6 @@
 <template>
   <div class="interview-detail">
-      <app-title :title="title" :next="next" @back="back"></app-title>
+      <!-- <app-title :title="title" :next="next" @back="back"></app-title> -->
       <div class="info">
           <div class="normal-wrapper">
               <span class="text">贷款编号</span>
@@ -37,7 +37,6 @@ import {mapGetters} from 'vuex'
 export default {
   data(){
       return{
-          title:'用户审批详情',
           next:'提交',
           formlist:['资料目录表','支行审批','分行审批','出正评']  
       }
@@ -87,7 +86,7 @@ export default {
 @import '~common/stylus/mixin'
     .interview-detail
         position fixed
-        top 0
+        top 52px
         bottom 0
         left 0
         right 0

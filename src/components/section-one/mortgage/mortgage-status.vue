@@ -1,6 +1,5 @@
 <template>
     <div class="mortgage-status">
-        <v-header :title="title" @back="back" :next="next" @submit="submit"></v-header>
         <div class="normal-wrapper">
             <span class="text">抵押日期:</span>
             <span class="val">2017-10-24</span>
@@ -17,7 +16,6 @@
 </template>
 
 <script>
-import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
 import {mapGetters} from 'vuex'
  export default {
@@ -49,7 +47,6 @@ import {mapGetters} from 'vuex'
          ])
      },
      components:{
-         vHeader,
          pop
      }
  }
@@ -60,7 +57,7 @@ import {mapGetters} from 'vuex'
 @import "~common/stylus/mixin"
 .mortgage-status
     position fixed
-    top 0
+    top 52px
     bottom 0
     left 0
     right 0

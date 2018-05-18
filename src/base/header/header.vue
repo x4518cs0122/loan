@@ -17,14 +17,6 @@
 import notice from 'components/notice/notice'
 export default {
   props:{
-      title:{
-          type:String,
-          default:'抵押接单'
-      },
-      next:{
-          type:String,
-          default:''
-      },
       icon:{
           type:String,
           default:''
@@ -47,6 +39,16 @@ export default {
       },
       noticeDetail(){
           this.noticeShow = !this.noticeShow
+      }
+  },
+  computed:{
+      title(){
+          let metas = this.$route.matched
+          return metas[metas.length-1].meta.title
+      },
+      next(){
+          let metas = this.$route.matched
+          return '' || metas[metas.length-1].meta.next
       }
   },
   components:{

@@ -1,6 +1,6 @@
 <template>
     <div class="evaluate-list">
-        <v-header @back="back" :title="title"></v-header>
+        <v-header @back="back"></v-header>
         <div class="list-wrapper">
             <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
         </div>
@@ -13,10 +13,6 @@ import {getEvaluate} from 'api/api'
 import vHeader from 'base/header/header'
  export default {
      props:{
-         title:{
-             type:String,
-             default:''
-         },
          list:{
              type:Array,
              default:()=>{

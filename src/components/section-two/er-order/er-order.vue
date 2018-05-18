@@ -1,7 +1,7 @@
 <template>
   <transition name="fade">
     <div class="er-order">
-        <v-header @back="back" @submit="next" :next="nextTxt"></v-header>
+        <v-header @back="back" @submit="next"></v-header>
         <!-- 接单第一页 --> 
         <form-list :list="list1" @pop="pop" ref="formList1" v-if="currentIndex === 1"></form-list>
         <form-list :list="list2" @pop="pop" ref="formList2" v-if="currentIndex === 2"></form-list>

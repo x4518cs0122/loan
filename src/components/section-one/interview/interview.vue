@@ -1,16 +1,16 @@
 <template>
   <div class="interview">
-        <app-title title="抵押面谈列表" @back="back"></app-title>
-        <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+        <v-header @back="back"></v-header>
+        <div class="list-wrapper">
+            <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+        </div>
         <router-view></router-view>
-        <!-- <interview-detail v-show="detail" @hiddenDetail="hiddenDetail" @showForm="showForm"></interview-detail>
-        <application v-if="application" @goBack="hiddenForm"></application> -->
   </div>
 </template>
 <script>
 import detailList from 'base/detail-list/detail-list'
 import {getInterview} from 'api/api'
-import appTitle from 'base/header/header'
+import vHeader from 'base/header/header'
 import {mapMutations} from 'vuex'
 export default {
   data(){
@@ -43,7 +43,7 @@ export default {
   },
   components: {
       detailList,
-      appTitle,
+      vHeader,
   }
 }
 </script>
@@ -57,6 +57,13 @@ export default {
         right 0
         background #fff
         overflow hidden
+        .list-wrapper
+            position fixed 
+            top 52px
+            bottom 0
+            left 0
+            right 0
+            overflow hidden
 </style>
 
 

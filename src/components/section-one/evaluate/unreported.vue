@@ -1,6 +1,6 @@
 <template>
     <div class="unreported">
-        <v-header :title="title" @submit="submit" :next="next" @back="back"></v-header>
+        <!-- <v-header :title="title" @submit="submit" :next="next" @back="back"></v-header> -->
         <form-list :list="reports" @pop="pop" @choosed="choosed" ref="formList"></form-list>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
@@ -13,8 +13,6 @@ import formList from 'components/form-list/form-list'
  export default {
      data(){
          return{
-             title:'出报告',
-             next:'提交',
              reports:[
                  {
                      title:'',
@@ -120,7 +118,7 @@ import formList from 'components/form-list/form-list'
 @import '~common/stylus/mixin'
 .unreported
     position absolute 
-    top 0
+    top 52px
     bottom 0
     left 0
     right 0

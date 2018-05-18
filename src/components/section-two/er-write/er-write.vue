@@ -1,6 +1,6 @@
 <template>
   <div class="sign-list">
-    <v-header title="二手房整件输机列表" @back="back"></v-header>
+    <v-header @back="back"></v-header>
     <div class="scroll">
       <detail-list :list='list' @itemHandle='select'></detail-list>
     </div>  
@@ -14,18 +14,11 @@ import vHeader from 'base/header/header'
 import {getEvaluate} from 'api/api'
 import {mapMutations} from 'vuex'
  export default {
-   props:{
-       title:{
-           type:String,
-           default:''
-       },
-       list:{
-           type:Array,
-           default:()=>{
-                return []
-           }
-       }
-    },
+   data(){
+     return{
+       list:[]
+     }
+   },
    components: {
      detailList,
      vHeader

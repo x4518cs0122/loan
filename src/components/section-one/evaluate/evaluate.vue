@@ -53,12 +53,4 @@ import { mapMutations } from 'vuex';
     right 0
     overflow hidden
     background $color-background
-    .list-wrapper
-        position fixed 
-        top 52px
-        bottom 0
-        right 0
-        left 0
-        overflow hidden
- 
 </style>

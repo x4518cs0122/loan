@@ -1,6 +1,6 @@
 <template>
     <div class="placeOrder">
-        <v-header :title="title" @back="back" @submit="submit" :next="next"></v-header>
+        <!-- <v-header :title="title" @back="back" @submit="submit" :next="next"></v-header> -->
         <div>
             <h2 class="title">下单格式</h2>
             <div class="normal-wrapper">
@@ -76,7 +76,7 @@ import vHeader from 'base/header/header'
 @import '~common/stylus/mixin'
 .placeOrder
     position absolute
-    top 0
+    top 52px
     bottom 0
     left 0
     right 0

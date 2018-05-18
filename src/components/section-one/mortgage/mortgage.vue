@@ -1,7 +1,9 @@
 <template> 
     <div class="mortgage">
-        <v-header :title="title" @back="back" ></v-header>
-        <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+        <v-header @back="back" ></v-header>
+        <div class="list-wrapper">
+            <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+        </div>
         <router-view></router-view>
     </div>
 </template>
@@ -15,7 +17,6 @@ import {mapMutations} from 'vuex'
     data(){
         return{
             list:[],
-            title:'抵押面签列表',
             detail:false
         }
     },
@@ -54,6 +55,18 @@ import {mapMutations} from 'vuex'
 </script>
 
 <style lang='stylus' scoped>
-
- 
+.mortgage
+    position fixed 
+    top 0
+    bottom 0
+    left 0
+    right 0
+    overflow hidden
+    .list-wrapper
+        position fixed 
+        top 52px
+        bottom 0
+        left 0
+        right 0
+        overflow hidden
 </style>

@@ -1,6 +1,6 @@
 <template>
     <div class="confirm-state">
-        <v-header :next="next" :title="title" @submit="submit" @back="back"></v-header>
+        <!-- <v-header :next="next" :title="title" @submit="submit" @back="back"></v-header> -->
         <form-list :list="list" @pop="pop" ref="formList" @choosed="choosed"></form-list>  
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
@@ -62,7 +62,7 @@ export default {
 @import '~common/stylus/mixin'
 .confirm-state
     position absolute
-    top 0
+    top 52px
     bottom 0
     left 0
     right 0

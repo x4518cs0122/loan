@@ -1,6 +1,6 @@
 <template>
     <div class="approve-list">
-        <v-header :title="title" @back="back"></v-header>
+        <v-header  @back="back"></v-header>
         <div class="list-wrapper">
             <detail-list :list="list" @itemHandle="select"></detail-list> 
         </div>
@@ -15,10 +15,6 @@ import {getApprove} from 'api/api'
 import {mapMutations} from 'vuex'
  export default {
     props:{
-        title:{
-            type:String,
-            default:''
-        },
         list:{
             type:Array,
             default:()=>{
@@ -38,8 +34,14 @@ import {mapMutations} from 'vuex'
         select(index){
             this.$emit('select',index)
         }
+    },
+    computed:{
+        title(){
+            let metas = this.$route.matched
+            return metas[metas.length-1].meta.title
+        }
     }
-    }
+}
 </script>
 
 <style lang='stylus' scoped>

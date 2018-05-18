@@ -1,12 +1,10 @@
 <template>
     <div class="jy-mulu">
-        <v-header title="资料目录表" @back="back" next="提交" @submit="submit"></v-header>
         <formList :list="list" ref="choosed" @pop="pop"></formList>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
 </template>
 <script>
-import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
 import formList from 'components/form-list/form-list'
 import {mapGetters} from 'vuex'
@@ -111,9 +109,6 @@ export default {
       ])
   },
   methods:{
-      back(){
-          this.$router.back()
-      },
       pop(option){
           this.options = option
           this.$refs.pop.show()
@@ -121,12 +116,8 @@ export default {
       choosed(option){
           this.$refs.formList.choosed(option)
       },
-      submit(){
-          console.log('yes! ')
-      }
   },
   components:{
-      vHeader,
       formList,
       pop
   }
@@ -135,8 +126,8 @@ export default {
 <style lang="stylus" scoped>
 @import "~common/stylus/variable"
 .jy-mulu
-    position absolute 
-    top 0
+    position fixed 
+    top 52px
     bottom 0
     left 0
     right 0

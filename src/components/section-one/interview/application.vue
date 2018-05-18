@@ -1,31 +1,31 @@
 <template>
   <div class="application">
-        <app-title title="个人贷款申请表" :next="nextTxt" @back="back" @submit="next"></app-title>  
-         <!-- 个人信息 index = 1 -->   
-        <div v-show="currentIndex === 1">
-            <form-list :list="userInfo" @pop="pop" ref="formList1"></form-list>
-        </div>
-         <!-- 配偶信息 index = 2 -->
-        <div v-show="currentIndex === 2">
-            <form-list :list="partnerInfo" @pop="pop" ref="formList2"></form-list>  
-        </div>
-        <!-- 工作单位 index = 3 -->
-        <div v-show="currentIndex === 3">
-            <form-list :list="jobInfo" @pop="pop" ref="formList3"></form-list>  
-        </div>
-        <!-- 贷款信息 index = 4 -->
-        <div v-show="currentIndex === 4">
-            <form-list :list="loanInfo" @pop="pop" ref="formList4"></form-list> 
-        </div>
-        <!-- 紧急联系人信息 index = 5 -->
-        <div v-show="currentIndex === 5">
-            <form-list :list="emergencyInfo" @pop="pop" ref="formList5"></form-list>  
+        <div class="scroll">
+                <!-- 个人信息 index = 1 -->   
+            <div v-show="currentIndex === 1">
+                <form-list :list="userInfo" @pop="pop" ref="formList1"></form-list>
+            </div>
+                <!-- 配偶信息 index = 2 -->
+            <div v-show="currentIndex === 2">
+                <form-list :list="partnerInfo" @pop="pop" ref="formList2"></form-list>  
+            </div>
+            <!-- 工作单位 index = 3 -->
+            <div v-show="currentIndex === 3">
+                <form-list :list="jobInfo" @pop="pop" ref="formList3"></form-list>  
+            </div>
+            <!-- 贷款信息 index = 4 -->
+            <div v-show="currentIndex === 4">
+                <form-list :list="loanInfo" @pop="pop" ref="formList4"></form-list> 
+            </div>
+            <!-- 紧急联系人信息 index = 5 -->
+            <div v-show="currentIndex === 5">
+                <form-list :list="emergencyInfo" @pop="pop" ref="formList5"></form-list>  
+            </div>
         </div>
         <popUp :options="options" ref="pop" @choosed="choosed"></popUp>
   </div>
 </template>
 <script>
-import appTitle from 'base/header/header'
 import Scroll from 'base/scroll/scroll'
 import popUp from 'base/pop-up/pop-up'
 import formList from 'components/form-list/form-list'
@@ -35,7 +35,6 @@ export default {
       return{
           currentIndex:1,
           currentItem:{},
-          nextTxt:'下一页',
           userInfo:[
                 {
                     title:"客户信息",
@@ -237,7 +236,6 @@ export default {
       }
   },
   components:{
-      appTitle,
       Scroll,
       popUp,
       formList
@@ -304,29 +302,22 @@ export default {
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
 @import '~common/stylus/mixin'
-.application
-    position fixed
-    top 0
+.scroll
+    position fixed 
+    top 52px
     bottom 0
     left 0
     right 0
-    background #ffffff
+    background $color-background
     overflow hidden
-    .scroll
-        position fixed 
-        top 52px
-        bottom 0
-        left 0
-        right 0
-        overflow hidden
-        .title
-            title() 
-        .select-wrapper
-            select-wrapper()
-        .input-wrapper
-            input-wrapper()
-            input[placeholder]
-                font-size 12px
+    .title
+        title() 
+    .select-wrapper
+        select-wrapper()
+    .input-wrapper
+        input-wrapper()
+        input[placeholder]
+            font-size 12px
                     
 </style>
 

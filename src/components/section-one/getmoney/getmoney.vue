@@ -1,6 +1,6 @@
 <template>
     <div class="getmoney">
-        <v-header :title="title" @back="back"></v-header>
+        <v-header @back="back"></v-header>
         <div class="list-wrapper">
             <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
         </div>
@@ -16,7 +16,6 @@ import {mapMutations} from 'vuex'
  export default {
      data(){
          return{
-             title:"抵押放款列表",
              list:[]
          }
      },

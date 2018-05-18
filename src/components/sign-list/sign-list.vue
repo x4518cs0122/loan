@@ -1,6 +1,6 @@
 <template>
   <div class="sign-list">
-    <app-title :title="title" @back="back"></app-title>
+    <v-header @back="back"></v-header>
     <div class="scroll">
       <detail-list :list='list' @itemHandle='select'></detail-list>
     </div>  
@@ -9,13 +9,9 @@
 
 <script>
 import detailList from 'base/detail-list/detail-list'
-import appTitle from 'base/header/header'
+import vHeader from 'base/header/header'
  export default {
    props:{
-       title:{
-           type:String,
-           default:''
-       },
        list:{
            type:Array,
            default:()=>{
@@ -25,7 +21,7 @@ import appTitle from 'base/header/header'
     },
    components: {
      detailList,
-     appTitle
+     vHeader
    },
    methods:{
      back(){

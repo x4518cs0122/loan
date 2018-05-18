@@ -1,6 +1,6 @@
 <template>
     <div class="branch">
-        <v-header :title="title" :next="next" @back="back" @submit="submit"></v-header>
+        <!-- <v-header :title="title" :next="next" @back="back" @submit="submit"></v-header> -->
         <div class="select-wrapper" @click="pop">
             <span class="text">环节状态</span>
             <span class="desc">{{status}}</span>

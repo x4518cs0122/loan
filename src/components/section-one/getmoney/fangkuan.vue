@@ -1,6 +1,5 @@
 <template>
     <div class="fangkuan">
-        <v-header :title="title" :next="next" @back="back" @submit="submit"></v-header>
         <div class="select-wrapper" @click="pop(item)">
             <span class="text">{{item.text}}</span>
             <span class="desc">{{item.status}}</span>
@@ -18,8 +17,6 @@ import vHeader from 'base/header/header'
  export default {
      data(){
          return{
-             next:'提交',
-             title:'确定放款状态',
              item:{
                  text:'放款状态',
                  status:'',
@@ -53,7 +50,7 @@ import vHeader from 'base/header/header'
 @import "~common/stylus/mixin"
 .fangkuan
     position fixed 
-    top 0
+    top 52px
     bottom 0
     left 0
     right 0

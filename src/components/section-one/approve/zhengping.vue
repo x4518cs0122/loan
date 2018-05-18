@@ -1,31 +1,6 @@
 <template>
     <div class="zhengping">
-        <v-header :title="title" @submit="submit" :next="next"></v-header>
-        <!-- <Scroll class="scroll">
-            <ul>
-                <li v-for="(info,index) in infos" :key="index">
-                    <h2 class="title" v-if="info.title">{{info.title}}</h2>
-                    <ul>
-                        <li v-for="(item,index) in info.items" :key="index">
-                            <div v-if="item.class==='select-wrapper'" :class="item.class" @click="pop(item)">
-                                <span class="text">{{item.text}}</span>
-                                <span class="desc">{{item.value}}</span>
-                                <span class="icon">
-                                    <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                                </span>
-                            </div>
-                            <div :class="item.class" v-else>
-                                <label class="text" for="name">{{item.text}}</label>
-                                <input  type="text" 
-                                    :placeholder="item.placeholder" 
-                                    id="name" 
-                                    v-model="item.value">
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </Scroll> -->
+        <!-- <v-header :title="title" @submit="submit" :next="next"></v-header> -->
         <form-list :list="infos" @pop="pop" ref="formList" choosed="choosed"></form-list> 
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>

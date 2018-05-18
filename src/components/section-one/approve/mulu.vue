@@ -1,6 +1,6 @@
 <template>
     <div class="jy-mulu">
-        <v-header :title="title" @back="back" :next="next"></v-header>
+        <!-- <v-header :title="title" @back="back" :next="next"></v-header> -->
         <formList :list="list" ref="choosed" @pop="pop"></formList>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>

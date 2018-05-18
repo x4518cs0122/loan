@@ -1,6 +1,5 @@
 <template>
   <div class="interview-detail">
-      <app-title :title="title" :next="next" @back="back"></app-title>
       <div class="info">
           <div class="normal-wrapper">
               <span class="text">贷款编号</span>
@@ -46,17 +45,12 @@
   </div>
 </template>
 <script>
-import appTitle from 'base/header/header'
 import {mapGetters} from 'vuex'
 export default {
   data(){
       return{
-          title:'抵押面谈',
           next:'提交'     
       }
-  },
-  components: {
-      appTitle
   },
   computed:{
       ...mapGetters([
@@ -78,7 +72,7 @@ export default {
 @import '~common/stylus/mixin'
     .interview-detail
         position fixed
-        top 0
+        top 52px
         bottom 0
         left 0
         right 0

@@ -1,6 +1,5 @@
 <template>
     <div class="progress">
-        <v-header title='二手房整件输机' @back="back"></v-header>
         <form-list :list="list" @pop="pop"></form-list>
     </div>
 </template>
@@ -55,10 +54,9 @@ export default {
 @import '~common/stylus/variable'
 .progress
     position fixed 
-    top 0
+    top 52px
     bottom 0
     left 0
     right 0
-    overflow hidden
     background $color-background
 </style>

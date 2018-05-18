@@ -1,6 +1,5 @@
 <template>
     <div class="danbao">
-        <v-header :title="title" @submit="submit" :next="next" @back="back"></v-header>
         <Scroll class="scroll">
             <ul>
                 <li v-for="(type,index) in danbaoList" :key="index">
@@ -29,13 +28,10 @@
 
 <script>
 import pop from 'base/pop-up/pop-up'
-import vHeader from 'base/header/header'
 import Scroll from 'base/scroll/scroll'
  export default {
      data(){
          return{
-             title:'担保函与收费明细',
-             next:'提交',
              options:[],
              currentItem:{},
              danbaoList:[
@@ -121,7 +117,6 @@ import Scroll from 'base/scroll/scroll'
          }
      },
      components:{
-         vHeader,
          pop,
          Scroll
      }
@@ -131,26 +126,19 @@ import Scroll from 'base/scroll/scroll'
 <style lang='stylus' scoped>
 @import '~common/stylus/variable'
 @import '~common/stylus/mixin'
-    .danbao
-        position absolute
-        top 0
-        bottom 0
-        left 0
-        right 0
-        overflow hidden
-        background $color-background
-        .scroll
-            position fixed 
-            top 52px
-            bottom 0
-            left 0
-            right 0
-            overflow hidden
-            .title
-                title()
-            .select-wrapper
-                select-wrapper()
-            .normal-wrapper
-                normal-wrapper()
- 
+.scroll
+    position fixed 
+    top 52px
+    bottom 0
+    left 0
+    right 0
+    overflow hidden
+    background $color-background
+    .title
+        title()
+    .select-wrapper
+        select-wrapper()
+    .normal-wrapper
+        normal-wrapper()
+
 </style>

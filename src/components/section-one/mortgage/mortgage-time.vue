@@ -1,6 +1,5 @@
 <template>
     <div class="mortgage-time">
-        <v-header :title="title" @back="back" :next="next" @submit="submit"></v-header>
         <div class="normal-wrapper">
             <span class="text">客户编号:</span>
             <span class="val">{{customer.id}}</span>
@@ -29,7 +28,6 @@
 </template>
 
 <script>
-import vHeader from 'base/header/header'
 import {mapGetters} from 'vuex'
  export default {
      data(){
@@ -51,9 +49,6 @@ import {mapGetters} from 'vuex'
          ...mapGetters([
              'customer'
          ])
-     },
-     components:{
-         vHeader
      }
  }
 </script>
@@ -63,7 +58,7 @@ import {mapGetters} from 'vuex'
 @import "~common/stylus/mixin"
 .mortgage-time
     position fixed
-    top 0
+    top 52px
     bottom 0
     left 0
     right 0
