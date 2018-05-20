@@ -6,6 +6,9 @@ const mutations = {
     },
     [types.SET_CUSTOMER](state, customer) {
         state.customer = customer
+    },
+    [types.SET_TOKEN](state, token) {
+        state.token = token
     }
 }
 export default mutations

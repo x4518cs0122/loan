@@ -41,7 +41,7 @@ Random.extend({
             return this.pick(GUOHU_state)
         },
         GUOHU_subState: function() {
-            var GUOHU_subState = ["待确定回证时间", "待约定过户时间","待确定过户状态"]
+            var GUOHU_subState = ["待确定回证时间", "待约定过户时间", "待确定过户状态"]
             return this.pick(GUOHU_subState)
         }
     })
@@ -126,6 +126,12 @@ Mock.mock('/api/getGuohu', {
         'name|1': '@cname',
         'phone': /\d{11}/,
         state: '@GUOHU_state',
-        substate:'@GUOHU_subState'
+        substate: '@GUOHU_subState'
     }]
+})
+
+Mock.mock('/api/login', {
+    "data": {
+        'token': /\d{7,8}/,
+    }
 })

@@ -8,9 +8,9 @@
                         <span class="title">{{item.title}}</span>
                     </template>
                     <ul>
-                        <li class="item" v-for="x in item.items" :key="x.router" @click="push(x.router)">
-                            <div class="fa icon" :class="x.icon" aria-hidden="true">
-                                <h2 class="text">{{x.item}}</h2>
+                        <li class="item" v-for="x in item.items" :key="x.meta.title" @click="push(x.path)" v-if="normalizeRouters(x)">
+                            <div class="fa icon" :class="x.meta.icon" aria-hidden="true">
+                                <h2 class="text">{{x.meta.title}}</h2>
                             </div>                  
                         </li>
                     </ul>
@@ -25,105 +25,121 @@ import Nav from 'components/nav/nav'
 import vHeader from 'base/header/header'
 import tab from 'components/tab/tab'
 import Scroll from 'base/scroll/scroll'
+import {mapGetters} from 'vuex'
 export default {
   data(){
       return{
-          group:[{
-            title:'抵押贷款',
-            id:'1',
-            items:[
-                {
-                    'item': '接单',
-                    'icon': 'fa-handshake-o',
-                    'router': 'order'
-                },
-                {
-                    'item': '面谈',
-                    'icon': 'fa-coffee',
-                    'router': 'interview'
-                },
-                {
-                    'item': '面签',
-                    'icon': 'fa-files-o',
-                    'router': 'sign'
-                },
-                {
-                    'item': '评估下单',
-                    'icon': 'fa-calculator',
-                    'router': 'evaluate'
-                },
-                {
-                    'item': '审批',
-                    'icon': 'fa-pencil',
-                    'router': 'approve'
-                },
-                {
-                    'item': '抵押',
-                    'icon': 'fa-university',
-                    'router': 'mortgage'
-                },
-                {
-                    'item': '放款',
-                    'icon': 'fa-money',
-                    'router': 'getmoney'
-                }
+          gp:[
+              {
+                title:'抵押贷款',
+                id:'1',
+                items:[
+                    {
+                        'item': '接单',
+                        'icon': 'fa-handshake-o',
+                        'router': 'order',
+                        // show:''
+                    },
+                    {
+                        'item': '面谈',
+                        'icon': 'fa-coffee',
+                        'router': 'interview'
+                    },
+                    {
+                        'item': '面签',
+                        'icon': 'fa-files-o',
+                        'router': 'sign'
+                    },
+                    {
+                        'item': '评估下单',
+                        'icon': 'fa-calculator',
+                        'router': 'evaluate'
+                    },
+                    {
+                        'item': '审批',
+                        'icon': 'fa-pencil',
+                        'router': 'approve'
+                    },
+                    {
+                        'item': '抵押',
+                        'icon': 'fa-university',
+                        'router': 'mortgage'
+                    },
+                    {
+                        'item': '放款',
+                        'icon': 'fa-money',
+                        'router': 'getmoney'
+                    }
                 ], 
-                },{
-                    title:'二手房贷款',
-                    id:'2', 
-                    items:[
-                        {
-                            'item': '接单',
-                            'icon': 'fa-handshake-o',
-                            'router':'erOrder'
-                        },
-                        {
-                            'item': '面签',
-                            'icon': 'fa-files-o',
-                            'router':'erSign'
-                        },
-                        {
-                            'item': '评估下单',
-                            'icon': 'fa-calculator',
-                            'router':'erEvaluate'
-                        },
-                        {
-                            'item': '整件输机',
-                            'icon': 'fa-laptop',
-                            'router':'erWrite'
-                        },
-                        {
-                            'item': '审批',
-                            'icon': 'fa-pencil',
-                            'router':'erApprove'
-                        },
-                        {
-                            'item': '过户',
-                            'icon': 'fa-building-o',
-                            'router':'erGuohu'
-                        },
-                        {
-                            'item': '抵押',
-                            'icon': 'fa-university',
-                            'router':'erMortgage'
-                        },
-                        {
-                            'item': '收费',
-                            'icon': 'fa-newspaper-o',
-                            'router':'erCharge'
-                        },
-                        {
-                            'item': '担保',
-                            'icon': 'fa-gavel',
-                            'router':'erGuarantee'
-                        },
-                        {
-                            'item': '放款',
-                            'icon': 'fa-money',
-                            'router':'erMoney'
-                        }
-                    ]
-                }
+              },
+              {
+                title:'二手房贷款',
+                id:'2', 
+                items:[
+                    {
+                        'item': '接单',
+                        'icon': 'fa-handshake-o',
+                        'router':'erOrder'
+                    },
+                    {
+                        'item': '面签',
+                        'icon': 'fa-files-o',
+                        'router':'erSign'
+                    },
+                    {
+                        'item': '评估下单',
+                        'icon': 'fa-calculator',
+                        'router':'erEvaluate'
+                    },
+                    {
+                        'item': '整件输机',
+                        'icon': 'fa-laptop',
+                        'router':'erWrite'
+                    },
+                    {
+                        'item': '审批',
+                        'icon': 'fa-pencil',
+                        'router':'erApprove'
+                    },
+                    {
+                        'item': '过户',
+                        'icon': 'fa-building-o',
+                        'router':'erGuohu'
+                    },
+                    {
+                        'item': '抵押',
+                        'icon': 'fa-university',
+                        'router':'erMortgage'
+                    },
+                    {
+                        'item': '收费',
+                        'icon': 'fa-newspaper-o',
+                        'router':'erCharge'
+                    },
+                    {
+                        'item': '担保',
+                        'icon': 'fa-gavel',
+                        'router':'erGuarantee'
+                    },
+                    {
+                        'item': '放款',
+                        'icon': 'fa-money',
+                        'router':'erMoney'
+                    }
+                ]
+              }
+          ],
+          group:[
+              {
+                title:'抵押贷款',
+                id:'1',
+                items:[]
+              },
+              {
+                title:'二手房贷款',
+                id:'2', 
+                items:[]
+              }
             ],
           show:true,
           icon:'fa-bell-o',
@@ -137,14 +153,30 @@ export default {
       tab,
       vHeader
   },
+  mounted(){
+      setTimeout(() => {
+          console.log(this.permission_routers)
+      }, 200);
+  },
   methods:{
       handleChange(val){
           this.$refs.scroll.refresh()
         //   console.log(sessionStorage.getItem("token"))
       },
       push(router) {
-        this.$router.push({path:`/${router}`})
+        this.$router.push({path:`${router}`})
+      },
+      normalizeRouters(route){
+          if(!route.hidden&&route.meta.roles){
+              return true
+          }
+          return false
       }
+  },
+  computed:{
+      ...mapGetters([
+          'permission_routers'
+      ])
   }
 }
 </script>

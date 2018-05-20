@@ -3,14 +3,14 @@
         <h2 class="header">登录</h2>
         <p class="message" v-show="message">{{message}}</p>
         <div class="name">
-            <input type="text" placeholder="用户名" v-model="name" class="input">
+            <input type="text" placeholder="用户名" v-model="userInfo.username" class="input">
             <i class="el-icon-close clear" @click="clear"></i>
             <i class="el-icon-arrow-down collapse"></i>
         </div>
         <div class="password">
-            <input type="text" placeholder="密码" v-model="password" class="input">
+            <input type="text" placeholder="密码" v-model="userInfo.password" class="input">
         </div>
-        <div class="botton" @click="_login">
+        <div class="botton" @click="loginByUsername">
             <el-button type="danger" class="inner">登录</el-button>
         </div>
         <p class="forget">忘记密码</p>
@@ -19,11 +19,14 @@
 
 <script>
 import {login} from 'api/api'
+import {setToken} from 'common/js/utils'
  export default {
      data(){
          return{
-             name:"",
-             password:"",
+             userInfo:{
+                 name:'',
+                 password:''
+             },
              message:''
          }
      },
@@ -31,22 +34,18 @@ import {login} from 'api/api'
          clear(){
              this.name = ""
          },
-         _login(){
-             let data = {
-                            name:this.name,
-                            password:this.password
-                        }
-             login(data).then((res)=>{
-                 console.log(res)
-                 if(!res.data.status){
-                     this.message = res.data.message
-                 }else{
-                     const token = res.headers.token
-                     sessionStorage.setItem("token", token)
-                     this.$router.push({path:'/bussiness'})
-                 }
-                 
-             })
+         setRoles(res){
+             return ['jiedan','miantan']
+         },
+         loginByUsername(){  
+             const userInfo = this.ueserInfo      
+             this.$store.dispatch('setUserInfo',userInfo).then((res)=>{
+                //  console.log('login-1')
+                 this.$router.push({ path: '/bussiness' })
+             }).catch((err)=>{
+                 console.log(err)
+                 this.message = err
+             })                            
          }
      }
  }
