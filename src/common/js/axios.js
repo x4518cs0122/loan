@@ -1,7 +1,8 @@
 import axios from 'axios'
 import qs from 'qs'
 
-axios.defaults.baseURL = '/api'
+// axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = 'http://47.93.43.106:8090/'
 
 export function get(url, params) {
     return new Promise((resolve, reject) => {

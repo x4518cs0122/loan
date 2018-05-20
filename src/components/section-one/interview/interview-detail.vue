@@ -1,55 +1,77 @@
 <template>
   <div class="interview-detail">
-      <div class="info">
-          <div class="normal-wrapper">
-              <span class="text">贷款编号</span>
-              <span class="val">{{customer.id}}</span>
-          </div>
-          <div class="normal-wrapper">
-              <span class="text">客户姓名</span>
-              <span class="val">{{customer.name}}</span>
-          </div>
-          <div class="normal-wrapper">
-              <span class="text">联系方式</span>
-              <span class="val">{{customer.phone}}</span>
-          </div>
-          <div class="normal-wrapper">
-              <span class="text">借款品种</span>
-              <span class="val"></span>
-          </div>
-      </div>
-      <div class="table-wrapper">
-          <div class="table" @click="editForm(1)">
-                <span class="text">资料目录表</span>
-                <span class="icon">
-                    点击编辑
-                    <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                </span>         
-          </div>
-          <div class="table" @click="editForm(2)">
-                <span class="text">个人贷款申请表</span>
-                <span class="icon">
-                    点击编辑
-                    <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                </span>         
-          </div>
-          <div class="table" @click="editForm(3)">
-                <span class="text">面谈建议</span>
-                <span class="icon">
-                    点击编辑
-                    <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                </span>         
-          </div>
-      </div>
+      <form-list :list="list" @pop="pop" ref="formList"></form-list>
+      <pop :options="options" ref="pop" @choosed="choosed"></pop>
       <router-view></router-view>
   </div>
 </template>
 <script>
+import formList from 'components/form-list/form-list'
+import pop from 'base/pop-up/pop-up'
 import {mapGetters} from 'vuex'
 export default {
   data(){
       return{
-          next:'提交'     
+          next:'提交',
+          options:[],
+          list:[{
+              title:'',
+              items:[{
+                  class:'normal-wrapper',
+                  text:'贷款编号',
+                  val:''
+              },{
+                  class:"select-wrapper",
+                  text:'完成时间',
+                  value:'',
+                  options:[]
+              }]
+            },{
+                title:'面谈建议',
+                items:[
+                    {
+                        class:'input-wrapper',
+                        text:'拟申请机构',
+                        placeholder:'点击输入拟申请机构名称',
+                        value:''
+                    },{
+                        class:'input-wrapper',
+                        text:'拟对接人',
+                        placeholder:'点击输入拟对接人姓名',
+                        value:''
+                    },{
+                        class:'input-wrapper',
+                        text:'拟上报金额',
+                        placeholder:'点击输入拟上报金额',
+                        value:''
+                    },{
+                        class:"select-wrapper",
+                        text:'拟签约时间',
+                        value:'',
+                        options:[]
+                    },{
+                        class:'input-wrapper',
+                        text:'费率',
+                        placeholder:'点击输入费率',
+                        value:''
+                    },{
+                        class:"select-wrapper",
+                        text:'客户还款方式',
+                        value:'',
+                        options:['按月等额本息','按月等额本金','按月付息']
+                    },{
+                        class:"select-wrapper",
+                        text:'客户用途',
+                        value:'',
+                        options:['客户自己提供','我公司提供']
+                    },{
+                        class:"input-wrapper",
+                        text:'调查意见',
+                        placeholder:'',
+                        value:''
+                    }
+                ]
+            }]
       }
   },
   computed:{
@@ -57,12 +79,20 @@ export default {
           'customer'
       ])
   },
+  components:{
+      formList,
+      pop
+  },
   methods:{
       back(){
           this.$router.back()
       },
-      editForm(form){
-          this.$router.push({path:`/interview/${this.customer.id}/sqForms`})
+      pop(option){
+          this.options = option
+          this.$refs.pop.show()
+      },
+      choosed(option){
+          this.$refs.formList.choosed(option)
       }
   }
 }

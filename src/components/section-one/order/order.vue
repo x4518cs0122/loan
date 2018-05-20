@@ -48,6 +48,11 @@ export default {
                         text:'工作类型',
                         value:'',
                         options:['授薪','自雇']
+                    },{
+                        class:'input-wrapper',
+                        text:'工作单位',
+                        placeholder:'点击输入工作单位',
+                        value:''
                     }]
                 },{
                     title:'借款信息',
@@ -92,10 +97,7 @@ export default {
                     }]
                 }
             ],
-          options:[],
-          jobType:['授薪','自雇'],
-          jiekuan:['借款消费','抵押经营','信用'],
-          
+          options:[],   
       }
   },
   methods:{
