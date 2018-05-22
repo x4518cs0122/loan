@@ -1,6 +1,6 @@
 <template>
     <div class="unreported">
-        <!-- <v-header :title="title" @submit="submit" :next="next" @back="back"></v-header> -->
+        <v-header :title="title" @submit="submit" :next="next" @back="back"></v-header>
         <form-list :list="reports" @pop="pop" @choosed="choosed" ref="formList"></form-list>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
@@ -118,7 +118,7 @@ import formList from 'components/form-list/form-list'
 @import '~common/stylus/mixin'
 .unreported
     position absolute 
-    top 52px
+    top 0
     bottom 0
     left 0
     right 0

@@ -1,27 +1,9 @@
 <template>
     <div class="danbao">
-        <Scroll class="scroll">
-            <ul>
-                <li v-for="(type,index) in danbaoList" :key="index">
-                    <h2 class="title" v-if="type.title">{{type.title}}</h2>
-                    <ul>
-                        <li v-for="(item,index) in type.items" :key="index">
-                            <div v-if="item.class==='select-wrapper'" :class="item.class" @click="pop(item)">
-                                <span class="text">{{item.text}}</span>
-                                <span class="desc">{{item.value}}</span>
-                                <span class="icon">
-                                    <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                                </span>
-                            </div>
-                            <div :class="item.class" v-else>                            
-                                <span class="text">{{item.text}}</span>
-                                <span class="val">{{item.value}}</span>                           
-                            </div>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        </Scroll>
+        <v-header :title="title" @submit="submit" :next="next" @back="back"></v-header>
+        <div class="scroll">
+            <form-list :list="list" ref="formList" @pop="pop"></form-list>
+        </div>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
 </template>
@@ -34,7 +16,7 @@ import Scroll from 'base/scroll/scroll'
          return{
              options:[],
              currentItem:{},
-             danbaoList:[
+             list:[
                 {
                     items:[{
                         class:'normal-wrapper',
@@ -101,13 +83,12 @@ import Scroll from 'base/scroll/scroll'
          }
      },
      methods:{
-         pop(item){
-             this.options = item.options
-             this.currentItem = item
+         pop(option){
+             this.options = option
              this.$refs.pop.show()
          },
          choosed(option){
-             this.currentItem.value = option
+             this.$refs.formList.choosed(option)
          },
          back(){
              this.$router.back()
@@ -125,20 +106,21 @@ import Scroll from 'base/scroll/scroll'
 
 <style lang='stylus' scoped>
 @import '~common/stylus/variable'
-@import '~common/stylus/mixin'
-.scroll
+.danbao
     position fixed 
-    top 52px
+    top 0
     bottom 0
     left 0
     right 0
     overflow hidden
     background $color-background
-    .title
-        title()
-    .select-wrapper
-        select-wrapper()
-    .normal-wrapper
-        normal-wrapper()
+    .scroll
+        position fixed 
+        top 52px
+        bottom 0
+        left 0
+        right 0
+        overflow hidden
+        background $color-background
 
 </style>

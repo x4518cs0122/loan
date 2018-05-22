@@ -1,5 +1,6 @@
 <template>
     <div class="mortgage-status">
+        <v-header title="确定签约状态" @submit="submit" next="提交" @back="back"></v-header>
         <div class="normal-wrapper">
             <span class="text">抵押日期:</span>
             <span class="val">2017-10-24</span>
@@ -16,13 +17,12 @@
 </template>
 
 <script>
+import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
 import {mapGetters} from 'vuex'
  export default {
      data(){
          return{
-             title:'确定签约状态',
-             next:'提交',
              options:['已完成','未完成'],
              status:''
          }
@@ -47,7 +47,8 @@ import {mapGetters} from 'vuex'
          ])
      },
      components:{
-         pop
+         pop,
+         vHeader
      }
  }
 </script>

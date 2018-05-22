@@ -1,5 +1,6 @@
 <template>
     <div class="mortgage-time">
+        <v-header title="确定抵押时间" @submit="submit" next="提交" @back="back"></v-header>
         <div class="normal-wrapper">
             <span class="text">客户编号:</span>
             <span class="val">{{customer.id}}</span>
@@ -28,12 +29,12 @@
 </template>
 
 <script>
+import vHeader from 'base/header/header'
+import pop from 'base/pop-up/pop-up'
 import {mapGetters} from 'vuex'
  export default {
      data(){
          return{
-             title:'确定抵押时间',
-             next:'提交',
              time:''
          }
      },
@@ -49,6 +50,10 @@ import {mapGetters} from 'vuex'
          ...mapGetters([
              'customer'
          ])
+     },
+     components:{
+         vHeader,
+         pop,
      }
  }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <transition name="fade">
         <div class="order">
-            <v-header @back="back" @submit="submit"></v-header>
+            <v-header @back="back" @submit="submit" title="接单" next="提交"></v-header>
             <form-list :list="list" @pop="pop" @estate='estateShow' ref="formList"></form-list>
             <pop :options="options" ref="pop" @choosed="choosed"></pop>
             <estate ref="estate" @submit="addEstate"></estate>
@@ -20,6 +20,15 @@ export default {
   data(){
       return{
            list:[
+                {
+                    title:'',
+                    items:[{
+                        class:'select-wrapper',
+                        type:selectType.option,
+                        text:'完成日期',
+                        value:'',
+                    }]
+                },
                 {
                     title:'借款人信息',
                     items:[{
@@ -119,7 +128,7 @@ export default {
           this.$refs.formList.choosed(option)
       },
       submit(){
-
+          
       }
   },
   components: {

@@ -54,6 +54,9 @@
                 </ul>
             </li>
         </ul>
+        <div class="botton" v-if="botton">
+            
+        </div>
     </Scroll>
 </template>
 <script>
@@ -66,6 +69,10 @@ export default {
           default:()=>{
               return[]
           }
+      },
+      botton:{
+          type:String,
+          default:''
       }
   },
   data(){

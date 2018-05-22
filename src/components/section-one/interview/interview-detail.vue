@@ -1,5 +1,6 @@
 <template>
   <div class="interview-detail">
+      <v-header @back="back" @submit="submit" next="提交" title="抵押面谈"></v-header>
       <form-list :list="list" @pop="pop" ref="formList"></form-list>
       <pop :options="options" ref="pop" @choosed="choosed"></pop>
       <router-view></router-view>
@@ -7,12 +8,12 @@
 </template>
 <script>
 import formList from 'components/form-list/form-list'
+import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
 import {mapGetters} from 'vuex'
 export default {
   data(){
       return{
-          next:'提交',
           options:[],
           list:[{
               title:'',
@@ -81,7 +82,8 @@ export default {
   },
   components:{
       formList,
-      pop
+      pop,
+      vHeader
   },
   methods:{
       back(){
@@ -93,43 +95,23 @@ export default {
       },
       choosed(option){
           this.$refs.formList.choosed(option)
+      },
+      submit(){
+
       }
   }
 }
 </script>
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
-@import '~common/stylus/mixin'
     .interview-detail
         position fixed
-        top 52px
+        top 0
         bottom 0
         left 0
         right 0
         overflow hidden
         background #fff
-        .info
-            margin-bottom 20px
-            .normal-wrapper
-                normal-wrapper()
-        .table-wrapper
-            border-top 1px solid $color-border
-            .table
-                display flex
-                height 20px
-                line-height 20px
-                padding 10px 20px
-                font-size $font-size-medium
-                border-bottom 1px solid $color-border
-                .text
-                    flex 1
-                .icon 
-                    flex 0 0 100px
-                    color $color-theme
-                    text-align right
-                    .fa
-                        color $color-icon-right
-
 </style>
 
 

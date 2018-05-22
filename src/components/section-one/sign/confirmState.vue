@@ -1,6 +1,6 @@
 <template>
     <div class="confirm-state">
-        <!-- <v-header :next="next" :title="title" @submit="submit" @back="back"></v-header> -->
+        <v-header next="提交" title="确定签约状态" @submit="submit" @back="back"></v-header>
         <form-list :list="list" @pop="pop" ref="formList" @choosed="choosed"></form-list>  
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
     </div>
@@ -12,8 +12,6 @@ import formList from 'components/form-list/form-list'
 export default {
   data(){
       return{
-          next:'提交',
-          title:'确定签约状态',
           list:[{
               title:'',
               items:[{

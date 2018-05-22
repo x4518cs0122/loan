@@ -12,10 +12,6 @@ Random.extend({
             var sign_state = ['待约定签约时间', '待确定签约状态']
             return this.pick(sign_state)
         },
-        interview_state: function() {
-            var interview_state = ['个人贷款申请表待填', '面谈建议待填', '表格未填写']
-            return this.pick(interview_state)
-        },
         P_state: function() {
             var P_state = ["待下单", "待出报告"]
             return this.pick(P_state)
@@ -41,7 +37,7 @@ Random.extend({
             return this.pick(GUOHU_state)
         },
         GUOHU_subState: function() {
-            var GUOHU_subState = ["待确定回证时间", "待约定过户时间","待确定过户状态"]
+            var GUOHU_subState = ["待确定回证时间", "待约定过户时间", "待确定过户状态"]
             return this.pick(GUOHU_subState)
         }
     })
@@ -57,7 +53,7 @@ Mock.mock('/api/notice', {
     //面谈数据生成
 Mock.mock('/api/interview', {
     "data|10-15": [{
-        state: '@INTERVIEW_STATE',
+        state: '待填写面谈建议',
         'id': /\d{7,8}/,
         'name|1': '@cname',
         'phone': '12345678910'
@@ -126,6 +122,10 @@ Mock.mock('/api/getGuohu', {
         'name|1': '@cname',
         'phone': /\d{11}/,
         state: '@GUOHU_state',
-        substate:'@GUOHU_subState'
+        substate: '@GUOHU_subState'
     }]
+})
+
+Mock.mock('/api/login', {
+    'token': /\d{7,8}/,
 })

@@ -1,6 +1,6 @@
 <template>
   <div class="interview">
-        <v-header @back="back"></v-header>
+        <v-header @back="back" title="抵押面谈列表"></v-header>
         <div class="list-wrapper">
             <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
         </div>

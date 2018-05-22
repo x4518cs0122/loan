@@ -1,5 +1,6 @@
 <template>
     <div class="fangkuan">
+        <v-header @back="back" @submit="submit" title="放款状态"></v-header>
         <div class="select-wrapper" @click="pop(item)">
             <span class="text">{{item.text}}</span>
             <span class="desc">{{item.status}}</span>

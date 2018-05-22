@@ -20,6 +20,14 @@ export default {
       icon:{
           type:String,
           default:''
+      },
+      title:{
+          type:String,
+          default:''
+      },
+      next:{
+          type:String,
+          default:''
       }
   },
   data(){
@@ -39,16 +47,6 @@ export default {
       },
       noticeDetail(){
           this.noticeShow = !this.noticeShow
-      }
-  },
-  computed:{
-      title(){
-          let metas = this.$route.matched
-          return metas[metas.length-1].meta.title
-      },
-      next(){
-          let metas = this.$route.matched
-          return '' || metas[metas.length-1].meta.next
       }
   },
   components:{

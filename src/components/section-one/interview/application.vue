@@ -310,14 +310,6 @@ export default {
     right 0
     background $color-background
     overflow hidden
-    .title
-        title() 
-    .select-wrapper
-        select-wrapper()
-    .input-wrapper
-        input-wrapper()
-        input[placeholder]
-            font-size 12px
                     
 </style>
 

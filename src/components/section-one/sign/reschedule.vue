@@ -1,5 +1,6 @@
 <template>
  <div class="sign-detail">
+     <v-header @back="back" @submit="submit" title="确认面签时间"></v-header>
      <ul>
          <li class="normal-wrapper" v-for="item in items" :key="item.name">
              <span class="text">{{item.text}}</span>
@@ -92,7 +93,7 @@ import pop from 'base/pop-up/pop-up'
 @import '~common/stylus/variable'
 .sign-detail
     position absolute 
-    top 52px
+    top 0
     bottom 0
     left 0
     right 0
