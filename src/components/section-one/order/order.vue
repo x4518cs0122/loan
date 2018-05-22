@@ -1,10 +1,11 @@
 <template>
     <transition name="fade">
         <div class="order">
-            <v-header @back="back" @submit="submit" title="接单" next="提交"></v-header>
+            <v-header @back="back" @submit="submit" title="抵押接单" next="提交"></v-header>
             <form-list :list="list" @pop="pop" @estate='estateShow' ref="formList"></form-list>
             <pop :options="options" ref="pop" @choosed="choosed"></pop>
             <estate ref="estate" @submit="addEstate"></estate>
+            <date-picker ref="datePicker" v-if="datePickerShow"></date-picker>
         </div>
     </transition>
 </template>
@@ -14,6 +15,7 @@ import estate from 'base/estate/estate'
 import Estate from 'common/js/estate'
 import Scroll from 'base/scroll/scroll'
 import pop from 'base/pop-up/pop-up'
+import datePicker from 'base/datePicker/datePicker'
 import formList from 'components/form-list/form-list'
 import {selectType} from 'common/js/config'
 export default {
@@ -106,7 +108,8 @@ export default {
                     }]
                 }
             ],
-          options:[],   
+          options:[], 
+          datePickerShow:false  
       }
   },
   methods:{
@@ -121,11 +124,16 @@ export default {
           this.estateInfo.push(estate)
       },
       pop(option){
-          this.options = option
-          this.$refs.pop.show()
+        //   this.options = option
+        //   this.$refs.pop.show()
+        console.log('ffa')
+        this.datePicker()
       },
       choosed(option){
           this.$refs.formList.choosed(option)
+      },
+      datePicker(){
+          this.datePickerShow = true
       },
       submit(){
           
@@ -136,7 +144,8 @@ export default {
       estate,
       Scroll,
       pop,
-      formList
+      formList,
+      datePicker
   }
 }
 </script>
