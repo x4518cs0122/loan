@@ -7,22 +7,22 @@
                 <span class="submit">提交</span>
             </div>
             <div class="scroll-wrapper">
-                <Scroll class="years">
-                    <ul >
+                <Scroll class="years" :listenScroll="listenScroll"  @scrollEnd="scrollEnd" ref="scroll" >
+                    <ul class="space">
                         <li v-for="(year,index) in yearList" :key="index" class="item">
                             <span>{{year}}</span>
                         </li>
                     </ul>
                 </Scroll>
-                <Scroll class="months">
-                    <ul >
+                <Scroll class="months" >
+                    <ul class="space">
                         <li v-for="(month,index) in monthList" :key="index" class="item">
                             <span>{{month}}</span>
                         </li>
                     </ul>
                 </Scroll>
-                <Scroll class="days">
-                    <ul>
+                <Scroll class="days" >
+                    <ul class="space">
                         <li v-for="(day,index) in dayList" :key="index" class="item">
                             <span>{{day}}</span>
                         </li>
@@ -43,6 +43,8 @@
 
 <script>
 import Scroll from 'base/scroll/scroll'
+
+const SCROLL_ITEM_SIZE = 26
  export default {
      data(){
          return{
@@ -52,9 +54,22 @@ import Scroll from 'base/scroll/scroll'
              dayList:['2016','2017','2018']
          }
      },
+     created(){
+         this.listenScroll = true
+     },
      methods:{
          toggleList(){
              this.show = !this.show
+         },
+         scrollEnd(pos){
+            //  console.log(pos.y)
+            let maxLength = (this.yearList.length-1) * SCROLL_ITEM_SIZE
+             if(pos.y > 0||pos.y < -maxLength){
+                 return
+             }
+             let y = Math.abs(pos.y)
+             let index = Math.floor((y-SCROLL_ITEM_SIZE/2)/SCROLL_ITEM_SIZE)+1
+             this.$refs.scroll.scrollTo(0,-SCROLL_ITEM_SIZE*index)
          }
      },
      components:{
@@ -103,20 +118,31 @@ import Scroll from 'base/scroll/scroll'
                 color rgb(0,160,220)
         .scroll-wrapper
             display flex
-            height 217px
+            height 226px
             width 100%
             background #f3f5f7
             .years,.months,.days
                 flex 1
-                overflow hidden
-                .item
-                    font-size 12px
-                    text-align center
-                    padding 5px
+                overflow hidden             
+                .space
+                    padding 100px 0
+                    .item
+                        font-size 16px
+                        text-align center
+                        padding 5px
             // .months
             //     flex 1
             // .days
             //     flex 1
+    .line-wrapper
+        position absolute 
+        bottom 100px
+        left 0
+        width 100%
+        display inline-block
+        height 26px
+        border-top 1px solid #c6c6c6
+        border-bottom 1px solid #c6c6c6
     .list-mask
         position fixed
         top 0

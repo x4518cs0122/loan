@@ -22,6 +22,10 @@ export default {
       refreshDelay:{
           type:Number,
           default:20
+      },
+      listenScroll:{
+          type:Boolean,
+          default:false
       }
   },
   mounted(){
@@ -39,10 +43,20 @@ export default {
               click:this.click,
               tab:true
           })
+          if(this.listenScroll){
+              let me = this
+              //this的变化要注意
+              this.scroll.on('scrollEnd',(pos)=>{
+                  me.$emit('scrollEnd',pos)
+              })
+          }
       },
       refresh(){
           this.scroll && this.scroll.refresh()
-      },   
+      }, 
+      scrollTo(){
+          this.scroll && this.scroll.scrollTo.apply(this.scroll,arguments)
+      },  
   },
   watch:{
       data(){
