@@ -1,6 +1,6 @@
 <template>
   <div class="sign-list">
-    <v-header @back="back"></v-header>
+    <v-header @back="back" :title="title"></v-header>
     <div class="scroll">
       <detail-list :list='list' @itemHandle='select'></detail-list>
     </div>  
@@ -17,6 +17,10 @@ import vHeader from 'base/header/header'
            default:()=>{
                 return []
            }
+       },
+       title:{
+         type:String,
+         default:''
        }
     },
    components: {

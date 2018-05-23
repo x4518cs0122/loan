@@ -1,6 +1,6 @@
 <template>
   <div class="sign">
-    <sign-list :list="list" :title="title" @select='selectItem'></sign-list>
+    <sign-list :list="list" title="抵押面签列表" @select='selectItem'></sign-list>
     <router-view></router-view>
   </div>
 </template>
@@ -11,8 +11,7 @@ import {getSignList} from 'api/api'
  export default {
    data(){
      return{
-       list:[],
-       title:'抵押面签列表'
+       list:[]
      }
    },
    components: {

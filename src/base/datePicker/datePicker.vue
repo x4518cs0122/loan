@@ -1,27 +1,27 @@
 <template>
-    <div class="date-picker">
+    <div class="date-picker" v-if="show">
         <div class="picker-wrapper">
             <div class="list-header">
-                <span class="cancel">取消</span>
+                <span class="cancel" @click="toggleList">取消</span>
                 <span class="title">选择时间</span>
-                <span class="submit">提交</span>
+                <span class="submit" @click="submit">提交</span>
             </div>
             <div class="scroll-wrapper">
-                <Scroll class="years" :listenScroll="listenScroll"  @scrollEnd="scrollEnd" ref="scroll" >
+                <Scroll class="years" :listenScroll="listenScroll"  @scrollEnd="scrollEndYear" ref="scrollYear" >
                     <ul class="space">
                         <li v-for="(year,index) in yearList" :key="index" class="item">
                             <span>{{year}}</span>
                         </li>
                     </ul>
                 </Scroll>
-                <Scroll class="months" >
+                <Scroll class="months" :listenScroll="listenScroll"  @scrollEnd="scrollEndMonth" ref="scrollMonth" >
                     <ul class="space">
                         <li v-for="(month,index) in monthList" :key="index" class="item">
                             <span>{{month}}</span>
                         </li>
                     </ul>
                 </Scroll>
-                <Scroll class="days" >
+                <Scroll class="days" :listenScroll="listenScroll"  @scrollEnd="scrollEndDay" ref="scrollDay" >
                     <ul class="space">
                         <li v-for="(day,index) in dayList" :key="index" class="item">
                             <span>{{day}}</span>
@@ -34,7 +34,7 @@
             
         </div>
         <transition name="fade">
-            <div class="list-mask"  @click="toggleList()">
+            <div class="list-mask"  @click="toggleList">
                 
             </div>
         </transition>
@@ -46,30 +46,111 @@ import Scroll from 'base/scroll/scroll'
 
 const SCROLL_ITEM_SIZE = 26
  export default {
+    //  props:{
+    //      yearList:{
+    //          type:Array,
+    //          default:()=>{
+    //              return []
+    //          }
+    //      },
+    //      monthList:{
+    //          type:Array,
+    //          default:()=>{
+    //              return []
+    //          }
+    //      },
+    //      dayList:{
+    //          type:Array,
+    //          default:()=>{
+    //              return []
+    //          }
+    //      }
+    //  },
      data(){
          return{
              show:false,
-             yearList:['2016','2017','2018','2016','2017','2018','2016','2017','2018','2016','2017','2018'],
-             monthList:['2016','2017','2018'],
-             dayList:['2016','2017','2018']
+             yearList:[],
+             monthList:[],
+             dayList:[]
          }
      },
      created(){
+         this.time = {}
          this.listenScroll = true
+         this.initDate()
      },
      methods:{
          toggleList(){
              this.show = !this.show
+             this.dayList = this.setArray(1,31)
          },
-         scrollEnd(pos){
-            //  console.log(pos.y)
-            let maxLength = (this.yearList.length-1) * SCROLL_ITEM_SIZE
+         scrollEndYear(pos){
              if(pos.y > 0||pos.y < -maxLength){
                  return
              }
+             let index = 0
+             let maxLength = (this.yearList.length-1) * SCROLL_ITEM_SIZE
              let y = Math.abs(pos.y)
-             let index = Math.floor((y-SCROLL_ITEM_SIZE/2)/SCROLL_ITEM_SIZE)+1
-             this.$refs.scroll.scrollTo(0,-SCROLL_ITEM_SIZE*index)
+             index = Math.floor((y-SCROLL_ITEM_SIZE/2)/SCROLL_ITEM_SIZE)+1
+             this.$refs.scrollYear.scrollTo(0,-SCROLL_ITEM_SIZE*index)
+             this.time.year = this.yearList[index]
+         },
+         scrollEndDay(pos){
+             if(pos.y > 0||pos.y < -maxLength){
+                 return
+             }
+             let index = 0
+             let maxLength = (this.dayList.length-1) * SCROLL_ITEM_SIZE
+             let y = Math.abs(pos.y)
+             index = Math.floor((y-SCROLL_ITEM_SIZE/2)/SCROLL_ITEM_SIZE)+1
+             this.$refs.scrollDay.scrollTo(0,-SCROLL_ITEM_SIZE*index)
+             //day需要单独处理，月份年份的变化会导致日变化，获取值出现问题，记录index值在提交的时候计算可解决
+             this.time.day = index
+         },
+         scrollEndMonth(pos){
+             if(pos.y > 0||pos.y < -maxLength){
+                 return
+             }
+             let index = 0
+             let maxLength = (this.monthList.length-1) * SCROLL_ITEM_SIZE
+             let y = Math.abs(pos.y)
+             index = Math.floor((y-SCROLL_ITEM_SIZE/2)/SCROLL_ITEM_SIZE)+1
+             this.$refs.scrollMonth.scrollTo(0,-SCROLL_ITEM_SIZE*index)
+             this.time.month = this.monthList[index]
+             let year = this.time.year || this.yearList[0]
+             this.monthChange(this.time.month,year)
+            //  this.$emit('monthChange',)
+         },            
+        initDate(){
+            let d = new Date()
+            let year = d.getFullYear()
+            this.yearList = this.setArray(year-1,year+1)
+            this.monthList = this.setArray(1,12)
+        },
+        monthChange(month,year){
+            let d = new Date(year,month,0)
+            this.dayList = this.setArray(1,d.getDate()) 
+        },
+        setArray(start,end){
+            let result = []
+            for(let i = start;i<=end;i++){
+                result.push(i)
+            }
+            return result
+        },
+         submit(){
+             let year = this.time.year || this.yearList[0]
+             let month = this.time.month || this.monthList[0]
+             let day
+             let dayIndex = this.time.day
+             if(dayIndex){
+                 let index = dayIndex > this.dayList.length-1? this.dayList.length-1:dayIndex
+                 day = this.dayList[index]
+             }else{
+                 day = this.time.day || this.dayList[0]
+             }            
+             this.show = false
+             this.$emit('submit',year+'-'+month+'-'+day)
          }
      },
      components:{

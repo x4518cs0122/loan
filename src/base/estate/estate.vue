@@ -1,6 +1,6 @@
 <template>
     <div class="estate" v-show="toggleShow">
-        <app-title :title="title" :next="next" @back="hide" @submit="submit"></app-title>
+        <app-title title="添加房产信息" next="确定" @back="hide" @submit="submit"></app-title>
         <div class="info-wrapper">
             <div class="area">
                 <span class="text">房产面积</span>
@@ -24,8 +24,6 @@ export default {
   data(){
       return{
           toggleShow:false,
-          title:'添加房产信息',
-          next:'确定'
       }
   },
   components: {

@@ -82,10 +82,12 @@ export default {
   },
   methods:{
       pop(item){
+          this.currentItem = item
           if(item.type === selectType.estate){
             this.$emit('estate')          
+          }else if(item.type && item.type === selectType.datePick){
+            this.$emit('datePick')
           }else{
-            this.currentItem = item
             this.$emit('pop',item.options)
           }    
       },

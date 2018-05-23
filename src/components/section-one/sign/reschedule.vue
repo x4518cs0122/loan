@@ -1,28 +1,9 @@
 <template>
  <div class="sign-detail">
      <v-header @back="back" @submit="submit" title="确认面签时间"></v-header>
-     <ul>
-         <li class="normal-wrapper" v-for="item in items" :key="item.name">
-             <span class="text">{{item.text}}</span>
-             <span class="val">{{item.val}}</span>
-         </li>
-     </ul>
-     <h2 class="title">约定签约时间</h2>
-     <div class="select-wrapper">
-        <span class="text">约定时间</span>
-        <span class="desc">选择签约时间</span>
-        <span class="icon">
-            <span class="fa fa-chevron-right" aria-hidden="true"></span>
-        </span>
-    </div>
-    <div class="select-wrapper" @click="pop">
-        <span class="text">约定地点</span>
-        <span class="desc" id="position"></span>
-        <span class="icon">
-            <span class="fa fa-chevron-right" aria-hidden="true"></span>
-        </span>
-    </div>
-    <pop :options="options" ref='pop' @choosed="choosed"></pop>
+     <form-list :list="list" @pop="pop" @datePick="datePickerShow" ref="formList"></form-list>
+     <pop :options="options" ref='pop' @choosed="choosed"></pop>
+     <date-picker ref="datePicker" @submit="choosed"></date-picker>
  </div>
 </template>
 
@@ -30,30 +11,57 @@
 import {getSignDetail} from 'api/api'
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
+import formList from 'components/form-list/form-list'
+import datePicker from 'base/datePicker/datePicker'
+import {selectType} from 'common/js/config'
  export default {
    data () {
      return {
          data:{},
-         items:[
+         list:[
             {
-                val:'',
-                text:'贷款编号'
+                title:'',
+                items:[
+                    {
+                        class:"normal-wrapper",
+                        val:'',
+                        text:'贷款编号'
+                    },{
+                        class:"normal-wrapper",
+                        val:'',
+                        text:'客户姓名'
+                    },{
+                        class:"normal-wrapper",
+                        val:'',
+                        text:'联系方式'
+                    },{
+                        class:"normal-wrapper",
+                        val:'',
+                        text:'借款品种'
+                    }
+                ]
             },{
-                val:'',
-                text:'客户姓名'
-            },{
-                val:'',
-                text:'联系方式'
-            },{
-                val:'',
-                text:'借款品种'
+                title:'约定签约时间',
+                items:[
+                    {
+                        class:'select-wrapper',
+                        text:"约定时间",
+                        value:'选择约定时间',
+                        type:selectType.datePick
+                    },{
+                        class:'select-wrapper',
+                        text:"约定地点",
+                        value:'',
+                        options:['儿童乐园','鬼屋','你说去哪儿']
+                    }
+                ]
             }
-        ],
-        next:'提交',
-        options:['儿童乐园','鬼屋','你说去哪儿']
+         ],
+         options:[]
      }
    },
    created(){
+       this.currentItem={},
        this._getDetail()
    },
    methods:{
@@ -64,12 +72,16 @@ import pop from 'base/pop-up/pop-up'
        },
        normalized(obj){ 
            var list = new Array(obj.id,obj.name,obj.phone,obj.type)
-           this.items.map((item,index)=>{
+           this.list[0].items.map((item,index)=>{
                item.val = list[index]
            })         
        },
        pop(){
+           this.currentItem = 
            this.$refs.pop.show()
+       },
+       datePickerShow(){
+           this.$refs.datePicker.toggleList()
        },
        choosed(item){
            document.getElementById('position').innerText = item
@@ -83,7 +95,9 @@ import pop from 'base/pop-up/pop-up'
    },
    components:{
        vHeader,
-       pop
+       pop,
+       datePicker,
+       formList
    }
  }
 </script>
