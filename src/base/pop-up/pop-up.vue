@@ -2,7 +2,7 @@
     <div class="pop-up" >
         <transition name="slide">   
             <ul class="item-wrapper" v-show="popUpShow">
-                <li v-for="item in options" :key="item.index" class="list-item" @click="choosed(item)">
+                <li v-for="(item,index) in options" :key="index" class="list-item" @click="choosed(item)">
                         <p class="text">{{item}}</p>
                     </li>
                 </ul>   

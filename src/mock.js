@@ -9,7 +9,7 @@ Random.extend({
             return this.pick(icon)
         },
         sign_state: function() {
-            var sign_state = ['待约定签约时间', '待确定签约状态']
+            var sign_state = ['待填写资料目录表', '待确定签约状态']
             return this.pick(sign_state)
         },
         P_state: function() {

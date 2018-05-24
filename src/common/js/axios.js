@@ -1,11 +1,13 @@
 import axios from 'axios'
 import qs from 'qs'
+import { getToken } from './utils'
 
-axios.defaults.baseURL = '/api'
-// axios.defaults.baseURL = 'http://47.93.43.106:8090'
+// axios.defaults.baseURL = '/api'
+axios.defaults.baseURL = 'http://47.93.43.106:8090'
 
 axios.interceptors.request.use(function(config) {
-    config.headers['token'] = '111';
+    console.log(getToken())
+    config.headers['token'] = getToken();
     return config;
 }, function(error) {
     // 对请求错误做些什么

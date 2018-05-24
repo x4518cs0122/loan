@@ -12,6 +12,7 @@ import detailList from 'base/detail-list/detail-list'
 import {getInterview} from 'api/api'
 import vHeader from 'base/header/header'
 import {mapMutations} from 'vuex'
+import {getToken} from 'common/js/utils'
 export default {
   data(){
       return{
@@ -21,6 +22,7 @@ export default {
   },
   created() {
       this._getInterview()
+    //   console.log(getToken())    
   },
   methods:{
       _getInterview(){

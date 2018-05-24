@@ -138,7 +138,7 @@ const SCROLL_ITEM_SIZE = 26
             }
             return result
         },
-         submit(){
+        submit(){
              let year = this.time.year || this.yearList[0]
              let month = this.time.month || this.monthList[0]
              let day
@@ -150,8 +150,10 @@ const SCROLL_ITEM_SIZE = 26
                  day = this.time.day || this.dayList[0]
              }            
              this.show = false
+             month = ('00'+month).substr(-2,2)
+             day = ('00'+day).substr(-2,2)
              this.$emit('submit',year+'-'+month+'-'+day)
-         }
+        }
      },
      components:{
          Scroll

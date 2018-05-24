@@ -54,8 +54,8 @@
                 </ul>
             </li>
         </ul>
-        <div class="botton" v-if="botton">
-            
+        <div class="botton" v-if="botton" @click="deleteOrder">
+            <el-button type="danger">废单</el-button>
         </div>
     </Scroll>
 </template>
@@ -71,8 +71,8 @@ export default {
           }
       },
       botton:{
-          type:String,
-          default:''
+          type:Boolean,
+          default:false
       }
   },
   data(){
@@ -93,6 +93,9 @@ export default {
       },
       choosed(option){
           this.currentItem.value = option
+      },
+      deleteOrder(){
+          this.$emit("deleteOrder")
       }
   },
   components:{
@@ -137,4 +140,6 @@ export default {
                     flex 1
                     outline none 
                     border-bottom 1px solid rgba(144,144,144,0.3)
+    .botton
+        padding 20px
 </style>

@@ -1,4 +1,5 @@
 import {get, post, userLogin } from 'common/js/axios'
+import store from '../store'
 
 //通知api
 export function getNotice() {
@@ -13,8 +14,20 @@ export function getTodo() {
 
 //面谈api接口
 export function getInterview() {
-    const url = '/interview'
+    const id = store.getters.userId
+    const url = `/task/m/view/${id}`
+    console.log(url)
     return get(url)
+}
+
+export function postAdvice(advice, taskId) {
+    const url = 'view/save'
+    let data = {}
+    data.advice = JSON.stringify(advice)
+    data.taskId = taskId
+    data.employeeId = store.getters.userId
+    console.log(data)
+    return post(url, data)
 }
 //面签api接口
 export function getSignList() {
