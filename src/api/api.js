@@ -11,12 +11,19 @@ export function getTodo() {
     const url = "/todos"
     return get(url)
 }
-
+//接单api接口
+export function postOrder(checkList) {
+    const id = store.getters.userId
+    let data = {}
+    data.checklist = JSON.stringify(checkList)
+    data.employeeId = id
+    const url = '/checklist/save'
+    return post(url, data)
+}
 //面谈api接口
 export function getInterview() {
     const id = store.getters.userId
     const url = `/task/m/view/${id}`
-    console.log(url)
     return get(url)
 }
 
@@ -26,12 +33,12 @@ export function postAdvice(advice, taskId) {
     data.advice = JSON.stringify(advice)
     data.taskId = taskId
     data.employeeId = store.getters.userId
-    console.log(data)
     return post(url, data)
 }
 //面签api接口
 export function getSignList() {
-    const url = '/signList'
+    const id = store.getters.userId
+    const url = `/task/m/visa/${id}`
     return get(url)
 }
 

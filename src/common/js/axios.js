@@ -6,7 +6,7 @@ import { getToken } from './utils'
 axios.defaults.baseURL = 'http://47.93.43.106:8090'
 
 axios.interceptors.request.use(function(config) {
-    console.log(getToken())
+    // console.log(getToken())
     config.headers['token'] = getToken();
     return config;
 }, function(error) {

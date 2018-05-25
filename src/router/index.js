@@ -42,13 +42,13 @@ export const asyncRouterMap = [{
         component: resolve => require(['../components/section-one/interview/interview'], resolve),
         children: [{
             path: ':id',
-            meta: { roles: 'miantan'},
+            meta: { roles: 'miantan' },
             component: resolve => require(['../components/section-one/interview/interview-detail'], resolve),
-            children: [{
-                path: 'sqForms',
-                meta: { roles: 'miantan'},
-                component: resolve => require(['../components/section-one/interview/application'], resolve)
-            }]
+            // children: [{
+            //     path: 'sqForms',
+            //     meta: { roles: 'miantan'},
+            //     component: resolve => require(['../components/section-one/interview/application'], resolve)
+            // }]
         }]
     }, {
         //面签
@@ -57,12 +57,21 @@ export const asyncRouterMap = [{
         meta: { roles: 'mianqian', icon: 'fa-files-o', title: '面签' },
         component: resolve => require(['../components/section-one/sign/sign'], resolve),
         children: [{
-            path: 'reschedule',
-            meta: { roles: 'mianqian'},
-            component: resolve => require(['../components/section-one/sign/reschedule'], resolve),
+            path: ':id',
+            meta: { roles: 'mianqian' },
+            component: resolve => require(['../components/section-one/sign/sign-detail'], resolve),
+            children: [{
+                path: 'form',
+                meta: { roles: 'mianqian' },
+                component: resolve => require(['../components/section-one/sign/jymulu'], resolve),
+            }, {
+                path: 'confirmState',
+                meta: { roles: 'mianqian' },
+                component: resolve => require(['../components/section-one/sign/confirmState'], resolve),
+            }]
         }, {
             path: 'confirmState',
-            meta: { roles: 'mianqian'},
+            meta: { roles: 'mianqian' },
             component: resolve => require(['../components/section-one/sign/confirmState'], resolve),
         }]
     }, {
@@ -73,11 +82,11 @@ export const asyncRouterMap = [{
         component: resolve => require(['../components/section-one/evaluate/evaluate'], resolve),
         children: [{
             path: 'placeOrder',
-            meta: { roles: 'pinggu'},
+            meta: { roles: 'pinggu' },
             component: resolve => require(['../components/section-one/evaluate/placeOrder'], resolve)
         }, {
             path: 'unreported',
-            meta: { roles: 'pinggu'},
+            meta: { roles: 'pinggu' },
             component: resolve => require(['../components/section-one/evaluate/unreported'], resolve)
         }]
     },
@@ -89,23 +98,23 @@ export const asyncRouterMap = [{
         component: resolve => require(['../components/section-one/approve/approve'], resolve),
         children: [{
             path: ':id',
-            meta: { roles: 'shengpi'},
+            meta: { roles: 'shengpi' },
             component: resolve => require(['../components/section-one/approve/approve-detail'], resolve),
             children: [{
                 path: 'mulu',
-                meta: { roles: 'shengpi'},
+                meta: { roles: 'shengpi' },
                 component: resolve => require(['../components/section-one/approve/mulu'], resolve),
             }, {
                 path: 'subbranch',
-                meta: { roles: 'shengpi'},
+                meta: { roles: 'shengpi' },
                 component: resolve => require(['../components/section-one/approve/subbranch'], resolve),
             }, {
                 path: 'branch',
-                meta: { roles: 'shengpi'},
+                meta: { roles: 'shengpi' },
                 component: resolve => require(['../components/section-one/approve/branch'], resolve),
             }, {
                 path: 'zhengping',
-                meta: { roles: 'shengpi'},
+                meta: { roles: 'shengpi' },
                 component: resolve => require(['../components/section-one/approve/zhengping'], resolve),
             }]
         }]

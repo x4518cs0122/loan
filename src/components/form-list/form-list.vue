@@ -7,7 +7,7 @@
                     <li v-for="(item,index) in items.items" :key="index">
                         <div v-if="item.class==='select-wrapper'" :class="item.class" @click="pop(item)">
                             <span class="text">{{item.text}}</span>
-                            <span class="desc">{{item.value}}</span>
+                            <span class="desc" v-html="item.value"></span>
                             <span class="icon">
                                 <span class="fa fa-chevron-right" aria-hidden="true"></span>
                             </span>
@@ -17,7 +17,7 @@
                             <input  type="text" 
                                 :placeholder="item.placeholder" 
                                 id="name" 
-                                v-model="item.value">
+                                v-model="obj[item.value]">
                             <span class="tips" v-if="item.tips">{{item.tips}}</span>
                         </div>
                         <div :class="item.class" v-if="item.class === 'normal-wrapper'">
@@ -29,23 +29,30 @@
                                 <el-collapse-item class="item">
                                     <template slot="title" >
                                         <span @click.stop>
-                                            <el-checkbox v-model="item.checked" class="color-grey">{{item.name}}</el-checkbox>
+                                            <el-checkbox v-model="obj[item.checked]" class="color-grey">{{item.name}}</el-checkbox>
                                         </span>
                                         <i class="header-icon el-icon-info"></i>
                                     </template>
                                     <div class="detail" v-if="item.options">
                                         <h2 class="detail-title">{{item.name}}明细</h2>
                                         <div class="sm">   
-                                            <el-checkbox-group v-model="item.checkList">
+                                            <el-radio-group v-model="obj[item.radio]">
                                                 <span class="text">说明：</span>
-                                                <el-checkbox v-for="(option,index) in item.options" :key="index" :label="option">{{option}}</el-checkbox>              
+                                                <el-radio :label="0">原件</el-radio>
+                                                <el-radio :label="1">复印件</el-radio>
+                                            </el-radio-group>
+                                            <el-checkbox-group v-if="item.options" class="padding-left" v-model="item.checkList"> 
+                                                <el-checkbox v-for="(option,index) in item.options" :key="index" :label="option" >{{option}}</el-checkbox>              
                                             </el-checkbox-group>
                                         </div>
                                         <div class="page-wrapper">
                                             <span class="text">页码:</span>
-                                            <input type="text" placeholder="请输入页码" v-model="item.page">
+                                            <input type="text" placeholder="请输入页码" v-model="obj[item.page]">
                                         </div>
-                                        <!-- <el-input type="textarea" :rows="2" placeholder="请输入内容" v-model="textarea"></el-input> -->
+                                        <div class="beizhu-wrapper">
+                                            <span class="text">备注:</span>
+                                            <textarea :rows="2" class="textarea" placeholder="请输入内容" v-model="obj[item.area]"></textarea>
+                                        </div>          
                                     </div>
                                 </el-collapse-item>
                             </el-collapse>
@@ -68,6 +75,12 @@ export default {
           type:Array,
           default:()=>{
               return[]
+          }
+      },
+      obj:{
+          type:Object,
+          default:()=>{
+              return{}  
           }
       },
       botton:{
@@ -93,6 +106,12 @@ export default {
       },
       choosed(option){
           this.currentItem.value = option
+          const arr = this.currentItem.options
+          if(arr){
+              this.obj[this.currentItem.key] = arr.indexOf(option)
+          }else{
+              this.obj[this.currentItem.key] = option
+          }   
       },
       deleteOrder(){
           this.$emit("deleteOrder")
@@ -132,14 +151,30 @@ export default {
                 margin 5px 0
                 .text
                     font-size 14px
+                .padding-left
+                    padding-left 42px
             .page-wrapper
                 display flex
+                margin-bottom 10px
                 .text
                     flex 0 0 40px
                 input 
                     flex 1
                     outline none 
+                    margin-right 20px
+                    line-height 20px
                     border-bottom 1px solid rgba(144,144,144,0.3)
+            .beizhu-wrapper
+                display flex
+                margin-right 20px
+                .text
+                    flex 0 0 40px
+                textarea 
+                    flex 1
+                    outline none 
+                    border 1px solid rgba(144,144,144,0.3)
+                    border-radius 5px
+                    padding 5px
     .botton
         padding 20px
 </style>
