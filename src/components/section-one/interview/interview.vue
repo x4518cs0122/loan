@@ -31,6 +31,7 @@ export default {
           })
       },
       back(){
+          console.log('22')
           this.$router.back()
       },
       itemHandle(index){

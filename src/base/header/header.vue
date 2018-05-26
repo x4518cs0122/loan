@@ -1,10 +1,12 @@
 <template>
   <div class="header">
         <div class="header-wrapper">
-            <span class="back" @click="back">返回</span>
-            <span class="title">{{title}}</span>
-            <span class="submit" @click="submit" v-if="next">{{next}}</span>     
-            <div class="bell-wrapper" @click="noticeDetail" v-if="!next">
+            <div class="back" @click="back">返回</div>
+            <div class="title">
+                <div class="inner">{{title}}</div>
+            </div>
+            <div class="submit" @click="submit" v-if="next">{{next}}</div>     
+            <div class="bell-wrapper" @click="noticeDetail" v-if="bello">
                 <span  class="fa icon" aria-hidden="true" v-if="icon" :class="icon">
                     <span class="active"></span>
                 </span>
@@ -28,6 +30,10 @@ export default {
       next:{
           type:String,
           default:''
+      },
+      bello:{
+          type:Boolean,
+          default:false
       }
   },
   data(){
@@ -37,6 +43,7 @@ export default {
   },
   methods:{
       back(){
+          console.log('ss')
           this.$emit('back')
       },
       submit(){
@@ -60,7 +67,7 @@ export default {
     position relative
     height 50px
     .header-wrapper
-        display  flex
+        width 100%
         height 100%
         line-height 50px
         text-align center
@@ -69,13 +76,21 @@ export default {
         background $color-header-background
         border-bottom 2px solid rgb(228,228,228)
         .back
-            flex 0 0 50px 
+            width 50px
+            float left
+            z-index 2
+            margin-right -50px
         .title
-            flex 1
-            color $color-text-l
-            font-size $font-size-large        
+            float left  
+            width 100%
+            .inner
+                margin 0 50px
+                color $color-text-l
+                font-size $font-size-large        
         .submit,.bell-wrapper
-            flex 0 0 60px   
+            float left
+            width 50px 
+            margin-left -50px 
         .bell-wrapper
             line-height 50px
             color $color-theme

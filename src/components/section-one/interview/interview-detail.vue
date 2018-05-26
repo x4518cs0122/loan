@@ -70,13 +70,21 @@ export default {
                         value:'',
                         options:['客户自己提供','我公司提供']
                     },{
+                        class:'input-wrapper',
+                        text:'',
+                        placeholder:'点击输入客户用途',
+                        value:''
+                    },{
                         class:"input-wrapper",
                         text:'调查意见',
                         placeholder:'',
                         value:''
                     }
                 ]
-            }]
+            }],
+        result:{
+            selectTime:''
+        }
       }
   },
   computed:{
@@ -112,32 +120,32 @@ export default {
           this.$refs.datePicker.toggleList()
       },
       submit(){
-          console.log(this.customer.taskId)
+          console.log(this.normalized())
+          
+        //   postAdvice(obj,this.customer.taskId).then((res) =>{
+        //       if(res.status === 1){
+        //           this.$router.back()
+        //       }else{
+        //           this.message = res.message
+        //       }
+        //       console.log(res)
+        //   })
+      },
+      normalized(){
           let obj={
                 "id": null,
           }
-        //   let temp = ['proposed_institution','proposed_clerk','proposed_amount',
-        //                 'proposed_time','rate','repayment_type','client_purpose_type',
-        //                 'survey_opinion']
           let valueList = this.list[1].items
           obj.finish_time = this.list[0].items[1].value
           obj.proposed_institution = valueList[0].value
           obj.proposed_clerk = valueList[1].value
           obj.proposed_amount = valueList[2].value
           obj.proposed_time = valueList[3].value
-          obj.repayment_type = 0
-          obj.client_purpose_type = 1
-          obj.client_purpose = ''
-          obj.survey_opinion = valueList[6].value
-          postAdvice(obj,this.customer.taskId).then((res) =>{
-              if(res.status === 1){
-                  this.$router.back()
-              }else{
-                  this.message = res.message
-              }
-              console.log(res)
-          })
-        //   console.log(obj)
+          obj.repayment_type = valueList[4].options.indexOf(valueList[4].value)
+          obj.client_purpose_type = valueList[5].options.indexOf(valueList[5].value)
+          obj.client_purpose = valueList[6].value
+          obj.survey_opinion = valueList[7].value
+          return obj
       }
   }
 }

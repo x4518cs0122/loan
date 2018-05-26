@@ -16,7 +16,6 @@ export function getTodo() {
 export function getInterview() {
     const id = store.getters.userId
     const url = `/task/m/view/${id}`
-    console.log(url)
     return get(url)
 }
 
@@ -26,7 +25,6 @@ export function postAdvice(advice, taskId) {
     data.advice = JSON.stringify(advice)
     data.taskId = taskId
     data.employeeId = store.getters.userId
-    console.log(data)
     return post(url, data)
 }
 //面签api接口

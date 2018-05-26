@@ -1,6 +1,6 @@
 <template>
   <div class="bussiness" >
-        <v-header :title="title" :icon="icon"></v-header> 
+        <v-header title="业务办理" icon="fa-bell-o" bello="bello"></v-header> 
         <Scroll ref="scroll" class="scroll">
             <el-collapse v-model="activeNames" @change="handleChange" >
                 <el-collapse-item v-for="item in group" :key="item.title" :name="item.id" class="item-wrapper">
@@ -142,8 +142,6 @@ export default {
               }
             ],
           show:true,
-          icon:'fa-bell-o',
-          title:'业务办理',
           activeNames:['1']
       }
   },
@@ -153,11 +151,9 @@ export default {
       tab,
       vHeader
   },
-  mounted(){
-    //   setTimeout(() => {
-    //       console.log(this.permission_routers)
-    //   }, 0);
-    this.normalizeRouters()
+  created(){
+      this.bello = true
+      this.normalizeRouters()
   },
   methods:{
       handleChange(val){

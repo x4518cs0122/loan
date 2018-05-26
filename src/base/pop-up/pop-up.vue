@@ -34,7 +34,7 @@ export default {
       hide(){
           this.popUpShow = false
       },
-      choosed(item){
+      choosed(item,){
           this.$emit('choosed',item)
           this.hide()
       }

@@ -46,26 +46,6 @@ import Scroll from 'base/scroll/scroll'
 
 const SCROLL_ITEM_SIZE = 26
  export default {
-    //  props:{
-    //      yearList:{
-    //          type:Array,
-    //          default:()=>{
-    //              return []
-    //          }
-    //      },
-    //      monthList:{
-    //          type:Array,
-    //          default:()=>{
-    //              return []
-    //          }
-    //      },
-    //      dayList:{
-    //          type:Array,
-    //          default:()=>{
-    //              return []
-    //          }
-    //      }
-    //  },
      data(){
          return{
              show:false,
