@@ -24,15 +24,15 @@ export default {
   data(){
       return{
           toggleShow:false,
-          mortgageHouses: [
-                {
+          mortgageHouses:{
                     id: null,
                     area: '',
                     enquiry_result: '',
                     total_price: '',
                     checklist_id: null
                 }
-            ]
+                
+            
       }
   },
   components: {

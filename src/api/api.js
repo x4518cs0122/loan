@@ -18,6 +18,7 @@ export function postOrder(checkList) {
     data.checklist = JSON.stringify(checkList)
     data.employeeId = id
     const url = '/checklist/save'
+    console.log(data)
     return post(url, data)
 }
 //面谈api接口
@@ -35,11 +36,32 @@ export function postAdvice(advice, taskId) {
     data.employeeId = store.getters.userId
     return post(url, data)
 }
+
+export function suspendOrder(time, taskId) {
+    const id = store.getters.userId
+    const url = 'view/suspend'
+    let data = {}
+    data.time = time
+    data.taskId = taskId
+    data.employeeId = id
+    return post(url, data)
+}
+
 //面签api接口
 export function getSignList() {
     const id = store.getters.userId
     const url = `/task/m/visa/${id}`
     return get(url)
+}
+
+export function postCatalog(catalog, taskId) {
+    const id = store.getters.userId
+    let data = {}
+    data.catalog = JSON.stringify(catalog)
+    data.employeeId = id
+    data.taskId = taskId
+    const url = 'visa/catalog/save'
+    return post(url, data)
 }
 
 export function getSignDetail() {

@@ -9,6 +9,7 @@
 <script>
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
+import {postCatalog} from 'api/api'
 import datePicker from 'base/datePicker/datePicker'
 import {selectType} from 'common/js/config'
 import formList from 'components/form-list/form-list'
@@ -16,108 +17,160 @@ import {mapGetters} from 'vuex'
 export default {
   data(){
       return{
-          title:'资料目录表',
-          next:'提交',
           options:[],
           jyList:[
-              {
-                  class:'collapse-wrapper',
-                  name:'借款人身份证',
-                  checked:false,
-                  options:['原件','复印件'],
-                  checkList:[],
-                  page:'',
-              },{
-                  class:'collapse-wrapper',
-                  name:'借款人户口',
-                  checked:false,
-                  options:['原件','复印件','首页','户主页','本人页'],
-                  checkList:[],
-                  page:'',
-              },{
-                  class:'collapse-wrapper',
-                  name:'借款人配偶身份证',
-                  checked:false,
-                  options:['原件','复印件'],
-                  checkList:[],
-                  page:'',
-              },{
-                  class:'collapse-wrapper',
-                  name:'借款人配偶户口',
-                  checked:false,
-                  options:['原件','复印件','首页','户主页','本人页'],
-                  checkList:[],
-                  page:'',
-              },{
-                  class:'collapse-wrapper',
-                  name:'婚姻证明',
-                  checked:false,
-                  options:['原件','复印件','结婚证','离婚证','离婚协议'],
-                  checkList:[],
-                  page:'',
-              },{
-                  class:'collapse-wrapper',
-                  name:'抵押物房产两证',
-                  checked:false,
-                  options:['原件','复印件'],
-                  checkList:[],
-                  page:'',
-              },{
-                  class:'collapse-wrapper',
-                  name:'资产证明复印件',
-                  checked:false,
-                  options:['原件','复印件','房产证','车产证','其他资产'],
-                  checkList:[],
-                  page:'',
-              },{
-                  class:'collapse-wrapper',
-                  name:'收入证明',
-                  checked:false,
-                  options:['原件','复印件'],
-                  checkList:[],
-                  page:'',
-              },{
+                {
+                    class:'collapse-wrapper',
+                    name:'借款人身份证',
+                    checked:'has_client_id_card',
+                    radio:'client_id_card_des',
+                    checkList:[],
+                    page:'client_id_card_page',
+                    area:'client_id_card_remark'
+                },{
+                    class:'collapse-wrapper',
+                    name:'借款人户口',
+                    checked:'has_client_account',
+                    radio:'client_account_des',
+                    options:[{
+                            key:'marriage_certificate',
+                            value:'client_account_home'
+                        },{
+                            key:'divorce_certificate',
+                            value:'client_account_household'
+                        },{
+                            key:'divorce_agreement',
+                            value:'client_account_myself'
+                        }],
+                    checkList:[],
+                    page:'client_account_page',
+                    area:'client_account_remark'
+                },{
+                    class:'collapse-wrapper',
+                    name:'借款人配偶身份证',
+                    checked:'has_client_spouse_id_card',
+                    radio:'client_spouse_id_card_des',
+                    checkList:[],
+                    page:'client_spouse_id_card_page',
+                    area:'client_spouse_id_card_remark'
+                },{
+                    class:'collapse-wrapper',
+                    name:'借款人配偶户口',
+                    checked:'has_client_spouse_account',
+                    radio:'client_spouse_account_des',
+                    options:[{
+                            key:'client_spouse_account_home',
+                            value:'首页'
+                        },{
+                            key:'client_spouse_account_household',
+                            value:'户主页'
+                        },{
+                            key:'client_spouse_account_myself',
+                            value:'本人页'
+                        }],
+                    checkList:[],
+                    page:'client_spouse_account_page',
+                    area:'client_spouse_account_remark'
+                },{
+                    class:'collapse-wrapper',
+                    name:'婚姻证明',
+                    checked:'has_marriage_proof',
+                    radio:'marriage_proof_des',
+                    options:[{
+                            key:'marriage_certificate',
+                            value:'结婚证'
+                        },{
+                            key:'divorce_certificate',
+                            value:'离婚证'
+                        },{
+                            key:'divorce_agreement',
+                            value:'离婚协议'
+                        }],
+                    checkList:[],
+                    page:'marriage_proof_page',
+                    area:'marriage_proof_remark'
+                },{
+                    class:'collapse-wrapper',
+                    name:'抵押物房产两证',
+                    checked:'has_house_mortgage',
+                    radio:'house_mortgage_des',
+                    checkList:[],
+                    page:'house_mortgage_page',
+                    area:'house_mortgage_remark'
+                },{
+                    class:'collapse-wrapper',
+                    name:'资产证明复印件',
+                    checked:'has_assets_certificate',
+                    radio:'assets_certificate_des',
+                    options:[{
+                            key:'assets_house_certificate',
+                            value:'房产证'
+                        },{
+                            key:'assets_car_certificate',
+                            value:'车产证'
+                        },{
+                            key:'assets_other',
+                            value:'其他资产'
+                        }],
+                    checkList:[],
+                    page:'assets_certificate_page',
+                    area:'assets_certificate_remark'
+                },{
+                    class:'collapse-wrapper',
+                    name:'收入证明',
+                    checked:'has_income_proof',
+                    radio:'income_proof_des',
+                    checkList:[],
+                    page:'income_proof_page',
+                    area:'income_proof_remark'
+                },{
                   class:'collapse-wrapper',
                   name:'营业执照（三证合一）',
-                  checked:false,
-                  options:['原件','复印件'],
+                  checked:'has_business_license',
+                  radio:'business_license_des',
                   checkList:[],
-                  page:'',
+                  page:'business_license_page',
+                  area:'business_license_remark'
               },{
                   class:'collapse-wrapper',
                   name:'企业法定代表人身份证',
-                  checked:false,
-                  options:['原件','复印件'],
+                  checked:'has_legal_representative',
+                  radio:'legal_representative_des',
                   checkList:[],
-                  page:'',
+                  page:'legal_representative_page',
+                  area:'legal_representative_remark'
               },{
                   class:'collapse-wrapper',
                   name:'公司章程',
-                  checked:false,
-                  options:['原件','复印件'],
+                  checked:'has_company_statute',
+                  radio:'company_statute_des',
                   checkList:[],
-                  page:'',
+                  page:'company_statute_page',
+                  area:'company_statute_remark'
               },{
                   class:'collapse-wrapper',
                   name:'经营地租赁合同或产权证明',
-                  checked:false,
-                  options:['原件','复印件'],
+                  checked:'has_grant_deed',
+                  radio:'grant_deed_des',
                   checkList:[],
-                  page:'',
+                  page:'grant_deed_page',
+                  area:'grant_deed_remark'
               },{
                   class:'collapse-wrapper',
                   name:'贸易合同',
-                  checked:false,
-                  options:['原件','复印件'],
+                  checked:'has_trading_contact',
+                  radio:'trading_contact_des',
                   checkList:[],
-                  page:'',
+                  page:'trading_contact_page',
+                  area:'trading_contact_remark'
               },{
                   class:'collapse-wrapper',
                   name:'用途合同',
-                  checked:false,
-                  options:['原件','复印件'],
+                  checked:'has_purpose_contact',
+                  radio:'purpose_contact_des',
                   checkList:[],
-                  page:'',
+                  page:'purpose_contact_page',
+                  area:'purpose_contact_remark'
               },{
                   class:'collapse-wrapper',
                   name:'其他',
@@ -166,7 +219,6 @@ export default {
                     name:'借款人身份证',
                     checked:'has_client_id_card',
                     radio:'client_id_card_des',
-                    options:[],
                     checkList:[],
                     page:'client_id_card_page',
                     area:'client_id_card_remark'
@@ -175,7 +227,16 @@ export default {
                     name:'借款人户口',
                     checked:'has_client_account',
                     radio:'client_account_des',
-                    options:['首页','户主页','本人页'],
+                    options:[{
+                            key:'marriage_certificate',
+                            value:'client_account_home'
+                        },{
+                            key:'divorce_certificate',
+                            value:'client_account_household'
+                        },{
+                            key:'divorce_agreement',
+                            value:'client_account_myself'
+                        }],
                     checkList:[],
                     page:'client_account_page',
                     area:'client_account_remark'
@@ -184,7 +245,6 @@ export default {
                     name:'借款人配偶身份证',
                     checked:'has_client_spouse_id_card',
                     radio:'client_spouse_id_card_des',
-                    options:[],
                     checkList:[],
                     page:'client_spouse_id_card_page',
                     area:'client_spouse_id_card_remark'
@@ -192,8 +252,17 @@ export default {
                     class:'collapse-wrapper',
                     name:'借款人配偶户口',
                     checked:'has_client_spouse_account',
-                    radio:'has_client_spouse_account',
-                    options:['首页','户主页','本人页'],
+                    radio:'client_spouse_account_des',
+                    options:[{
+                            key:'client_spouse_account_home',
+                            value:'首页'
+                        },{
+                            key:'client_spouse_account_household',
+                            value:'户主页'
+                        },{
+                            key:'client_spouse_account_myself',
+                            value:'本人页'
+                        }],
                     checkList:[],
                     page:'client_spouse_account_page',
                     area:'client_spouse_account_remark'
@@ -201,8 +270,17 @@ export default {
                     class:'collapse-wrapper',
                     name:'婚姻证明',
                     checked:'has_marriage_proof',
-                    radio:'client_spouse_account_des',
-                    options:['结婚证','离婚证','离婚协议'],
+                    radio:'marriage_proof_des',
+                    options:[{
+                            key:'marriage_certificate',
+                            value:'结婚证'
+                        },{
+                            key:'divorce_certificate',
+                            value:'离婚证'
+                        },{
+                            key:'divorce_agreement',
+                            value:'离婚协议'
+                        }],
                     checkList:[],
                     page:'marriage_proof_page',
                     area:'marriage_proof_remark'
@@ -211,7 +289,6 @@ export default {
                     name:'抵押物房产两证',
                     checked:'has_house_mortgage',
                     radio:'house_mortgage_des',
-                    options:[],
                     checkList:[],
                     page:'house_mortgage_page',
                     area:'house_mortgage_remark'
@@ -220,7 +297,16 @@ export default {
                     name:'资产证明复印件',
                     checked:'has_assets_certificate',
                     radio:'assets_certificate_des',
-                    options:['房产证','车产证','其他资产'],
+                    options:[{
+                            key:'assets_house_certificate',
+                            value:'房产证'
+                        },{
+                            key:'assets_car_certificate',
+                            value:'车产证'
+                        },{
+                            key:'assets_other',
+                            value:'其他资产'
+                        }],
                     checkList:[],
                     page:'assets_certificate_page',
                     area:'assets_certificate_remark'
@@ -229,7 +315,6 @@ export default {
                     name:'收入证明',
                     checked:'has_income_proof',
                     radio:'income_proof_des',
-                    options:[],
                     checkList:[],
                     page:'income_proof_page',
                     area:'income_proof_remark'
@@ -238,7 +323,6 @@ export default {
                     name:'用途合同',
                     checked:'has_purpose_contact',
                     radio:'purpose_contact_des',
-                    options:[],
                     checkList:[],
                     page:'purpose_contact_page',
                     area:'purpose_contact_remark'
@@ -260,7 +344,7 @@ export default {
             "loan_amount": null,
             "clerk_name": null,
             "clerk_phone": null,
-            has_client_id_card: false,
+            'has_client_id_card': false,
             "client_id_card_des": 0,
             "client_id_card_page": null,
             "client_id_card_remark": null,
@@ -286,7 +370,7 @@ export default {
             "marriage_certificate": false,
             "divorce_certificate": false,
             "divorce_agreement": false,
-            "marriage_proof_des": null,
+            "marriage_proof_des": 0,
             "marriage_proof_page": null,
             "marriage_proof_remark": null,
             "has_house_mortgage": false,
@@ -372,11 +456,14 @@ export default {
         this.$refs.datePicker.toggleList()
       },
       submit(){
-          console.log(this.obj)
+          postCatalog(this.obj,this.customer.taskId).then((res)=>{
+              if(res.status === 1){
+                  this.$router.push({path:`/sign/${this.customer.taskId}`})
+              }
+              console.log(res)
+          })
+        //   console.log(this.obj)
       }
-  },
-  mounted(){
-    //   this.init()
   },
   components:{
       vHeader,
