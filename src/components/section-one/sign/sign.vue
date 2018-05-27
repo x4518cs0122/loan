@@ -26,6 +26,7 @@ import {mapMutations} from 'vuex'
        getSignList().then((res)=>{
         //  console.log(res)
          this.list = res.data
+         console.log(this.list)
        })
      },
      selectItem(index){  

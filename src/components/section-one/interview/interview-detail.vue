@@ -1,7 +1,11 @@
 <template>
   <div class="interview-detail">
       <v-header @back="back" @submit="submit" next="提交" title="抵押面谈"></v-header>
-      <form-list :list="list" @pop="pop" ref="formList" botton='botton' @deleteOrder="deleteOrder" @datePick="datePickerShow"></form-list>
+      <form-list :list="list" @pop="pop" ref="formList" :obj='obj' @datePick="datePickerShow">
+        <div class="botton">
+            <el-button type="danger" @click="deleteOrder">废单</el-button>
+        </div>
+      </form-list>
       <pop :options="options" ref="pop" @choosed="choosed"></pop>
       <date-picker ref="datePicker" @submit="choosed"></date-picker>
       <router-view></router-view>
@@ -14,7 +18,7 @@ import pop from 'base/pop-up/pop-up'
 import datePicker from 'base/datePicker/datePicker'
 import {selectType} from 'common/js/config'
 import {mapGetters} from 'vuex'
-import {postAdvice} from 'api/api'
+import {postAdvice,suspendOrder} from 'api/api'
 export default {
   data(){
       return{
@@ -131,7 +135,17 @@ export default {
       },
       deleteOrder(){
           //调用删除订单api,跳转到面谈列表界面
-          this.$router.back()
+          let date = new Date()
+          let time = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()
+          let taskId = this.customer.taskId
+        //   console.log(time+'$$'+taskId)
+          suspendOrder(time,taskId).then((res)=>{
+              if(res.status === 1){
+                  console.log(res)
+                  this.$router.back()
+              }
+          })
+          
       },
       datePickerShow(){
           this.$refs.datePicker.toggleList()
@@ -158,6 +172,8 @@ export default {
         right 0
         overflow hidden
         background #fff
+        .botton
+            padding 20px
 </style>
 
 

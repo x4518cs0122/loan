@@ -104,6 +104,11 @@ export default {
                         options:['存量转货','中介介绍','老客户介绍','银行介绍','同行介绍','熟人介绍','广告','微信']
                     },{
                         class:'input-wrapper',
+                        text:'',
+                        placeholder:'点击输入单子来源',
+                        value:'agent_name'
+                    },{
+                        class:'input-wrapper',
                         text:'备注事项',
                         placeholder:'点击输入备注事项',
                         value:'remark'
@@ -114,16 +119,16 @@ export default {
           estateInfo:[],
           obj:{
                 id: null,
-                finish_time: '',
-                client_name: '',
-                client_phone: '',
-                client_id_type: '',
-                client_id_number: '',
+                finish_time: '2017-01-05',
+                client_name: '小雨',
+                client_phone: '13698758475',
+                client_id_type: '身份证',
+                client_id_number: '332548789654781',
                 client_work_type: 0,
-                client_work_unit: '',
+                client_work_unit: '随州',
                 loan_type: 0,
-                loan_amount: '',
-                loan_period: '',
+                loan_amount: '25487',
+                loan_period: '5',
                 checklist_source: 0,
                 agent_name: '',
                 remark: '',

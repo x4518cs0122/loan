@@ -42,7 +42,7 @@
                                                 <el-radio :label="1">复印件</el-radio>
                                             </el-radio-group>
                                             <el-checkbox-group v-if="item.options" class="padding-left" v-model="item.checkList"> 
-                                                <el-checkbox v-for="(option,index) in item.options" :key="index" :label="option" >{{option}}</el-checkbox>              
+                                                <el-checkbox v-for="(option,index) in item.options" :key="index" :label="option.key" >{{option.value}}</el-checkbox>              
                                             </el-checkbox-group>
                                         </div>
                                         <div class="page-wrapper">
@@ -60,10 +60,8 @@
                     </li>
                 </ul>
             </li>
-        </ul>
-        <div class="botton" v-if="botton" @click="deleteOrder">
-            <el-button type="danger">废单</el-button>
-        </div>
+            <slot></slot>
+        </ul>    
     </Scroll>
 </template>
 <script>
@@ -83,10 +81,6 @@ export default {
               return{}  
           }
       },
-      botton:{
-          type:Boolean,
-          default:false
-      }
   },
   data(){
       return{
@@ -112,9 +106,6 @@ export default {
           }else{
               this.obj[this.currentItem.key] = option
           }   
-      },
-      deleteOrder(){
-          this.$emit("deleteOrder")
       }
   },
   components:{
@@ -175,6 +166,5 @@ export default {
                     border 1px solid rgba(144,144,144,0.3)
                     border-radius 5px
                     padding 5px
-    .botton
-        padding 20px
+    
 </style>
