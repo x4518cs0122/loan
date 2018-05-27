@@ -19,6 +19,19 @@ export default {
   data(){
       return{
           options:[],
+          obj:{
+            "id": null,
+            "finish_time": '',
+            "proposed_institution": '',
+            "proposed_clerk": '',
+            "proposed_amount": '',
+            "proposed_time": '',
+            "rate": '',
+            "repayment_type": 0,
+            "client_purpose_type": 0,
+            "client_purpose": '',
+            "survey_opinion": ''
+          },
           list:[{
               title:'',
               items:[{
@@ -29,6 +42,7 @@ export default {
                   class:"select-wrapper",
                   text:'完成时间',
                   type:selectType.datePick,
+                  key:'finish_time',
                   value:''
               }]
             },{
@@ -38,47 +52,50 @@ export default {
                         class:'input-wrapper',
                         text:'拟申请机构',
                         placeholder:'点击输入拟申请机构名称',
-                        value:''
+                        value:'proposed_institution'
                     },{
                         class:'input-wrapper',
                         text:'拟对接人',
                         placeholder:'点击输入拟对接人姓名',
-                        value:''
+                        value:'proposed_clerk'
                     },{
                         class:'input-wrapper',
                         text:'拟上报金额',
                         placeholder:'点击输入拟上报金额',
-                        value:''
+                        value:'proposed_amount'
                     },{
                         class:"select-wrapper",
                         text:'拟签约时间',
+                        key:'proposed_time',
                         value:'',
                         type:selectType.datePick
                     },{
                         class:'input-wrapper',
                         text:'费率',
                         placeholder:'点击输入费率',
-                        value:''
+                        value:'rate'
                     },{
                         class:"select-wrapper",
                         text:'客户还款方式',
+                        key:'repayment_type',
                         value:'',
                         options:['按月等额本息','按月等额本金','按月付息']
                     },{
                         class:"select-wrapper",
                         text:'客户用途',
+                        key:'client_purpose_type',
                         value:'',
                         options:['客户自己提供','我公司提供']
                     },{
                         class:'input-wrapper',
                         text:'',
                         placeholder:'点击输入客户用途',
-                        value:''
+                        value:'client_purpose'
                     },{
                         class:"input-wrapper",
                         text:'调查意见',
                         placeholder:'',
-                        value:''
+                        value:'survey_opinion'
                     }
                 ]
             }],
@@ -119,33 +136,14 @@ export default {
       datePickerShow(){
           this.$refs.datePicker.toggleList()
       },
-      submit(){
-          console.log(this.normalized())
-          
-        //   postAdvice(obj,this.customer.taskId).then((res) =>{
-        //       if(res.status === 1){
-        //           this.$router.back()
-        //       }else{
-        //           this.message = res.message
-        //       }
-        //       console.log(res)
-        //   })
-      },
-      normalized(){
-          let obj={
-                "id": null,
-          }
-          let valueList = this.list[1].items
-          obj.finish_time = this.list[0].items[1].value
-          obj.proposed_institution = valueList[0].value
-          obj.proposed_clerk = valueList[1].value
-          obj.proposed_amount = valueList[2].value
-          obj.proposed_time = valueList[3].value
-          obj.repayment_type = valueList[4].options.indexOf(valueList[4].value)
-          obj.client_purpose_type = valueList[5].options.indexOf(valueList[5].value)
-          obj.client_purpose = valueList[6].value
-          obj.survey_opinion = valueList[7].value
-          return obj
+      submit(){   
+          postAdvice(this.obj,this.customer.taskId).then((res) =>{
+              if(res.status === 1){
+                  this.$router.back()
+              }else{
+                  this.message = res.message
+              }
+          })
       }
   }
 }

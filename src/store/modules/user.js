@@ -30,6 +30,7 @@ const user = {
                             // let token = res.data.token
                         commit('SET_TOKEN', token)
                         commit('SET_ROLES', roles)
+                        console.log(res.data.data.id)
                         commit('SET_USERID', res.data.data.id)
                         setToken(token)
                         resolve()

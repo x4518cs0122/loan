@@ -4,16 +4,16 @@
         <div class="info-wrapper">
             <div class="area">
                 <span class="text">房产面积</span>
-                <input class="input" placeholder="请输入房产面积（性质）" ref="area">
+                <input class="input" placeholder="请输入房产面积（性质）" ref="area" v-model="mortgageHouses.area">
             </div>
             <div class="area">
                 <span class="text">询价结果</span>
-                <input class="input" placeholder="请输入询价结果" ref="price">
+                <input class="input" placeholder="请输入询价结果" ref="price" v-model="mortgageHouses.enquiry_result">
                 <span class="perMeters">元/平方米</span>
             </div>
             <div class="area">
                 <span class="text">总价</span>
-                <input class="input" placeholder="请输入总价" ref="total">
+                <input class="input" placeholder="请输入总价" ref="total" v-model="mortgageHouses.total_price">
             </div>
         </div>
     </div>
@@ -24,6 +24,15 @@ export default {
   data(){
       return{
           toggleShow:false,
+          mortgageHouses: [
+                {
+                    id: null,
+                    area: '',
+                    enquiry_result: '',
+                    total_price: '',
+                    checklist_id: null
+                }
+            ]
       }
   },
   components: {
@@ -37,10 +46,7 @@ export default {
           this.toggleShow = true
       },
       submit(){
-          const area = this.$refs.area.value
-          const price = this.$refs.price.value
-          const total = this.$refs.total.value
-          this.$emit('submit',area,price,total)
+          this.$emit('submit',this.mortgageHouses)
           this.hide()
       }
   }

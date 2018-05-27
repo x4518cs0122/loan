@@ -8,6 +8,7 @@
 <script>
 import signList from 'components/sign-list/sign-list'
 import {getSignList} from 'api/api'
+import {mapMutations} from 'vuex'
  export default {
    data(){
      return{
@@ -23,16 +24,18 @@ import {getSignList} from 'api/api'
    methods:{
      _getSignList(){
        getSignList().then((res)=>{
+        //  console.log(res)
          this.list = res.data
        })
      },
-     selectItem(index){
-       if(this.list[index].state === '待约定签约时间'){
-         this.$router.push({path:'/sign/reschedule'})
-       }else{
-         this.$router.push({path:'/sign/confirmState'})
-       }  
-     }
+     selectItem(index){  
+       let customer = this.list[index]  
+       this.setCustomer(customer)
+       this.$router.push({path:`/sign/${customer.taskId}`})       
+     },
+     ...mapMutations({
+       setCustomer:'SET_CUSTOMER'
+     })
    }
  }
 </script>

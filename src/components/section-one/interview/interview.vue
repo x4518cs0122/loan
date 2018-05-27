@@ -35,7 +35,7 @@ export default {
           this.$router.back()
       },
       itemHandle(index){
-          let id = this.list[index].id
+          let id = this.list[index].taskId
           let customer = this.list[index]
           this.$router.push({path:`/interview/${id}`})
           this.setCustomer(customer)
