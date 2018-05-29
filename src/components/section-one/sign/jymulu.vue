@@ -1,7 +1,41 @@
 <template>
     <div class="jy-mulu">
         <v-header title="资料目录表" @back="back" next="保存" @submit="submit"></v-header>
-        <formList :list="list" ref="formList" :obj="obj" @pop="pop" @datePick="datePickerShow"></formList>
+        <formList :list="list" ref="formList" :obj="obj" @pop="pop" @datePick="datePickerShow">
+            <div class='collapse-wrapper'>
+                <el-collapse accordion>
+                    <el-collapse-item class="item" v-for="(item,index) in mortgageCatalogOthers" :key="index">
+                        <template slot="title" >
+                            <span @click.stop>
+                                <el-checkbox v-model="obj[item.checked]" class="color-grey">{{item.content}}</el-checkbox>
+                            </span>
+                            <i class="header-icon el-icon-info"></i>
+                        </template>
+                        <div class="detail">
+                            <div class="lisence-wrapper">
+                                <span class="text">证件名:</span>
+                                <input type="text" placeholder="点击输入证件名称" v-model="item.content">
+                            </div>
+                            <div class="des-wrapper">
+                                <span class="text">说明:</span>
+                                <input type="text" placeholder="点击输入证件说明" v-model="item.description">
+                            </div>
+                            <div class="page-wrapper">
+                                <span class="text">页码:</span>
+                                <input type="text" placeholder="请输入页码" v-model="item.page">
+                            </div>
+                            <div class="beizhu-wrapper">
+                                <span class="text">备注:</span>
+                                <textarea :rows="2" class="textarea" placeholder="请输入内容" v-model="item.remark"></textarea>
+                            </div>          
+                        </div>
+                    </el-collapse-item>
+                </el-collapse>
+            </div>
+            <div class="addMore" @click="addMore">
+                <span class="el-icon-circle-plus-outline icon"></span>
+            </div>
+        </formList>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
         <date-picker ref="datePicker" @submit="choosed"></date-picker>
     </div>
@@ -171,13 +205,6 @@ export default {
                   checkList:[],
                   page:'purpose_contact_page',
                   area:'purpose_contact_remark'
-              },{
-                  class:'collapse-wrapper',
-                  name:'其他',
-                  checked:false,
-                  options:['原件','复印件'],
-                  checkList:[],
-                  page:'',
               }
           ],
           list:[{
@@ -228,14 +255,14 @@ export default {
                     checked:'has_client_account',
                     radio:'client_account_des',
                     options:[{
-                            key:'marriage_certificate',
-                            value:'client_account_home'
+                            key:'client_account_home',
+                            value:'首页'
                         },{
-                            key:'divorce_certificate',
-                            value:'client_account_household'
+                            key:'client_account_household',
+                            value:'户主页'
                         },{
-                            key:'divorce_agreement',
-                            value:'client_account_myself'
+                            key:'client_account_myself',
+                            value:'本人页'
                         }],
                     checkList:[],
                     page:'client_account_page',
@@ -326,13 +353,6 @@ export default {
                     checkList:[],
                     page:'purpose_contact_page',
                     area:'purpose_contact_remark'
-                },{
-                    class:'collapse-wrapper',
-                    name:'其他',
-                    checked:false,
-                    options:['原件','复印件'],
-                    checkList:[],
-                    page:'',
                 }
               ]
            }
@@ -416,17 +436,8 @@ export default {
             "purpose_contact_des": 0,
             "purpose_contact_page": null,
             "purpose_contact_remark": null,
-            "mortgageCatalogOthers": [
-                {
-                    "id": null,
-                    "content": null,
-                    "description": null,
-                    "page": null,
-                    "remark": null,
-                    "catalog": null
-                }
-            ]
-          }
+          },
+          mortgageCatalogOthers: [],
       }
   },
   computed:{
@@ -434,16 +445,18 @@ export default {
           'customer'
       ])
   },
+  created(){
+      this.init()
+  },
   methods:{
       back(){
           this.$router.back()
       },
       init(){
           if(this.customer.loan_type === 0){
-              this.list[1].items = this.xfList
-          }else{
-              this.list[1].items = this.jyList
+              return
           }
+          this.list[1].items = this.jyList       
       },
       pop(option){
           this.options = option
@@ -453,16 +466,30 @@ export default {
           this.$refs.formList.choosed(option)
       },
       datePickerShow(){
-        this.$refs.datePicker.toggleList()
+          this.$refs.datePicker.toggleList()
+      },
+      addMore(){
+          let others = {
+                "id": null,
+                "content": null,
+                "description": null,
+                "page": null,
+                "remark": null,
+                "catalog": null
+            }
+          this.mortgageCatalogOthers.push(others)
+      },
+      normalized(){
+          this.obj.mortgageCatalogOthers = this.mortgageCatalogOthers
       },
       submit(){
+          this.normalized()
           postCatalog(this.obj,this.customer.taskId).then((res)=>{
               if(res.status === 1){
-                  this.$router.push({path:`/sign/${this.customer.taskId}`})
+                  this.$router.go(-2)
               }
               console.log(res)
           })
-        //   console.log(this.obj)
       }
   },
   components:{
@@ -482,5 +509,40 @@ export default {
     left 0
     right 0
     background $color-background
-    
+    .item
+        .color-grey
+            color #000
+            padding-left 20px
+        .detail
+            color #606266
+            margin-left 40px
+            .page-wrapper,.lisence-wrapper,.des-wrapper
+                display flex
+                margin-bottom 10px
+                .text
+                    flex 0 0 60px
+                input 
+                    flex 1
+                    outline none 
+                    margin-right 20px
+                    line-height 20px
+                    border-bottom 1px solid rgba(144,144,144,0.3)
+            .beizhu-wrapper
+                display flex
+                margin-right 20px
+                .text
+                    flex 0 0 60px
+                textarea 
+                    flex 1
+                    outline none 
+                    border 1px solid rgba(144,144,144,0.3)
+                    border-radius 5px
+                    padding 5px
+    .addMore
+        width 100%
+        text-align:center
+        height 50px
+        line-height 50px
+        .icon
+            font-size 20px
 </style>

@@ -65,9 +65,9 @@ export const asyncRouterMap = [{
                 meta: { roles: 'mianqian' },
                 component: resolve => require(['../components/section-one/sign/jymulu'], resolve),
             }, {
-                path: 'confirmState',
+                path: 'application',
                 meta: { roles: 'mianqian' },
-                component: resolve => require(['../components/section-one/sign/confirmState'], resolve),
+                component: resolve => require(['../components/section-one/sign/application'], resolve),
             }]
         }, {
             path: 'confirmState',

@@ -1,14 +1,19 @@
 <template>
     <div class="confirm-state">
         <v-header next="提交" title="确定签约状态" @submit="submit" @back="back"></v-header>
-        <form-list :list="list" @pop="pop" ref="formList" @choosed="choosed"></form-list>  
+        <form-list :list="list" @pop="pop" ref="formList" :obj="obj" @choosed="choosed" @datePick="datePickerShow"></form-list>  
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
+        <date-picker ref="datePicker" @submit="choosed"></date-picker>
     </div>
 </template>
 <script>
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
+import {mapMutations} from 'vuex'
 import formList from 'components/form-list/form-list'
+import datePicker from 'base/datePicker/datePicker'
+import {selectType} from 'common/js/config'
+import {postVisa} from 'api/api'
 export default {
   data(){
       return{
@@ -16,21 +21,27 @@ export default {
               title:'',
               items:[{
                 class:'normal-wrapper',
-                text:'约定时间',
+                text:'贷款编号',
                 value:'',
             },{
                 class:'normal-wrapper',
-                text:'约定地点',
+                text:'完成时间',
+                key:'time',
+                type:selectType.datePick,
                 value:'',
             },{
                 class:'select-wrapper',
-                text:'签约状态',
+                text:'签约地点',
+                key:'address',
                 value:'',
-                options:['已签约','未签约']
+                options:['管理添加1','管理添加2']
             }]
           }],
+          obj:{
+              time:null,
+              address:null
+          },
           options:[],
-          currentIndex:-1
       }
   },
   methods:{
@@ -44,14 +55,27 @@ export default {
       back(){
           this.$router.back()
       },
+      datePickerShow(){
+          this.$refs.datePicker.toggleList()
+      },
       submit(){
-          console.log("done!")
+          this.obj.taskId = this.customer.taskId
+          console.log(this.obj)
+        //   postVisa(this.obj).then((res)=>{
+        //       console.log(res)
+        //   })
       }
+  },
+  computed:{
+      ...mapGetters([
+          'customer'
+      ])
   },
   components:{
       vHeader,
       pop,
-      formList
+      formList,
+      datePicker
   }
 }
 </script>

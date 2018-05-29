@@ -15,8 +15,8 @@ import estate from 'base/estate/estate'
 import {postOrder} from 'api/api'
 import Scroll from 'base/scroll/scroll'
 import pop from 'base/pop-up/pop-up'
-import datePicker from 'base/datePicker/datePicker'
 import formList from 'components/form-list/form-list'
+import datePicker from 'base/datePicker/datePicker'
 import {selectType} from 'common/js/config'
 export default {
   data(){

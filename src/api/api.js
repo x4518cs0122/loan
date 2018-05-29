@@ -64,11 +64,12 @@ export function postCatalog(catalog, taskId) {
     return post(url, data)
 }
 
-export function getSignDetail() {
-    const url = '/signDetail'
-    return get(url)
+export function postVisa(data) {
+    const url = '/visa/save'
+    return post(url,data)
 }
 
+//评估下单
 export function getEvaluate() {
     const url = '/getEvaluate'
     return get(url)

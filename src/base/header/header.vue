@@ -43,7 +43,6 @@ export default {
   },
   methods:{
       back(){
-          console.log('ss')
           this.$emit('back')
       },
       submit(){
@@ -76,21 +75,26 @@ export default {
         background $color-header-background
         border-bottom 2px solid rgb(228,228,228)
         .back
+            position absolute
+            top 0
+            bottom 0
+            left 0
             width 50px
-            float left
+            // float left
             z-index 2
-            margin-right -50px
-        .title
-            float left  
+            // margin-right -50px
+        .title  
             width 100%
             .inner
                 margin 0 50px
                 color $color-text-l
                 font-size $font-size-large        
         .submit,.bell-wrapper
-            float left
+            position absolute
+            top 0
+            right 0
+            bottom 0
             width 50px 
-            margin-left -50px 
         .bell-wrapper
             line-height 50px
             color $color-theme

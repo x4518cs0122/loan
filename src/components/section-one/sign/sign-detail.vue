@@ -60,7 +60,7 @@ import {mapGetters} from 'vuex'
              this.$router.push({path:`/sign/${this.customer.taskId}/form`})
          },
          editPersonalForm(){
-             
+             this.$router.push({path:`/sign/${this.customer.taskId}/application`})
          }
      },
      computed:{

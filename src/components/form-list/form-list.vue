@@ -24,16 +24,16 @@
                             <span class="text">{{item.text}}</span>
                             <span class="val">{{item.val}}</span>
                         </div>
-                        <div class="collapse" v-if="item.class==='collapse-wrapper'">
+                        <div v-if="item.class==='collapse-wrapper'">
                             <el-collapse accordion>
                                 <el-collapse-item class="item">
                                     <template slot="title" >
                                         <span @click.stop>
                                             <el-checkbox v-model="obj[item.checked]" class="color-grey">{{item.name}}</el-checkbox>
                                         </span>
-                                        <i class="header-icon el-icon-info"></i>
+                                        <i class="header-icon"></i>
                                     </template>
-                                    <div class="detail" v-if="item.options">
+                                    <div class="detail">
                                         <h2 class="detail-title">{{item.name}}明细</h2>
                                         <div class="sm">   
                                             <el-radio-group v-model="obj[item.radio]">
@@ -41,9 +41,9 @@
                                                 <el-radio :label="0">原件</el-radio>
                                                 <el-radio :label="1">复印件</el-radio>
                                             </el-radio-group>
-                                            <el-checkbox-group v-if="item.options" class="padding-left" v-model="item.checkList"> 
-                                                <el-checkbox v-for="(option,index) in item.options" :key="index" :label="option.key" >{{option.value}}</el-checkbox>              
-                                            </el-checkbox-group>
+                                            <div v-if="item.options" class="padding-left"> 
+                                                <el-checkbox v-for="(option,index) in item.options" :key="index" v-model="obj[option.key]">{{option.value}}</el-checkbox>              
+                                            </div>
                                         </div>
                                         <div class="page-wrapper">
                                             <span class="text">页码:</span>
