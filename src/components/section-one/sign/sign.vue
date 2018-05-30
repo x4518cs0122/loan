@@ -26,13 +26,18 @@ import {mapMutations} from 'vuex'
        getSignList().then((res)=>{
         //  console.log(res)
          this.list = res.data
-         console.log(this.list)
        })
      },
      selectItem(index){  
        let customer = this.list[index]  
        this.setCustomer(customer)
-       this.$router.push({path:`/sign/${customer.taskId}`})       
+       console.log(customer)
+       if(customer.state === "待确定签约状态"){
+         this.$router.push({path:`/sign/confirmState`})    
+       }else{
+         this.$router.push({path:`/sign/${customer.taskId}`})   
+       }
+           
      },
      ...mapMutations({
        setCustomer:'SET_CUSTOMER'

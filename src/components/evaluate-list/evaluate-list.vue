@@ -1,6 +1,6 @@
 <template>
     <div class="evaluate-list">
-        <v-header @back="back"></v-header>
+        <v-header @back="back" :title="title"></v-header>
         <div class="list-wrapper">
             <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
         </div>
@@ -18,6 +18,10 @@ import vHeader from 'base/header/header'
              default:()=>{
                  return []
              }
+         },
+         title:{
+             type:String,
+             default:''
          }
      },
      methods:{

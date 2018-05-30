@@ -4,7 +4,7 @@
         <div class="scroll">
                 <!-- 个人信息 index = 1 -->   
             <div v-show="currentIndex === 1">
-                <form-list :list="userInfo" :obj="obj" @pop="pop" @datePick="datePickerShow" ref="formList"></form-list>
+                <form-list :list="userInfo" :obj="obj" @pop="pop" @datePick="datePickerShow" ref="formList1"></form-list>
             </div>
                 <!-- 配偶信息 index = 2 -->
             <div v-show="currentIndex === 2">
@@ -12,7 +12,7 @@
             </div>
             <!-- 工作单位 index = 3 -->
             <div v-show="currentIndex === 3">
-                <form-list :list="jobInfo" :obj="obj" @pop="pop" @datePick="datePickerShow" ref="formList3"></form-list>  
+                <form-list :list="jobType" :obj="obj" @pop="pop" @datePick="datePickerShow" ref="formList3"></form-list>  
             </div>
             <!-- 贷款信息 index = 4 -->
             <div v-show="currentIndex === 4">
@@ -30,9 +30,11 @@
 <script>
 import popUp from 'base/pop-up/pop-up'
 import { mapGetters } from 'vuex'
+import vHeader from 'base/header/header'
 import datePicker from 'base/datePicker/datePicker'
 import formList from 'components/form-list/form-list'
 import {selectType} from 'common/js/config'
+import {postForm} from 'api/api'
 export default {
   data(){
       return{
@@ -47,7 +49,6 @@ export default {
                         type:selectType.datePick,
                         key:'application_time',
                         value:'选择申请日期',
-                        options:['男','女']
                     },{
                         class:'input-wrapper',
                         text:'姓名',
@@ -143,46 +144,73 @@ export default {
                     },{
                         class:'select-wrapper',
                         text:'证件类型',
-                        value:'proposer_spouse_paper_type',
+                        key:'proposer_spouse_paper_type',
+                        value:'',
                         options:['身份证','临时身份证','户口簿','其他']
                     },{
                         class:'select-wrapper',
                         text:'是否共同申请',
-                        value:'has_proposer_spouse_together',
+                        key:'has_proposer_spouse_together',
+                        value:'',
                         options:['是','否']
                     }]
                 }
           ],
-          jobInfo:[
+          ziguInfo:[
                {
                    title:"工作信息",
                    items:[ {
                         class:'input-wrapper',
                         text:'经营主体',
-                        value:'',
+                        value:'proposer_business_license',
                         placeholder:'点击输入经营主体'
                     },{
                         class:'input-wrapper',
                         text:'办公地址',
-                        value:'',
+                        value:'proposer_business_address',
                         placeholder:'点击输入办公地址'
                     },{
                         class:'select-wrapper',
                         text:'经营场所',
+                        key:'proposer_company_type',
                         value:'',
                         options:['自有','租赁']
                     },{
                         class:'input-wrapper',
                         text:'营业执照',
-                        value:'',
-                        placeholder:'点击输入营业执照'
+                        value:'proposer_business',
+                        placeholder:'点击输入营业执照注册号'
                     },{
                         class:'input-wrapper',
                         text:'贷款卡号',
-                        value:'',
+                        value:'proposer_business_card',
                         placeholder:'点击输入贷款卡号'
                     }]
                }
+          ],
+          shouxinInfo:[
+            {
+                title:"工作信息",
+                items:[ 
+                    {
+                        class:'input-wrapper',
+                        text:'工作单位',
+                        value:'proposer_company',
+                        placeholder:'点击输入工作单位名称'
+                    },{
+                        class:'input-wrapper',
+                        text:'工作单位地址',
+                        value:'proposer_company_address',
+                        placeholder:'点击输入工作单位地址'
+                    },{
+                        class:'select-wrapper',
+                        text:'单位性质',
+                        key:'proposer_company_type',
+                        value:'',
+                        options:['事业/机关','国有','私营','股份']
+                    }
+                 ]
+            }
           ],
           loanInfo:[
                {
@@ -202,7 +230,8 @@ export default {
                     },{
                         class:'select-wrapper',
                         text:'申请授信方式',
-                        value:'loan_credit_type',
+                        key:'loan_credit_type',
+                        value:'',
                         options:['抵押经营','抵押消费']
                     },{
                         class:'input-wrapper',
@@ -212,7 +241,8 @@ export default {
                     },{
                         class:'select-wrapper',
                         text:'还款方式',
-                        value:'loan_repayment_type',
+                        key:'loan_repayment_type',
+                        value:'',
                         options:['按月付息到期还本','按月等额还息','按月等额本金']
                     },{
                         class:'input-wrapper',
@@ -233,7 +263,8 @@ export default {
                     },{
                         class:'select-wrapper',
                         text:'是您的',
-                        value:'loan_contact_rela',
+                        key:'loan_contact_rela',
+                        value:'',
                         options:['父母','子女','其他']
                     },{
                         class:'input-wrapper',
@@ -299,7 +330,8 @@ export default {
   components:{
       popUp,
       formList,
-      datePicker
+      datePicker,
+      vHeader
   },
   methods:{
       init(){
@@ -344,13 +376,23 @@ export default {
           }
       },
       submit(){
-          console.log('提交成功')
+          this.obj.has_proposer_spouse_together = false
+          let taskId = this.customer.taskId
+          console.log(this.obj)
+          postForm(this.obj,taskId).then((res)=>{
+              if(res.status === 1){
+                  this.$router.go(-2)
+              }
+          })
       },
   },
   computed:{
       ...mapGetters([
           'customer'
-      ])
+      ]),
+      jobType(){
+          return this.obj.proposer_job_type === 0? this.shouxinInfo:this.ziguInfo
+      }
   },
   watch: {
     currentIndex(newIndex){
@@ -365,10 +407,9 @@ export default {
 </script>
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
-@import '~common/stylus/mixin'
-.scroll
+.application
     position fixed 
-    top 52px
+    top 0
     bottom 0
     left 0
     right 0

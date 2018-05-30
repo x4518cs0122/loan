@@ -80,9 +80,6 @@ export default {
             bottom 0
             left 0
             width 50px
-            // float left
-            z-index 2
-            // margin-right -50px
         .title  
             width 100%
             .inner

@@ -1,28 +1,9 @@
 <template>
     <div class="placeOrder">
-        <v-header :title="title" @back="back" @submit="submit" :next="next"></v-header>
-        <div>
-            <h2 class="title">下单格式</h2>
-            <div class="normal-wrapper">
-                <span class="text">下单格式</span>
-                <textarea class="val" placeholder="输入单子内容" v-model="textarea"></textarea>
-            </div>
-        </div>
-        <div>
-            <h2 class="title">确定下单状态</h2>
-            <ul>
-                <li class="select-wrapper" v-for="(item,index) in items" 
-                    :key="index" 
-                    @click="pop(item)">
-                    <span class="text">{{item.text}}</span>
-                    <span class="desc">{{item.val}}</span>
-                    <span class="icon">
-                        <span class="fa fa-chevron-right" aria-hidden="true"></span>
-                    </span>
-                </li>
-            </ul>
-        </div>
-        <pop :options="options" @choosed="choosed" ref="pop"></pop>
+        <v-header title="下单" @back="back" @submit="submit" next="提交"></v-header>
+        <form-list :list="list" @pop="pop" ref="formList" :obj="obj" @choosed="choosed" @datePick="datePickerShow"></form-list>  
+        <pop :options="options" ref="pop" @choosed="choosed"></pop>
+        <date-picker ref="datePicker" @submit="choosed"></date-picker>
     </div>
 </template>
 
@@ -32,19 +13,30 @@ import vHeader from 'base/header/header'
  export default {
      data(){
          return{
-             title:'下单',
-             next:'提交',
-             items:[{
-                 text:'完成时间',
-                 val:'选择下单完成日期',
-                 options:[]
-             },{
-                 text:'评估公司',
-                 val:'',
-                 options:['公司1','公司2','公司3']
-             }],
-             textarea:'',
-             currentItem:{},
+             list:[{
+                    title:'',
+                    items:[{
+                        class:'normal-wrapper',
+                        text:'贷款编号',
+                        value:'',
+                    },{
+                        class:'select-wrapper',
+                        text:'完成时间',
+                        key:'time',
+                        type:selectType.datePick,
+                        value:'',
+                    },{
+                        class:'select-wrapper',
+                        text:'签约地点',
+                        key:'company',
+                        value:'',
+                        options:['管理添加1','管理添加2']
+                    }]
+                }],
+             obj:{
+                    time:'',
+                    company:''
+                },
              options:[]
          }
      },
@@ -52,10 +44,9 @@ import vHeader from 'base/header/header'
          pop(item){
              this.options = item.options
              this.$refs.pop.show()
-             this.currentItem = item
          },
          choosed(item){
-             this.currentItem.val = item
+             this.$refs.formList.choosed(item)
          },
          back(){
              this.$router.back()

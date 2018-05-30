@@ -9,7 +9,7 @@
 <script>
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
-import {mapMutations} from 'vuex'
+import {mapGetters} from 'vuex'
 import formList from 'components/form-list/form-list'
 import datePicker from 'base/datePicker/datePicker'
 import {selectType} from 'common/js/config'
@@ -24,7 +24,7 @@ export default {
                 text:'贷款编号',
                 value:'',
             },{
-                class:'normal-wrapper',
+                class:'select-wrapper',
                 text:'完成时间',
                 key:'time',
                 type:selectType.datePick,
@@ -60,10 +60,11 @@ export default {
       },
       submit(){
           this.obj.taskId = this.customer.taskId
-          console.log(this.obj)
-        //   postVisa(this.obj).then((res)=>{
-        //       console.log(res)
-        //   })
+          postVisa(this.obj).then((res)=>{
+              if(res.status === 1){
+                  this.$router.back()
+              }
+          })
       }
   },
   computed:{

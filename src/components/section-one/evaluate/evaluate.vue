@@ -27,7 +27,7 @@ import { mapMutations } from 'vuex';
          select(index){
              let customer = this.list[index]
              this.setCustomer(customer)
-             if(this.list[index].state === '待下单'){
+             if(this.list[index].state === '待评估下单'){
                 this.$router.push({path:'/evaluate/placeOrder'})
              }else{
                 this.$router.push({path:'/evaluate/unreported'})

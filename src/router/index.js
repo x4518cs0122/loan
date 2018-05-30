@@ -57,6 +57,10 @@ export const asyncRouterMap = [{
         meta: { roles: 'mianqian', icon: 'fa-files-o', title: '面签' },
         component: resolve => require(['../components/section-one/sign/sign'], resolve),
         children: [{
+            path: 'confirmState',
+            meta: { roles: 'mianqian' },
+            component: resolve => require(['../components/section-one/sign/confirmState'], resolve),
+        },{
             path: ':id',
             meta: { roles: 'mianqian' },
             component: resolve => require(['../components/section-one/sign/sign-detail'], resolve),
@@ -69,10 +73,6 @@ export const asyncRouterMap = [{
                 meta: { roles: 'mianqian' },
                 component: resolve => require(['../components/section-one/sign/application'], resolve),
             }]
-        }, {
-            path: 'confirmState',
-            meta: { roles: 'mianqian' },
-            component: resolve => require(['../components/section-one/sign/confirmState'], resolve),
         }]
     }, {
         //评估下单
