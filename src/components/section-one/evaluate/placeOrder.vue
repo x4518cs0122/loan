@@ -10,6 +10,11 @@
 <script>
 import pop from 'base/pop-up/pop-up'
 import vHeader from 'base/header/header'
+import formList from 'components/form-list/form-list'
+import datePicker from 'base/datePicker/datePicker'
+import {selectType} from 'common/js/config'
+import {mapGetters} from 'vuex'
+import {postEvaluateOrder} from 'api/api'
  export default {
      data(){
          return{
@@ -41,23 +46,38 @@ import vHeader from 'base/header/header'
          }
      },
      methods:{
-         pop(item){
-             this.options = item.options
+         pop(options){
+             this.options = options
              this.$refs.pop.show()
          },
          choosed(item){
              this.$refs.formList.choosed(item)
          },
+         datePickerShow(){
+             this.$refs.datePicker.toggleList()
+         },
          back(){
              this.$router.back()
          },
          submit(){
-             console.log('success! textarea:'+this.textarea+'company:'+this.items[1].val)
+             this.obj.taskId = this.customer.taskId
+             postEvaluateOrder(this.obj).then((res)=>{
+                 if(res.status === 1){
+                     this.$router.back()
+                 }
+             })
          }
+     },
+     computed:{
+         ...mapGetters([
+             'customer'
+         ])
      },
      components: {
          vHeader,
-         pop
+         pop,
+         datePicker,
+         formList
      }
  }
 </script>

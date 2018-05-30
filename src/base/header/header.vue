@@ -73,7 +73,7 @@ export default {
         font-size $font-size-medium
         color $color-theme
         background $color-header-background
-        border-bottom 2px solid rgb(228,228,228)
+        border-bottom 1px solid rgb(228,228,228)
         .back
             position absolute
             top 0

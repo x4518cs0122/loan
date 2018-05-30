@@ -62,7 +62,7 @@ export default {
         overflow hidden
         .list-wrapper
             position fixed 
-            top 52px
+            top 50px
             bottom 0
             left 0
             right 0

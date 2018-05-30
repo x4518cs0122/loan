@@ -199,31 +199,31 @@ export default {
         overflow hidden   
         .scroll
             position absolute
-            top 52px
+            top 50px
             bottom 77px
             left 0
             right 0
             overflow hidden
-        .item-wrapper
-            display inline-block
-            width 100% 
-            .title
-                padding-left 20px
-                font-size $font-size-medium-x
-                color $color-text-l
-            .item
-                text-align center
+            .item-wrapper
                 display inline-block
-                width 33%
-                height 50px
-                margin-bottom 20px
-                .icon
-                    font-size 25px
-                    color #868686
-                    .text
-                        padding-top 5px
-                        color $color-text-l
-                        font-size $font-size-medium
+                width 100% 
+                .title
+                    padding-left 20px
+                    font-size $font-size-medium-x
+                    color $color-text-l
+                .item
+                    text-align center
+                    display inline-block
+                    width 33%
+                    height 50px
+                    margin-bottom 20px
+                    .icon
+                        font-size 25px
+                        color #868686
+                        .text
+                            padding-top 5px
+                            color $color-text-l
+                            font-size $font-size-medium
 </style>
 
 

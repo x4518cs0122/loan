@@ -30,7 +30,7 @@ import { mapMutations } from 'vuex';
              if(this.list[index].state === '待评估下单'){
                 this.$router.push({path:'/evaluate/placeOrder'})
              }else{
-                this.$router.push({path:'/evaluate/unreported'})
+                this.$router.push({path:'/evaluate/reports'})
              }           
          },
          ...mapMutations({

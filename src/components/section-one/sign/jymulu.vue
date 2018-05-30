@@ -208,7 +208,7 @@ export default {
               }
           ],
           list:[{
-              title:'',
+              title:'基本信息',
               items:[
                   {
                       class:"select-wrapper",

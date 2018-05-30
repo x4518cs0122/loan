@@ -41,8 +41,10 @@ export default {
         height 100%
         width 100%
         overflow hidden
+        background $color-background
         .list-item
             padding 20px 30px
+            background $color-white
             border-bottom 2px solid $color-border  
             .state-wrapper  
                 font-size $font-size-medium    

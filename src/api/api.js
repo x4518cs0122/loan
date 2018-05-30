@@ -63,17 +63,17 @@ export function postCatalog(catalog, taskId) {
     const url = 'visa/catalog/save'
     return post(url, data)
 }
-export function postForm(form,taskId){
+export function postForm(form, taskId) {
     let data = {}
     data.form = JSON.stringify(form)
     data.taskId = taskId
     const url = '/visa/form/save'
-    return post(url,data)
+    return post(url, data)
 }
 
 export function postVisa(data) {
     const url = '/visa/save'
-    return post(url,data)
+    return post(url, data)
 }
 
 //评估下单
@@ -81,6 +81,11 @@ export function getEvaluate() {
     const id = store.getters.userId
     const url = `/task/m/order/${id}`
     return get(url)
+}
+
+export function postEvaluateOrder(data) {
+    const url = '/order/state/save'
+    return post(url, data)
 }
 
 export function getApprove() {

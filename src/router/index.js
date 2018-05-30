@@ -60,7 +60,7 @@ export const asyncRouterMap = [{
             path: 'confirmState',
             meta: { roles: 'mianqian' },
             component: resolve => require(['../components/section-one/sign/confirmState'], resolve),
-        },{
+        }, {
             path: ':id',
             meta: { roles: 'mianqian' },
             component: resolve => require(['../components/section-one/sign/sign-detail'], resolve),
@@ -85,9 +85,9 @@ export const asyncRouterMap = [{
             meta: { roles: 'pinggu' },
             component: resolve => require(['../components/section-one/evaluate/placeOrder'], resolve)
         }, {
-            path: 'unreported',
+            path: 'reports',
             meta: { roles: 'pinggu' },
-            component: resolve => require(['../components/section-one/evaluate/unreported'], resolve)
+            component: resolve => require(['../components/section-one/evaluate/reports'], resolve)
         }]
     },
     {

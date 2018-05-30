@@ -119,7 +119,7 @@ export default {
 .form-list
     position fixed 
     width 100%
-    top 52px
+    top 50px
     bottom 0
     left 0
     overflow hidden

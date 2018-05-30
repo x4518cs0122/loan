@@ -59,7 +59,7 @@ import {setToken} from 'common/js/utils'
     left 0
     right 0
     overflow hidden
-    background $color-background
+    background $color-white
     .header
         margin-top 70px
         margin-bottom 30px

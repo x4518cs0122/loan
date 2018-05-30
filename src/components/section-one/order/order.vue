@@ -23,18 +23,14 @@ export default {
       return{
            list:[
                 {
-                    title:'',
+                    title:'借款人信息',
                     items:[{
                         class:'select-wrapper',
                         type:selectType.datePick,
                         text:'完成日期',
                         key:'finish_time',
                         value:'',
-                    }]
-                },
-                {
-                    title:'借款人信息',
-                    items:[{
+                    },{
                         class:'input-wrapper',
                         text:'客户姓名',
                         placeholder:'点击输入客户姓名',
@@ -166,9 +162,12 @@ export default {
           this.$refs.formList.choosed(option)      
       },
       submit(){
-          console.log(this.obj)
           postOrder(this.obj).then((res)=>{
-              console.log(res)
+              if(res.status === 1){
+                  console.log(res)
+                  this.$router.back()
+              }
+              
           })
       }
   },
@@ -190,71 +189,13 @@ export default {
         bottom 0
         left 0
         right 0
-        background #fff
+        background $color-white
         overflow hidden
         &.fade-enter-active, &.fade-leave-active 
             transition: all .3s
         &.fade-enter, &.fade-leave-to 
             transform translate3d(100%,0,0)
-        .order-content
-            position absolute
-            top 52px
-            bottom 0
-            left 0
-            right 0
-            overflow hidden
-            .section
-                margin-bottom 20px
-                font-size $font-size-medium
-                .date
-                    display flex
-                    padding 15px 20px
-                    border-bottom 1px solid $color-border
-                    .text
-                        flex 1
-                    .date-picker
-                        flex 0 0 122px
-                        color $color-theme
-                    .icon
-                        flex 0 0 16px
-                        color $color-icon-right
-                        font-size $font-size-medium-x
-                .item
-                    padding 0 20px
-                    display flex
-                    height 45px
-                    line-height 45px
-                    align-items center
-                    border-bottom 1px solid $color-border
-                    &.firstItem
-                        border-top 1px solid $color-border
-                    .text
-                        flex 0 0 90px
-                    input
-                        flex 1
-                        color $color-text-ll
-                        outline:none
-                    .icon
-                        flex 1
-                        text-align right
-                        color $color-icon-right
-                        font-size $font-size-medium-x
-                .info-item
-                    font-size $font-size-small
-                    margin-left 20px
-                    padding 5px 0px
-                    border-bottom 1px solid $color-border
-                    color $color-text-l
-            .addition
-                padding 0 20px
-                margin 10px 0
-                .text 
-                    font-size $font-size-medium
-                textarea
-                    width 100%
-                    border none 
-                    resize none
-                    outline none
+        
 </style>
 
 

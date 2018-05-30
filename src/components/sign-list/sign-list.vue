@@ -39,12 +39,14 @@ import vHeader from 'base/header/header'
 </script>
 
 <style lang='stylus' scoped>
+@import '~common/stylus/variable'
 .scroll
   position absolute 
   top 54px
   bottom 0
   left 0
   right 0
+  background $color-background
   overflow hidden
  
 </style>
