@@ -6,10 +6,10 @@
             <div class="report-wrapper" v-for="(item,index) in list" :key="index">
                 <!-- 如果存在id值 则表示该报告已经填写 -->
                 <div class="report-content" v-if="item.id">
-                    <h2 class="title">报告{{index}}</h2>
+                    <h2 class="title">报告{{index+1}}</h2>
                     <div class="text">
-                        <span class="text-left">预评</span>
-                        <span class="text-right">2017-01-02</span>
+                        <span class="text-left" v-html="item.report_type === 0? '预评':'正评'"></span>
+                        <span class="text-right">{{item.time}}</span>
                     </div>
                 </div>
                 <!-- v-else 报告为空 -->
@@ -21,7 +21,7 @@
                 </div>
                 <!-- 报告footer操作区 -->
                 <div class="report-footer">
-                    <div class="delete" @click="deleteReport">
+                    <div class="delete" @click="deleteReport(index)">
                         <i class="el-icon-delete icon"></i>
                         <span>删除</span>
                     </div>
@@ -31,8 +31,11 @@
                     </div>   
                 </div>
             </div>
+            <div class="button">
+                <el-button type="danger" class="add-report" @click="addReports">添加报告</el-button>
+            </div>
         </div>
-        <unreported :list="reportsObj" ref="unreported"></unreported>
+        <unreported :list="reportObj" ref="unreported"></unreported>
     </div>
 </template>
 
@@ -42,7 +45,7 @@ import unreported from './unreported'
  export default {
      data(){
          return{
-             reportsObj:{},
+             reportObj:{},
              list:[{
                 "id": null,
                 "report_type": 0,
@@ -57,8 +60,11 @@ import unreported from './unreported'
                 "report_loan_year": null,
                 "report_first": false,
                 "loan_id": null
-              }],
-             obj:{
+              }]
+         }
+     },
+     created(){
+         this.obj = {
                 "id": null,
                 "report_type": 0,
                 "report_obligee": null,
@@ -73,18 +79,21 @@ import unreported from './unreported'
                 "report_first": false,
                 "loan_id": null
               }
-         }
      },
      methods:{
          back(){
              this.$router.back()
          },
+         addReports(){
+             let obj = Object.assign({},this.obj)
+             this.list.push(obj)
+         },
          editReport(item){
              this.reportObj = item
              this.$refs.unreported.show()
          },
-         deleteReport(){
-             
+         deleteReport(index){
+             this.list.splice(index,1)
          }
      },
      components: {
@@ -109,6 +118,7 @@ import unreported from './unreported'
             width 100%
             height 100px
             background $color-white
+            margin-bottom 20px
             .report-content 
                 box-sizing border-box      
                 width 100%
@@ -133,5 +143,11 @@ import unreported from './unreported'
                     font-size $font-size-medium
                     margin-right 10px
                     extend-click()
+        .button
+            width 100%
+            padding 20px
+            box-sizing border-box
+            .add-report
+                width 100%
                     
 </style>

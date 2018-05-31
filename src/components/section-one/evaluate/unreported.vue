@@ -7,6 +7,7 @@
             </div>
         </form-list>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
+        <date-picker ref="datePicker" @submit="choosed"></date-picker>
     </div>
 </template>
 
@@ -52,60 +53,52 @@ import datePicker from 'base/datePicker/datePicker'
                     items:[{
                         class:'input-wrapper',
                         text:'权利人',
-                        key:'report_obligee',
                         placeholder:'点击输入权利人姓名',
-                        value:''
+                        value:'report_obligee'
                     },{
                         class:'input-wrapper',
                         text:'借款人',
-                        key:'report_borrower',
                         placeholder:'点击输入借款人姓名',
-                        value:''
+                        value:'report_borrower'
                     },{
                         class:'input-wrapper',
                         text:'座落',
-                        key:'report_repose',
                         placeholder:'点击输入座落',
-                        value:''
+                        value:'report_repose'
                     },{
                         class:'input-wrapper',
                         text:'房龄',
-                        key:'report_house_age',
                         placeholder:'点击输入房龄姓名',
-                        value:''
+                        value:'report_house_age'
                     },{
                         class:'input-wrapper',
                         text:'面积',
-                        key:'report_house_area',
                         placeholder:'点击输入面积',
-                        value:''
+                        value:'report_house_area'
                     },{
                         class:'input-wrapper',
                         text:'单价',
-                        key:'report_house_single',
                         placeholder:'点击输入单价',
-                        value:''
+                        value:'report_house_single'
                     },{
                         class:'input-wrapper',
                         text:'总价',
-                        key:'report_house_total',
                         placeholder:'点击输入总价',
-                        value:''
+                        value:'report_house_total'
                     },{
                         class:'input-wrapper',
                         text:'贷款金额',
-                        key:'report_loan_amount',
                         placeholder:'点击输入贷款金额',
-                        value:''
+                        value:'report_loan_amount'
                     },{
                         class:'input-wrapper',
                         text:'年限',
-                        key:'report_loan_year',
                         placeholder:'点击输入年限',
-                        value:''
+                        value:'report_loan_year'
                     },{
                         class:'select-wrapper',
                         text:'首套/两套',
+                        key:'report_first',
                         value:'',
                         options:['首套','两套']
                     }]
@@ -133,16 +126,26 @@ import datePicker from 'base/datePicker/datePicker'
             this.$refs.formList.choosed(option)      
          },
          submit(){
-             console.log('you did!')
+             this.list.id = 1
+             this.hidden()
+             console.log(this.list)
+         },
+         validate(obj){
+             for(key in obj){
+                 if(obj[key] === ''|| !obj[key]){
+                     obj.key
+                 }
+             }
          },
          back(){
-             this.$router.back()
+             this.hidden()
          }
      },
      components:{
          vHeader,
          pop,
-         formList
+         formList,
+         datePicker
      }
  }
 </script>
