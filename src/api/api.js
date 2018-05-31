@@ -88,10 +88,29 @@ export function postEvaluateOrder(data) {
     return post(url, data)
 }
 
+export function postReports(data) {
+    const url = '/order/report/save'
+    return post(url, data)
+}
+
+//审批
 export function getApprove() {
-    const url = '/getApprove'
+    const id = store.getters.userId
+    const url = `/task/m/approve/${id}`
     return get(url)
 }
+
+export function isDataPerfect(taskId) {
+    const id = store.getters.userId
+    const url = '/approve/completeData'
+    let data = {
+        employeeId: id,
+        taskId: taskId
+    }
+    console.log(data)
+    return post(url, data)
+}
+// 抵押
 
 export function getMortgage() {
     const url = '/getMortgage'

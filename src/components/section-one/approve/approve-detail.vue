@@ -1,6 +1,6 @@
 <template>
   <div class="interview-detail">
-      <!-- <app-title :title="title" :next="next" @back="back"></app-title> -->
+      <v-header title="资料目录表" next="next" @back="back"></v-header>
       <div class="info">
           <div class="normal-wrapper">
               <span class="text">贷款编号</span>
@@ -32,8 +32,9 @@
   </div>
 </template>
 <script>
-import appTitle from 'base/header/header'
+import vHeader from 'base/header/header'
 import {mapGetters} from 'vuex'
+import {isDataPerfect} from 'api/api'
 export default {
   data(){
       return{
@@ -42,16 +43,24 @@ export default {
       }
   },
   components: {
-      appTitle
+      vHeader
   },
   computed:{
       ...mapGetters([
           'customer'
       ])
   },
+  created(){
+      this.getInfo()
+  },
   methods:{
       back(){
           this.$router.back()
+      },
+      getInfo(){
+          isDataPerfect(this.customer.taskId).then((res)=>{
+              console.log(res)
+          })
       },
       editForm(e){
           let target = e.target    

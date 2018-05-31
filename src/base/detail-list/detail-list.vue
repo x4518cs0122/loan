@@ -5,7 +5,7 @@
               <div class="state-wrapper">
                   <span class="id">{{index+1}}.</span>
                   <span class="state">{{item.state}}</span>
-                  <span class="state" v-if="item.substate">{{item.substate}}</span>
+                  <span class="state" v-if="item.report_type">已出{{item.report_type}}</span>
               </div>
               <div class="info">
                   <span class="name">客户:{{item.name}}</span>

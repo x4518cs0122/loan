@@ -21,6 +21,7 @@ import {mapMutations} from 'vuex'
      methods:{
          _getApprove(){
              getApprove().then((res)=>{
+                 console.log(res.data)
                  this.list = res.data
              })
          },

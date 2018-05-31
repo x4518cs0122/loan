@@ -1,6 +1,6 @@
 <template>
     <div class="approve-list">
-        <v-header  @back="back"></v-header>
+        <v-header  @back="back" :title="title"></v-header>
         <div class="list-wrapper">
             <detail-list :list="list" @itemHandle="select"></detail-list> 
         </div>
@@ -10,9 +10,6 @@
 <script>
 import vHeader from 'base/header/header'
 import detailList from 'base/detail-list/detail-list'
-import Scroll from 'base/scroll/scroll'
-import {getApprove} from 'api/api'
-import {mapMutations} from 'vuex'
  export default {
     props:{
         list:{
@@ -20,11 +17,14 @@ import {mapMutations} from 'vuex'
             default:()=>{
                 return []
             }
+        },
+        title:{
+             type:String,
+             default:''
         }
     },
     components: {
         detailList,
-        Scroll,
         vHeader
     },
     methods:{
@@ -33,12 +33,6 @@ import {mapMutations} from 'vuex'
         },
         select(index){
             this.$emit('select',index)
-        }
-    },
-    computed:{
-        title(){
-            let metas = this.$route.matched
-            return metas[metas.length-1].meta.title
         }
     }
 }

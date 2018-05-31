@@ -7,7 +7,6 @@
             </div>
         </form-list>
         <pop :options="options" ref="pop" @choosed="choosed"></pop>
-        <date-picker ref="datePicker" @submit="choosed"></date-picker>
     </div>
 </template>
 
@@ -15,8 +14,6 @@
 import vHeader from 'base/header/header'
 import pop from 'base/pop-up/pop-up'
 import formList from 'components/form-list/form-list'
-import {selectType} from 'common/js/config'
-import datePicker from 'base/datePicker/datePicker'
  export default {
      props:{
          list:{
@@ -30,25 +27,6 @@ import datePicker from 'base/datePicker/datePicker'
          return{
              reports:[
                  {
-                     title:'',
-                     items:[{
-                        class:'normal-wrapper',
-                        text:'贷款编号',
-                        value:'',
-                     },{
-                         class:'select-wrapper',
-                         text:'完成日期',
-                         key:'time',
-                         type:selectType.datePick,
-                         value:'选择出报告日期'
-                     },{
-                         class:'select-wrapper',
-                         text:'报告类型',
-                         key:'report_type',
-                         value:'',
-                         options:['预评','正评']
-                     }]
-                 },{
                     title:'报告内容',
                     items:[{
                         class:'input-wrapper',
@@ -128,7 +106,6 @@ import datePicker from 'base/datePicker/datePicker'
          submit(){
              this.list.id = 1
              this.hidden()
-             console.log(this.list)
          },
          validate(obj){
              for(key in obj){
@@ -144,8 +121,7 @@ import datePicker from 'base/datePicker/datePicker'
      components:{
          vHeader,
          pop,
-         formList,
-         datePicker
+         formList
      }
  }
 </script>
