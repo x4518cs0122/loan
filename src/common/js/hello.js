@@ -1,0 +1,1 @@
+export default{"ju":"hi","hw":"22"}

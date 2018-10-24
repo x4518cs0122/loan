@@ -1,14 +1,12 @@
 <template>
     <div class="approve-list">
-        <v-header  @back="back" :title="title"></v-header>
-        <div class="list-wrapper">
-            <detail-list :list="list" @itemHandle="select"></detail-list> 
-        </div>
+        <v-header  @goback="goback" :title="title"></v-header>
+        <detail-list :list="list" @itemHandle="select"></detail-list> 
     </div>
 </template>
 
 <script>
-import vHeader from 'base/header/header'
+import vHeader from 'components/header/header'
 import detailList from 'base/detail-list/detail-list'
  export default {
     props:{
@@ -28,8 +26,8 @@ import detailList from 'base/detail-list/detail-list'
         vHeader
     },
     methods:{
-        back(){
-            this.$router.back()
+        goback(){
+            this.$router.push({path:'/bussiness'})
         },
         select(index){
             this.$emit('select',index)
@@ -45,11 +43,4 @@ import detailList from 'base/detail-list/detail-list'
     bottom 0
     right 0
     left 0
-    .list-wrapper
-        position fixed 
-        top 52px
-        bottom 0
-        right 0
-        left 0
-        overflow hidden
 </style>

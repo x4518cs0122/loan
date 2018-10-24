@@ -3,9 +3,9 @@
         <transition name="slide">   
             <ul class="item-wrapper" v-show="popUpShow">
                 <li v-for="(item,index) in options" :key="index" class="list-item" @click="choosed(item)">
-                        <p class="text">{{item}}</p>
-                    </li>
-                </ul>   
+                    <p class="text">{{item.value}}</p>
+                </li>
+            </ul>   
         </transition>
         <transition name="meng">
             <div class="list-mask" v-if="popUpShow" @click="hide"></div>
@@ -34,7 +34,7 @@ export default {
       hide(){
           this.popUpShow = false
       },
-      choosed(item,){
+      choosed(item){
           this.$emit('choosed',item)
           this.hide()
       }
@@ -71,12 +71,12 @@ export default {
             width 100%
             height 100%
             z-index -2
-            background rgba(7,17,27,0.6)
+            background rgba(7,17,27,0.3)
             backdrop-filter blur(10px)
             &.meng-enter-active, &.meng-leave-active 
                 transition all .3s              
             &.meng-enter-to, &.meng-leave
-                background rgba(7,17,27,0.6)
+                background rgba(7,17,27,0.3)
     
 
 </style>

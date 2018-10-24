@@ -3,53 +3,54 @@ import qs from 'qs'
 import { getToken } from './utils'
 
 // axios.defaults.baseURL = '/api'
-axios.defaults.baseURL = 'http://47.93.43.106:8090'
 
-axios.interceptors.request.use(function(config) {
-    // console.log(getToken())
-    config.headers['token'] = getToken();
+let axiosIns = axios.create({});
+
+axiosIns.defaults.baseURL = 'http://116.62.148.24:8080/loan'
+
+
+axiosIns.defaults.headers.post['X-Requested-With'] = 'XMLHttpRequest';
+axiosIns.defaults.headers.get['X-Requested-With'] = 'XMLHttpRequest';
+axiosIns.defaults.responseType = 'json';
+axiosIns.defaults.transformRequest = [function (data) {
+    //数据序列化
+        return qs.stringify(data);
+    }
+];
+
+axiosIns.interceptors.request.use(function (config) {
+    //配置config
+    config.headers.Accept = 'application/json';
+    // config.headers.System = 'vue';
+    let token = getToken();
+    if(token){
+        config.headers.Token = token;
+    }
     return config;
-}, function(error) {
-    // 对请求错误做些什么
-    return Promise.reject(error);
 });
 
-export function get(url, params) {
-    return new Promise((resolve, reject) => {
-        axios.get(url, {
-            params: params
-        }).then((res) => {
-            resolve(res.data)
-        }).catch((err) => {
-            reject(err)
-        })
-    })
-}
+axiosIns.interceptors.response.use(function (response) {
+    let status = response.status;
+    if (status === 200) {
+        return Promise.resolve(response);
+    } else {
+        return Promise.reject(response);
+    }
+});
 
-export function post(url, data) {
-    return new Promise((resolve, reject) => {
-        axios.post(url, qs.stringify(data), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        }).then(res => {
-            resolve(res.data)
-        }).catch(err => {
-            reject(err)
+let ajaxMethod = ['get', 'post'];
+let api = {};
+ajaxMethod.forEach((method)=> {
+    api[method] = function (uri, data, config) {
+        return new Promise(function (resolve, reject) {
+            axiosIns[method](uri, data, config).then((response)=> {
+                resolve(response.data);
+            }).catch((response)=> {
+                
+                alert('something wrong'+response.status);
+            })
         })
-    })
-}
+    }
+});
 
-export function userLogin(url, data) {
-    return new Promise((resolve, reject) => {
-        axios.post(url, qs.stringify(data), {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            }
-        }).then(res => {
-            resolve(res)
-        }).catch(err => {
-            reject(err)
-        })
-    })
-}
+export default api;

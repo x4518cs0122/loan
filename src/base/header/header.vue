@@ -96,7 +96,7 @@ export default {
             line-height 50px
             color $color-theme
             font-weight 200
-            font-size $font-size-large-x
+            font-size $font-size-large
             .icon
                 position relative 
                 .active

@@ -1,52 +1,27 @@
 <template>
     <div class="jy-mulu">
-        <v-header title="资料目录表" @back="back" next="保存" @submit="submit"></v-header>
-        <formList :list="list" ref="formList" :obj="obj" @pop="pop" @datePick="datePickerShow">
-            <div class='collapse-wrapper'>
-                <el-collapse accordion>
-                    <el-collapse-item class="item" v-for="(item,index) in mortgageCatalogOthers" :key="index">
-                        <template slot="title" >
-                            <span @click.stop>
-                                <el-checkbox v-model="obj[item.checked]" class="color-grey">{{item.content}}</el-checkbox>
-                            </span>
-                            <i class="header-icon el-icon-info"></i>
-                        </template>
-                        <div class="detail">
-                            <div class="lisence-wrapper">
-                                <span class="text">证件名:</span>
-                                <input type="text" placeholder="点击输入证件名称" v-model="item.content">
-                            </div>
-                            <div class="des-wrapper">
-                                <span class="text">说明:</span>
-                                <input type="text" placeholder="点击输入证件说明" v-model="item.description">
-                            </div>
-                            <div class="page-wrapper">
-                                <span class="text">页码:</span>
-                                <input type="text" placeholder="请输入页码" v-model="item.page">
-                            </div>
-                            <div class="beizhu-wrapper">
-                                <span class="text">备注:</span>
-                                <textarea :rows="2" class="textarea" placeholder="请输入内容" v-model="item.remark"></textarea>
-                            </div>          
-                        </div>
-                    </el-collapse-item>
-                </el-collapse>
-            </div>
-            <div class="addMore" @click="addMore">
-                <span class="el-icon-circle-plus-outline icon"></span>
-            </div>
-        </formList>
-        <pop :options="options" ref="pop" @choosed="choosed"></pop>
-        <date-picker ref="datePicker" @submit="choosed"></date-picker>
+        <v-header title="资料目录表" @goback="goback" next="保存" @submit="submit"></v-header>
+        <rs-list>
+            <ul slot="body">
+                <li class="placeholder"> </li>
+                <li><rs-select selectText="完成时间" model="finish_time" @selected="selected" :isDate="true"></rs-select></li>
+                <li class="placeholder"></li>
+                <li><rs-input @input="rsinput" inputText="贷款人姓名" model="client_name"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="贷款金额" model="proposed_clerk"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="接单人姓名" model="proposed_amount"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="接单人电话" model="proposed_time"></rs-input></li>   
+                <li><catalog :list="formlist" :obj="obj"></catalog></li>         
+            </ul>
+        </rs-list>
     </div>
 </template>
 <script>
-import vHeader from 'base/header/header'
-import pop from 'base/pop-up/pop-up'
+import vHeader from 'components/header/header'
+import rsList from 'base/rslist/rslist'
+import rsInput from 'base/rsinput/rsinput'
+import rsSelect from 'base/rsselect/rsselect'
+import catalog from './catalog'
 import {postCatalog} from 'api/api'
-import datePicker from 'base/datePicker/datePicker'
-import {selectType} from 'common/js/config'
-import formList from 'components/form-list/form-list'
 import {mapGetters} from 'vuex'
 export default {
   data(){
@@ -54,29 +29,25 @@ export default {
           options:[],
           jyList:[
                 {
-                    class:'collapse-wrapper',
                     name:'借款人身份证',
                     checked:'has_client_id_card',
                     radio:'client_id_card_des',
-                    checkList:[],
                     page:'client_id_card_page',
                     area:'client_id_card_remark'
                 },{
-                    class:'collapse-wrapper',
                     name:'借款人户口',
                     checked:'has_client_account',
                     radio:'client_account_des',
                     options:[{
-                            key:'marriage_certificate',
-                            value:'client_account_home'
+                            key:'client_account_home',
+                            value:'首页'
                         },{
-                            key:'divorce_certificate',
-                            value:'client_account_household'
+                            key:'client_account_household',
+                            value:'户主页'
                         },{
-                            key:'divorce_agreement',
-                            value:'client_account_myself'
+                            key:'client_account_myself',
+                            value:'本人页'
                         }],
-                    checkList:[],
                     page:'client_account_page',
                     area:'client_account_remark'
                 },{
@@ -207,50 +178,13 @@ export default {
                   area:'purpose_contact_remark'
               }
           ],
-          list:[{
-              title:'基本信息',
-              items:[
-                  {
-                      class:"select-wrapper",
-                      text:'完成日期',
-                      key:'finish_time',
-                      value:'',
-                      type:selectType.datePick,
-                  },{
-                      class:"input-wrapper",
-                      text:'贷款人姓名',
-                      value:'client_name',
-                      placeholder:'点击输入贷款人姓名',
-                  },{
-                      class:"input-wrapper",
-                      text:'贷款金额',
-                      value:'loan_amount',
-                      placeholder:'点击输入贷款金额',
-                  },{
-                      class:"input-wrapper",
-                      text:'接单人姓名',
-                      value:'clerk_name',
-                      placeholder:'点击输入接单人姓名',
-                  },{
-                      class:"input-wrapper",
-                      text:'接单人电话',
-                      value:'',
-                      placeholder:'点击输入接单人电话',
-                  }
-              ]
-           },{
-              title:'资料明细',
-              items:[
-                {
-                    class:'collapse-wrapper',
+          xyList:[{
                     name:'借款人身份证',
                     checked:'has_client_id_card',
                     radio:'client_id_card_des',
-                    checkList:[],
                     page:'client_id_card_page',
                     area:'client_id_card_remark'
                 },{
-                    class:'collapse-wrapper',
                     name:'借款人户口',
                     checked:'has_client_account',
                     radio:'client_account_des',
@@ -264,7 +198,6 @@ export default {
                             key:'client_account_myself',
                             value:'本人页'
                         }],
-                    checkList:[],
                     page:'client_account_page',
                     area:'client_account_remark'
                 },{
@@ -346,16 +279,14 @@ export default {
                     page:'income_proof_page',
                     area:'income_proof_remark'
                 },{
-                    class:'collapse-wrapper',
-                    name:'用途合同',
-                    checked:'has_purpose_contact',
-                    radio:'purpose_contact_des',
-                    checkList:[],
-                    page:'purpose_contact_page',
-                    area:'purpose_contact_remark'
-                }
-              ]
-           }
+                  class:'collapse-wrapper',
+                  name:'用途合同',
+                  checked:'has_purpose_contact',
+                  radio:'purpose_contact_des',
+                  checkList:[],
+                  page:'purpose_contact_page',
+                  area:'purpose_contact_remark'
+              }
           ],
           obj:{
             "id": null,
@@ -443,30 +374,20 @@ export default {
   computed:{
       ...mapGetters([
           'customer'
-      ])
-  },
-  created(){
-      this.init()
+      ]),
+      formlist() {
+          return this.customer.loan_type === 0 ? this.xyList:this.jyList
+      }
   },
   methods:{
-      back(){
+      goback(){
           this.$router.back()
+      },     
+      selected(key, model) {
+          this.obj[model] = key
       },
-      init(){
-          if(this.customer.loan_type === 0){
-              return
-          }
-          this.list[1].items = this.jyList       
-      },
-      pop(option){
-          this.options = option
-          this.$refs.pop.show()
-      },
-      choosed(option){
-          this.$refs.formList.choosed(option)
-      },
-      datePickerShow(){
-          this.$refs.datePicker.toggleList()
+      rsinput(value, model) {
+          this.obj[model] = value
       },
       addMore(){
           let others = {
@@ -486,28 +407,31 @@ export default {
           this.normalized()
           postCatalog(this.obj,this.customer.taskId).then((res)=>{
               if(res.status === 1){
-                  this.$router.go(-2)
+                  this.$router.push({path:`/sign/${this.customer.taskId}`})
               }
               console.log(res)
           })
+        console.log(this.obj)
       }
   },
   components:{
       vHeader,
-      formList,
-      pop,
-      datePicker
+      catalog,
+      rsList,
+      rsSelect,
+      rsInput
   }
 }
 </script>
 <style lang="stylus" scoped>
 @import "~common/stylus/variable"
 .jy-mulu
-    position absolute 
+    position fixed 
     top 0
     bottom 0
     left 0
     right 0
+    overflow auto
     background $color-background
     .item
         .color-grey

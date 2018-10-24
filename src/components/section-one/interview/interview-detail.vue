@@ -1,28 +1,47 @@
 <template>
   <div class="interview-detail">
-      <v-header @back="back" @submit="submit" next="提交" title="抵押面谈"></v-header>
-      <form-list :list="list" @pop="pop" ref="formList" :obj='obj' @datePick="datePickerShow">
-        <div class="botton">
-            <el-button type="danger" @click="deleteOrder">废单</el-button>
+      <v-header @goback="goback" @submit="submit" next="提交" title="抵押面谈"></v-header>
+      <rs-list>
+        <ul slot="body">
+            <li class="placeholder"> </li>
+            <!-- <li>
+
+            </li> -->
+            <li><rs-select selectText="完成时间" model="finish_time" @selected="selected" :isDate="true"></rs-select></li>
+            <li class="placeholder"></li>
+            <li><rs-input @input="rsinput" inputText="拟申请机构" model="proposed_institution"></rs-input></li>
+            <li><rs-input @input="rsinput" inputText="拟对接人" model="proposed_clerk"></rs-input></li>
+            <li><rs-input @input="rsinput" inputText="拟上报金额" model="proposed_amount"></rs-input></li>
+            <li><rs-input @input="rsinput" inputText="拟签约时间" model="proposed_time"></rs-input></li>
+            <li><rs-input @input="rsinput" inputText="费率" model="rate"></rs-input></li>
+            <li><rs-select selectText="客户还款方式" :options="options.repayment" model="repayment_type" @selected="selected"></rs-select></li>                  
+            <li class="placeholder"></li>
+            <li><rs-select selectText="客户用途" model="client_purpose_type" :options="options.purpose_type"></rs-select></li>
+            <li><rs-input @input="rsinput" inputText="客户用途" model="client_purpose"></rs-input></li>
+            <li><rs-input @input="rsinput" inputText="调查意见" model="survey_opinion"></rs-input></li>
+        </ul>
+        <div class="suspend" slot="footer">
+            <el-button type="danger" plain @click="deleteOrder">废单</el-button>
         </div>
-      </form-list>
-      <pop :options="options" ref="pop" @choosed="choosed"></pop>
-      <date-picker ref="datePicker" @submit="choosed"></date-picker>
-      <router-view></router-view>
+        
+      </rs-list>
   </div>
 </template>
 <script>
-import formList from 'components/form-list/form-list'
-import vHeader from 'base/header/header'
-import pop from 'base/pop-up/pop-up'
-import datePicker from 'base/datePicker/datePicker'
-import {selectType} from 'common/js/config'
+import vHeader from 'components/header/header'
+import rsList from 'base/rslist/rslist'
+import rsInput from 'base/rsinput/rsinput'
+import rsSelect from 'base/rsselect/rsselect'
 import {mapGetters} from 'vuex'
 import {postAdvice,suspendOrder} from 'api/api'
 export default {
   data(){
       return{
-          options:[],
+          options:{
+              repayment:[{key:0, value:'按月等额本息'},{key:1, value:'按月等额本金'},{key:2, value:'按月付息'}],
+              purpose_type:[{key:0, value:'客户自己提供'},{key:1, value:'我公司提供'}]
+          },
+          loading:false,
           obj:{
             "id": null,
             "finish_time": '',
@@ -35,77 +54,7 @@ export default {
             "client_purpose_type": 0,
             "client_purpose": '',
             "survey_opinion": ''
-          },
-          list:[{
-              title:'',
-              items:[{
-                  class:'normal-wrapper',
-                  text:'贷款编号',
-                  val:''
-              },{
-                  class:"select-wrapper",
-                  text:'完成时间',
-                  type:selectType.datePick,
-                  key:'finish_time',
-                  value:''
-              }]
-            },{
-                title:'面谈建议',
-                items:[
-                    {
-                        class:'input-wrapper',
-                        text:'拟申请机构',
-                        placeholder:'点击输入拟申请机构名称',
-                        value:'proposed_institution'
-                    },{
-                        class:'input-wrapper',
-                        text:'拟对接人',
-                        placeholder:'点击输入拟对接人姓名',
-                        value:'proposed_clerk'
-                    },{
-                        class:'input-wrapper',
-                        text:'拟上报金额',
-                        placeholder:'点击输入拟上报金额',
-                        value:'proposed_amount'
-                    },{
-                        class:"select-wrapper",
-                        text:'拟签约时间',
-                        key:'proposed_time',
-                        value:'',
-                        type:selectType.datePick
-                    },{
-                        class:'input-wrapper',
-                        text:'费率',
-                        placeholder:'点击输入费率',
-                        value:'rate'
-                    },{
-                        class:"select-wrapper",
-                        text:'客户还款方式',
-                        key:'repayment_type',
-                        value:'',
-                        options:['按月等额本息','按月等额本金','按月付息']
-                    },{
-                        class:"select-wrapper",
-                        text:'客户用途',
-                        key:'client_purpose_type',
-                        value:'',
-                        options:['客户自己提供','我公司提供']
-                    },{
-                        class:'input-wrapper',
-                        text:'',
-                        placeholder:'点击输入客户用途',
-                        value:'client_purpose'
-                    },{
-                        class:"input-wrapper",
-                        text:'调查意见',
-                        placeholder:'',
-                        value:'survey_opinion'
-                    }
-                ]
-            }],
-        result:{
-            selectTime:''
-        }
+          }
       }
   },
   computed:{
@@ -113,47 +62,36 @@ export default {
           'customer'
       ])
   },
-  created(){
-      this.botton = true
-  },
-  components:{
-      formList,
-      pop,
-      vHeader,
-      datePicker
-  },
+  components:{vHeader, rsSelect, rsInput, rsList},
   methods:{
-      back(){
-          this.$router.back()
+      selected(key, model) {
+          this.obj[model] = key
       },
-      pop(option){
-          this.options = option
-          this.$refs.pop.show()
+      goback() {      
+          this.$router.push({path:`/interview`})
       },
-      choosed(option){
-          this.$refs.formList.choosed(option)
+      rsinput(value, model) {
+          this.obj[model] = value
       },
       deleteOrder(){
           //调用删除订单api,跳转到面谈列表界面
+          this.loading = true
           let date = new Date()
           let time = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate()
           let taskId = this.customer.taskId
         //   console.log(time+'$$'+taskId)
           suspendOrder(time,taskId).then((res)=>{
               if(res.status === 1){
-                  console.log(res)
-                  this.$router.back()
+                //   console.log(res)
+                  this.loading = false
+                  this.goback()
               }
-          })
-          
-      },
-      datePickerShow(){
-          this.$refs.datePicker.toggleList()
+          })        
       },
       submit(){   
           postAdvice(this.obj,this.customer.taskId).then((res) =>{
               if(res.status === 1){
-                  this.$router.back()
+                  this.goback()
               }else{
                   this.message = res.message
               }
@@ -170,9 +108,8 @@ export default {
         bottom 0
         left 0
         right 0
-        overflow hidden
-        background #fff
-        .botton
+        .suspend
+            margin-top: 20px
             padding 20px
 </style>
 

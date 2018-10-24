@@ -193,10 +193,6 @@ const SCROLL_ITEM_SIZE = 26
                         font-size 16px
                         text-align center
                         padding 5px
-            // .months
-            //     flex 1
-            // .days
-            //     flex 1
     .line-wrapper
         position absolute 
         bottom 100px

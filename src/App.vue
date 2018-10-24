@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import vHeader from 'base/header/header'
 export default {
   name: 'app',
 }

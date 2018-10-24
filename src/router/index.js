@@ -32,7 +32,7 @@ export const asyncRouterMap = [{
         path: '/order',
         name: 'order',
         meta: { roles: 'jiedan', icon: 'fa-handshake-o', title: '接单' },
-        component: resolve => require(['../components/section-one/order/order'], resolve)
+        component: resolve => require(['../components/jiedan/jiedan'], resolve)
     },
     {
         //面谈
@@ -55,23 +55,23 @@ export const asyncRouterMap = [{
         path: '/sign',
         name: 'sign',
         meta: { roles: 'mianqian', icon: 'fa-files-o', title: '面签' },
-        component: resolve => require(['../components/section-one/sign/sign'], resolve),
+        component: resolve => require(['../components/mianqian'], resolve),
         children: [{
             path: 'confirmState',
             meta: { roles: 'mianqian' },
-            component: resolve => require(['../components/section-one/sign/confirmState'], resolve),
+            component: resolve => require(['../components/mianqian/confirmState'], resolve),
         }, {
             path: ':id',
             meta: { roles: 'mianqian' },
-            component: resolve => require(['../components/section-one/sign/sign-detail'], resolve),
+            component: resolve => require(['../components/mianqian/sign-detail'], resolve),
             children: [{
                 path: 'form',
                 meta: { roles: 'mianqian' },
-                component: resolve => require(['../components/section-one/sign/jymulu'], resolve),
+                component: resolve => require(['../components/mianqian/jymulu'], resolve),
             }, {
                 path: 'application',
                 meta: { roles: 'mianqian' },
-                component: resolve => require(['../components/section-one/sign/application'], resolve),
+                component: resolve => require(['../components/mianqian/application'], resolve),
             }]
         }]
     }, {
@@ -79,15 +79,15 @@ export const asyncRouterMap = [{
         path: '/evaluate',
         name: 'evaluate',
         meta: { roles: 'pinggu', icon: 'fa-calculator', title: '评估下单' },
-        component: resolve => require(['../components/section-one/evaluate/evaluate'], resolve),
+        component: resolve => require(['../components/pinggu/evaluate'], resolve),
         children: [{
             path: 'placeOrder',
             meta: { roles: 'pinggu' },
-            component: resolve => require(['../components/section-one/evaluate/placeOrder'], resolve)
+            component: resolve => require(['../components/pinggu/placeOrder'], resolve)
         }, {
             path: 'reports',
             meta: { roles: 'pinggu' },
-            component: resolve => require(['../components/section-one/evaluate/reports'], resolve)
+            component: resolve => require(['../components/pinggu/reports'], resolve)
         }]
     },
     {
@@ -95,27 +95,27 @@ export const asyncRouterMap = [{
         path: '/approve',
         name: 'approve',
         meta: { roles: 'shengpi', icon: 'fa-pencil', title: '审批' },
-        component: resolve => require(['../components/section-one/approve/approve'], resolve),
+        component: resolve => require(['../components/shenpi/approve'], resolve),
         children: [{
             path: ':id',
             meta: { roles: 'shengpi' },
-            component: resolve => require(['../components/section-one/approve/approve-detail'], resolve),
+            component: resolve => require(['../components/shenpi/approve-detail'], resolve),
             children: [{
                 path: 'mulu',
                 meta: { roles: 'shengpi' },
-                component: resolve => require(['../components/section-one/approve/mulu'], resolve),
+                component: resolve => require(['../components/shenpi/mulu'], resolve),
             }, {
-                path: 'subbranch',
+                path: 'state',
                 meta: { roles: 'shengpi' },
-                component: resolve => require(['../components/section-one/approve/subbranch'], resolve),
+                component: resolve => require(['../components/shenpi/state'], resolve),
             }, {
-                path: 'branch',
+                path: 'baoshen',
                 meta: { roles: 'shengpi' },
-                component: resolve => require(['../components/section-one/approve/branch'], resolve),
+                component: resolve => require(['../components/shenpi/baoshen'], resolve),
             }, {
                 path: 'zhengping',
                 meta: { roles: 'shengpi' },
-                component: resolve => require(['../components/section-one/approve/zhengping'], resolve),
+                component: resolve => require(['../components/shenpi/zhengping'], resolve),
             }]
         }]
     },
@@ -124,13 +124,13 @@ export const asyncRouterMap = [{
         path: '/mortgage',
         name: 'mortgage',
         meta: { roles: 'diya', icon: 'fa-university', title: '抵押' },
-        component: resolve => require(['../components/section-one/mortgage/mortgage'], resolve),
+        component: resolve => require(['../components/diya/mortgage'], resolve),
         children: [{
             path: 'timePicker',
-            component: resolve => require(['../components/section-one/mortgage/mortgage-time'], resolve),
+            component: resolve => require(['../components/diya/mortgage-time'], resolve),
         }, {
             path: 'statusPicker',
-            component: resolve => require(['../components/section-one/mortgage/mortgage-status'], resolve),
+            component: resolve => require(['../components/diya/mortgage-status'], resolve),
         }]
     },
     {
@@ -150,7 +150,7 @@ export const asyncRouterMap = [{
         path: '/erOrder',
         name: 'erOrder',
         meta: { roles: 'erJiedan', icon: 'fa-handshake-o', title: '接单' },
-        component: resolve => require(['../components/section-two/er-order/er-order'], resolve),
+        component: resolve => require(['../components/jiedan/erjiedan'], resolve),
     }, {
         path: '/erSign',
         name: 'erSign',

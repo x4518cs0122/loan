@@ -21,17 +21,13 @@ import {mapMutations} from 'vuex'
      methods:{
          _getApprove(){
              getApprove().then((res)=>{
-                 console.log(res.data)
                  this.list = res.data
              })
-         },
-         back(){
-             this.$router.back()
          },
          select(index){
              let customer = this.list[index]
              this.setCustomer(customer)
-             this.$router.push({path:`/approve/${customer.id}`}) 
+             this.$router.push({path:`/approve/${customer.taskId}`}) 
          },
          ...mapMutations({
              setCustomer:'SET_CUSTOMER'
@@ -50,11 +46,5 @@ import {mapMutations} from 'vuex'
     bottom 0
     right 0
     left 0
-    .list-wrapper
-        position fixed 
-        top 52px
-        bottom 0
-        right 0
-        left 0
-        overflow hidden
+    overflow auto 
 </style>

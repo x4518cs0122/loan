@@ -1,22 +1,35 @@
 <template>
     <div class="unreported" v-if="showForm">
-        <v-header title="出报告" @back="back"></v-header>
-        <form-list :list="reports" @pop="pop" :obj="list" @choosed="choosed" ref="formList" @datePick="datePickerShow">
-            <div class="botton">
+        <v-header title="出报告" @goback="hidden"></v-header>
+        <rs-list>
+            <ul slot="body">
+                <li class="list-header">报告内容</li>
+                <li><rs-input @input="rsinput" inputText="权利人" model="report_obligee" :value="obj.report_obligee"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="借款人" model="report_borrower"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="座落" model="report_repose"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="房龄" model="report_house_age"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="面积" model="report_house_area"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="单价" model="report_house_single"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="总价" model="report_house_total"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="贷款金额" model="report_loan_amount"></rs-input></li>
+                <li><rs-input @input="rsinput" inputText="年限" model="report_loan_year"></rs-input></li>
+                <li><rs-select selectText="首套/两套" :options="options.onetwo" model="report_first" @selected="selected"></rs-select></li>
+            </ul>
+            <div class="botton" slot="footer">
                 <el-button type="danger" class="submit" @click="submit">提交</el-button>
             </div>
-        </form-list>
-        <pop :options="options" ref="pop" @choosed="choosed"></pop>
+        </rs-list>
     </div>
 </template>
 
 <script>
-import vHeader from 'base/header/header'
-import pop from 'base/pop-up/pop-up'
-import formList from 'components/form-list/form-list'
+import vHeader from 'components/header/header'
+import rsList from 'base/rslist/rslist'
+import rsInput from 'base/rsinput/rsinput'
+import rsSelect from 'base/rsselect/rsselect'
  export default {
      props:{
-         list:{
+         obj:{
              type:Object,
              default:() =>{
                  return {}
@@ -82,7 +95,9 @@ import formList from 'components/form-list/form-list'
                     }]
                  }
                 ],
-             options:[],
+             options:{
+                 onetwo:[{key:0, value:'首套'},{key:1, value:'两套'}]
+             },
              showForm:false
          }
      },
@@ -93,18 +108,14 @@ import formList from 'components/form-list/form-list'
          hidden(){
              this.showForm = false
          },
-         pop(option){
-            this.options = option
-            this.$refs.pop.show()
+         selected(key, model) {
+             this.obj[model] = key
          },
-         datePickerShow(){
-            this.$refs.datePicker.toggleList()
-         },
-         choosed(option){
-            this.$refs.formList.choosed(option)      
+         rsinput(value, model) {
+             this.obj[model] = value
          },
          submit(){
-             this.list.id = 1
+             this.obj.id = 1
              this.hidden()
          },
          validate(obj){
@@ -113,15 +124,13 @@ import formList from 'components/form-list/form-list'
                      obj.key
                  }
              }
-         },
-         back(){
-             this.hidden()
          }
      },
      components:{
          vHeader,
-         pop,
-         formList
+         rsList,
+         rsSelect,
+         rsInput
      }
  }
 </script>
@@ -130,12 +139,12 @@ import formList from 'components/form-list/form-list'
 @import '~common/stylus/variable'
 @import '~common/stylus/mixin'
 .unreported
-    position absolute 
+    position fixed 
     top 0
     bottom 0
     left 0
     right 0
-    overflow hidden
+    overflow auto
     background $color-background
     .botton   
         box-sizing border-box

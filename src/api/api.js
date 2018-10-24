@@ -1,15 +1,15 @@
-import {get, post, userLogin } from 'common/js/axios'
+import axios from 'common/js/axios'
 import store from '../store'
 
 //通知api
 export function getNotice() {
     const url = "/notice"
-    return get(url)
+    return axios.get(url)
 }
 //tab选项：待办
 export function getTodo() {
     const url = "/todos"
-    return get(url)
+    return axios.get(url)
 }
 //接单api接口
 export function postOrder(checkList) {
@@ -18,14 +18,13 @@ export function postOrder(checkList) {
     data.checklist = JSON.stringify(checkList)
     data.employeeId = id
     const url = '/checklist/save'
-    console.log(data)
-    return post(url, data)
+    return axios.post(url, data)
 }
 //面谈api接口
 export function getInterview() {
     const id = store.getters.userId
     const url = `/task/m/view/${id}`
-    return get(url)
+    return axios.get(url)
 }
 
 export function postAdvice(advice, taskId) {
@@ -34,7 +33,7 @@ export function postAdvice(advice, taskId) {
     data.advice = JSON.stringify(advice)
     data.taskId = taskId
     data.employeeId = store.getters.userId
-    return post(url, data)
+    return axios.post(url, data)
 }
 
 export function suspendOrder(time, taskId) {
@@ -44,14 +43,14 @@ export function suspendOrder(time, taskId) {
     data.time = time
     data.taskId = taskId
     data.employeeId = id
-    return post(url, data)
+    return axios.post(url, data)
 }
 
 //面签api接口
 export function getSignList() {
     const id = store.getters.userId
     const url = `/task/m/visa/${id}`
-    return get(url)
+    return axios.get(url)
 }
 
 export function postCatalog(catalog, taskId) {
@@ -61,43 +60,48 @@ export function postCatalog(catalog, taskId) {
     data.employeeId = id
     data.taskId = taskId
     const url = 'visa/catalog/save'
-    return post(url, data)
+    return axios.post(url, data)
 }
 export function postForm(form, taskId) {
     let data = {}
     data.form = JSON.stringify(form)
     data.taskId = taskId
     const url = '/visa/form/save'
-    return post(url, data)
+    return axios.post(url, data)
 }
 
 export function postVisa(data) {
     const url = '/visa/save'
-    return post(url, data)
+    return axios.post(url, data)
+}
+
+export function getCatalog(catalogId) {
+    const url = `/visa/catalog/${catalogId}`
+    return axios.get(url)
 }
 
 //评估下单
 export function getEvaluate() {
     const id = store.getters.userId
     const url = `/task/m/order/${id}`
-    return get(url)
+    return axios.get(url)
 }
 
 export function postEvaluateOrder(data) {
     const url = '/order/state/save'
-    return post(url, data)
+    return axios.post(url, data)
 }
 
 export function postReports(data) {
     const url = '/order/report/save'
-    return post(url, data)
+    return axios.post(url, data)
 }
 
 //审批
 export function getApprove() {
     const id = store.getters.userId
     const url = `/task/m/approve/${id}`
-    return get(url)
+    return axios.get(url)
 }
 
 export function isDataPerfect(taskId) {
@@ -107,27 +111,53 @@ export function isDataPerfect(taskId) {
         employeeId: id,
         taskId: taskId
     }
-    console.log(data)
-    return post(url, data)
+    return axios.post(url, data)
+}
+
+export function approveSubmit(time, taskId) {
+    const url = '/approve/submit'
+    let data = {
+        time: time,
+        taskId: taskId
+    }
+    return axios.post(url, data)
+}
+
+export function baoshen(time, taskId) {
+    let data = {
+        time: time,
+        taskId: taskId
+    }
+    const url = '/approve/complete'
+    return axios.post(url, data)
+}
+
+export function changeState(obj, taskId) {
+    const url = '/approve/save'
+    let data = {
+        approve: JSON.stringify(obj),
+        taskId: taskId
+    }
+    return axios.post(url, data)
 }
 // 抵押
 
 export function getMortgage() {
     const url = '/getMortgage'
-    return get(url)
+    return axios.get(url)
 }
 
 export function getMoney() {
     const url = '/getMoney'
-    return get(url)
+    return axios.get(url)
 }
 
 export function getGuohu() {
     const url = '/getGuohu'
-    return get(url)
+    return axios.get(url)
 }
 
 export function login(data) {
-    const url = '/login'
-    return userLogin(url, data)
+    const url = `/auth/login?name=${data.name}&password=${data.password}`
+    return axios.get(url)
 }

@@ -34,9 +34,6 @@ import {setToken} from 'common/js/utils'
          clear(){
              this.name = ""
          },
-         setRoles(res){
-             return ['jiedan','miantan']
-         },
          loginByUsername(){  
              const userInfo = this.userInfo      
              this.$store.dispatch('setUserInfo',userInfo).then((res)=>{

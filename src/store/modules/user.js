@@ -19,19 +19,18 @@ const user = {
     },
     actions: {
         setUserInfo({ commit }, userInfo) {
-            let roles = ['bussiness', 'jiedan', 'miantan', 'mianqian', 'pinggu', 'shengpi', 'diya', 'shoufei', 'fangkuan']
+            let roles = ['bussiness', 'jiedan', 'miantan', 'mianqian', 'pinggu', 'shengpi', 'diya', 'shoufei', 'fangkuan','erJiedan','erMianqian'
+                          ,'erPingu','erShuji','erShenpi','erGuohu','erDiya']
             return new Promise((resolve, reject) => {
                 login(userInfo).then((res) => {
-                    if (!res.data.status === 200) {
-                        reject(res.data.message)
+                    if (!res.success) {
+                        reject(res.message)
                     } else {
-                        let token = res.headers.token
-                            // console.log(res.data)
-                            // let token = res.data.token
+                        let token = res.data.token
                         commit('SET_TOKEN', token)
-                        commit('SET_ROLES', roles)
                         console.log(token)
-                        commit('SET_USERID', res.data.data.id)
+                        commit('SET_ROLES', roles)
+                        commit('SET_USERID', res.data.id)
                         setToken(token)
                         resolve()
                     }

@@ -1,27 +1,33 @@
 <template>
-  <Scroll class="detail-list" :data="list">
-      <ul>
-          <li class="list-item" v-for="(item,index) in list" :key="index" @click="itemHandle(index)">
-              <div class="state-wrapper">
-                  <span class="id">{{index+1}}.</span>
-                  <span class="state">{{item.state}}</span>
-                  <span class="state" v-if="item.report_type">已出{{item.report_type}}</span>
-              </div>
-              <div class="info">
-                  <span class="name">客户:{{item.name}}</span>
-                  <span class="phone">联系方式:{{item.phone}}</span>
-              </div>
-          </li>
-      </ul>
-  </Scroll>
+    <div>
+        <ul class="detail-list" v-if="list.length > 0">
+            <li class="list-item" v-for="(item,index) in list" :key="index" @click="itemHandle(index)">
+                <div class="state-wrapper">
+                    <span class="id">{{index+1}}.</span>
+                    <span class="state">{{state || item.state}}</span>
+                    <span class="state" v-if="item.report_type">已出{{item.report_type}}</span>
+                </div>
+                <div class="info">
+                    <span class="name">客户:{{item.name}}</span>
+                    <span class="phone">联系方式:{{item.phone}}</span>
+                </div>
+            </li>
+        </ul>
+        <h3 class="empty" v-else>列表为空</h3>
+    </div>
 </template>
 <script>
-import Scroll from 'base/scroll/scroll'
 export default {
     props:{
         list:{
             type:Array,
-            default:[]
+            default: ()=>{
+                return []
+            }
+        },
+        state:{
+            type:String,
+            default:''
         }
     },
     methods:{
@@ -29,18 +35,15 @@ export default {
             this.$emit('itemHandle',index)
         }
     },
-    components:{
-        Scroll
-    }
+    components:{}
 }
 </script>
 <style lang="stylus" scoped>
 @import "~common/stylus/variable"
     .detail-list
         position relative
-        height 100%
         width 100%
-        overflow hidden
+        overflow auto 
         background $color-background
         .list-item
             padding 20px 30px
@@ -57,7 +60,11 @@ export default {
             .info
                 font-size $font-size-small
                 color $color-text-ll
-
+    .empty
+        position: fixed
+        top: 50%
+        left: 50%
+        transform translate3d(-50%, -50%, 0)
             
 
 </style>

@@ -21,8 +21,7 @@
   </div>
 </template>
 <script>
-import Nav from 'components/nav/nav'
-import vHeader from 'base/header/header'
+import vHeader from './header'
 import tab from 'components/tab/tab'
 import Scroll from 'base/scroll/scroll'
 import {mapGetters} from 'vuex'
@@ -147,7 +146,6 @@ export default {
   },
   components:{
       Scroll,
-      Nav,
       tab,
       vHeader
   },
@@ -196,7 +194,7 @@ export default {
         left 0
         right 0
         z-index 100
-        overflow hidden   
+        background $pure-white  
         .scroll
             position absolute
             top 50px
