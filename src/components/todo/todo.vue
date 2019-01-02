@@ -1,53 +1,75 @@
 <template>
-  <div class="todo">
-      <Nav :title="title"></Nav>
-      <div class="content">
-          <detai-list :list="todos"></detai-list>
-      </div>
-      <tab></tab>
-  </div>
+    <div class="todo">
+        <v-header title="待办列表" :hideback="true"></v-header>
+        <div class="scroll">
+            <detail-list :list="undoList" @itemHandle="itemHandle"></detail-list>
+        </div>
+        <tab></tab>
+        <div class="loading" v-if="loading">
+            <i class="fa fa-spinner fa-pulse icon fa-3x"></i>
+            <p>加载中</p>
+        </div>
+    </div>
 </template>
-<script>
-import {getTodo} from 'api/todo'
-import {ERR_OK} from 'api/config'
-import Nav from 'components/nav/nav'
+
+<script type='text/ecmascript-6'>
+import vHeader from 'components/header/header'
 import tab from 'components/tab/tab'
-import detaiList from 'base/detail-list/detail-list'
-
-export default {
-  data(){
-      return{
-          todos:[],
-          title:'待办事项'
+import detailList from 'base/detail-list/detail-list'
+import {mortgageUndo, houseUndo} from '@/api/api'
+import {loanStates} from '@/utils/Const'
+import * as _ from 'lodash'
+  export default {
+    data () {
+      return {
+          loading:true,
+          undoList:[]
       }
-  },
-  created () {
-    this._getTodo()  
-  },
-  methods:{
-      _getTodo(){
-          getTodo().then((res)=>{     
-            console.log(res)     
-            this.todos = res.data
+    },
+    methods:{
+      _getUndo() {
+          Promise.all([mortgageUndo(), houseUndo()]).then(res =>{
+              let list = res.map(item =>{
+                  return item.data.filter(item =>{
+                    return item.state !== 'finish' && item.state !== 'close'
+                })
+              })
+              this.undoList = list[0].concat(list[1])
+              this.loading = false
           })
+      },
+      itemHandle(index) {
+          let customer = this.undoList[index]
+          let prefix = _.startsWith(customer.id, '2')? 'er' : ''
+          this.$router.push({name:`${prefix}${customer.state}`})
+
       }
-  },
-  components: {
-      detaiList,
-      tab,
-      Nav
+    },
+    created() {
+        this._getUndo()
+    },
+    components:{vHeader, tab, detailList}
   }
-}
 </script>
-<style lang="stylus" scoped>
-    .content
-        position absolute 
-        top 52px
-        bottom 77px
-        left 0
-        right 0
-        overflow hidden
-        
+
+<style lang='stylus' scoped>
+@import '~common/stylus/variable';
+.scroll
+    position fixed
+    top 50px
+    bottom 50px;
+    left 0
+    width:100%
+    background $color-background
+    overflow auto
+.loading
+    position fixed
+    top 50%
+    left 50%
+    text-align center
+    line-height 20px
+    transform translate3d(-50%, -50%, 0)
+    color: $color-grey
+    .icon
+        margin-bottom 10px
 </style>
-
-

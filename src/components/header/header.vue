@@ -1,7 +1,7 @@
 <template>
   <div class="header">
         <div class="header-wrapper">
-            <div class="back" @click="goback">
+            <div class="back" @click="goback" v-show="!hideback">
                 <i class="fa fa-angle-left" aria-hidden="true"></i>&nbsp;{{back}}</div>
             <div class="title">
                 <div class="inner">{{title}}</div>
@@ -27,6 +27,10 @@ export default {
           type:String,
           default:''
       },
+      hideback:{
+          type:Boolean,
+          default:false
+      }
   },
   data(){
       return{
@@ -48,7 +52,6 @@ export default {
 .header
     .placeholder
         height: 50px;
-
     .header-wrapper
         position fixed
         top 0
@@ -58,14 +61,18 @@ export default {
         text-align center
         font-size $font-size-medium
         color $pure-white
-        background $background-color-header
+        background: -webkit-linear-gradient($background-color-header-top, $background-color-header); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient($background-color-header-top, $background-color-header); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient($background-color-header-top, $background-color-header); /* Firefox 3.6 - 15 */
+        background: linear-gradient($background-color-header-top, $background-color-header);
         border-bottom 1px solid rgb(228,228,228)
         .back
             position absolute
             top 0
             bottom 0
             left 0
-            width 50px
+            width 60px
+            white-space nowrap;
         .title  
             width 100%
             .inner
@@ -77,7 +84,7 @@ export default {
             top 0
             right 0
             bottom 0
-            width 50px 
+            width 60px 
 </style>
 
 

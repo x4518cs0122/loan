@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import { getToken } from './utils'
+import {getToken, getUserId, setToken} from '@/utils/userPassport.js'
 
 // axios.defaults.baseURL = '/api'
 
@@ -20,12 +20,9 @@ axiosIns.defaults.transformRequest = [function (data) {
 
 axiosIns.interceptors.request.use(function (config) {
     //配置config
-    config.headers.Accept = 'application/json';
-    // config.headers.System = 'vue';
-    let token = getToken();
-    if(token){
-        config.headers.Token = token;
-    }
+    // config.headers.Accept = 'application/json';
+    config.headers['token'] = getToken();
+    config.headers['userId'] = getUserId();
     return config;
 });
 
@@ -41,12 +38,15 @@ axiosIns.interceptors.response.use(function (response) {
 let ajaxMethod = ['get', 'post'];
 let api = {};
 ajaxMethod.forEach((method)=> {
-    api[method] = function (uri, data, config) {
-        return new Promise(function (resolve, reject) {
+    api[method] = (uri, data, config) =>{
+        return new Promise((resolve, reject) =>{
             axiosIns[method](uri, data, config).then((response)=> {
+                /**登陆后设置token */
+                if(response.headers.token){
+                    setToken(response.headers.token)
+                }
                 resolve(response.data);
             }).catch((response)=> {
-                
                 alert('something wrong'+response.status);
             })
         })

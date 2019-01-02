@@ -49,7 +49,10 @@ export default {
         text-align center
         font-size $font-size-medium
         color $pure-white
-        background $background-color-header
+        background: -webkit-linear-gradient($background-color-header-top, $background-color-header); /* Safari 5.1 - 6.0 */
+        background: -o-linear-gradient($background-color-header-top, $background-color-header); /* Opera 11.1 - 12.0 */
+        background: -moz-linear-gradient($background-color-header-top, $background-color-header); /* Firefox 3.6 - 15 */
+        background: linear-gradient($background-color-header-top, $background-color-header);
         border-bottom 1px solid rgb(228,228,228)
         .title  
             width 100%

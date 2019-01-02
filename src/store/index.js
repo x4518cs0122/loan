@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 import user from './modules/user'
 import app from './modules/app'
 import permission from './modules/permission'
+import query from './modules/query'
 import getters from './getters'
 import createLogger from 'vuex/dist/logger'
 
@@ -14,7 +15,8 @@ export default new Vuex.Store({
     modules: {
         app,
         user,
-        permission
+        permission,
+        query
     },
     getters,
     strict: debug,

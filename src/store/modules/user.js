@@ -1,20 +1,21 @@
-import { getToken, setToken } from 'common/js/utils'
+import { Permission } from '@/utils/Const.js'
 import { login } from 'api/api'
+import {setCookies} from '@/common/js/utils'
 const user = {
     state: {
-        token: getToken(),
-        roles: [],
-        userId: ''
+        token: '',
+        user: {},
+        roles: ''
     },
     mutations: {
         SET_TOKEN: (state, token) => {
             state.token = token
         },
+        SET_USER: (state, user) => {
+            state.user = user
+        },
         SET_ROLES: (state, roles) => {
             state.roles = roles
-        },
-        SET_USERID: (state, userId) => {
-            state.userId = userId
         }
     },
     actions: {
@@ -23,15 +24,16 @@ const user = {
                           ,'erPingu','erShuji','erShenpi','erGuohu','erDiya']
             return new Promise((resolve, reject) => {
                 login(userInfo).then((res) => {
-                    if (!res.success) {
+                    if (!res.result) {
                         reject(res.message)
                     } else {
-                        let token = res.data.token
-                        commit('SET_TOKEN', token)
-                        console.log(token)
+                        /** 保存登陆用户信息 */
+                        commit('SET_USER', res.data)
+                        setCookies(res.data.id)
+                        /** 角色类型参照 utils/const.js/Permission */
+                        const roles = Permission.EMPLOYEE
+                        // const roles = Permission[res.data.role] || Permission.M_MANAGE_2_EMPLOYEE
                         commit('SET_ROLES', roles)
-                        commit('SET_USERID', res.data.id)
-                        setToken(token)
                         resolve()
                     }
                 })

@@ -146,7 +146,7 @@ const SCROLL_ITEM_SIZE = 26
     position fixed
     left:0
     bottom 0
-    z-index 50
+    z-index 500
     width 100%
     height 100% 
     .picker-wrapper

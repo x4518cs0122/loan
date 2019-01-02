@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import {Permission} from '@/utils/Const.js'
 
 
 Vue.use(Router)
@@ -13,37 +14,40 @@ export const constantRouterMap = [{
     name: 'login',
     component: resolve => require(['../base/login/login'], resolve),
     hidden: true
-}, {
+}, 
+{
     //tab下的待办
     path: '/todo',
+    meta: { roles: Permission.EMPLOYEE},
     component: resolve => require(['../components/todo/todo'], resolve),
     hidden: true
-}]
+}
+]
 
 export const asyncRouterMap = [{
         path: '/bussiness',
         name: 'bussiness',
-        meta: { roles: 'bussiness', title: '业务办理' },
+        meta: { roles: Permission.EMPLOYEE, title: '业务办理' },
         component: resolve => require(['../components/bussiness/bussiness'], resolve),
         hidden: true
     },
     {
         //接单
         path: '/order',
-        name: 'order',
-        meta: { roles: 'jiedan', icon: 'fa-handshake-o', title: '接单' },
-        component: resolve => require(['../components/jiedan/jiedan'], resolve)
+        name: 'checklist',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-handshake-o', title: '接单' },
+        component: resolve => require(['../components/mortgageLoan/getOrder/jiedan'], resolve)
     },
     {
         //面谈
         path: '/interview',
-        name: 'interview',
-        meta: { roles: 'miantan', icon: 'fa-coffee', title: '面谈' },
-        component: resolve => require(['../components/section-one/interview/interview'], resolve),
+        name: 'view',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-coffee', title: '面谈' },
+        component: resolve => require(['../components/mortgageLoan/interview/interview'], resolve),
         children: [{
             path: ':id',
-            meta: { roles: 'miantan' },
-            component: resolve => require(['../components/section-one/interview/interview-detail'], resolve),
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/interview/interview-detail'], resolve),
             // children: [{
             //     path: 'sqForms',
             //     meta: { roles: 'miantan'},
@@ -53,69 +57,70 @@ export const asyncRouterMap = [{
     }, {
         //面签
         path: '/sign',
-        name: 'sign',
-        meta: { roles: 'mianqian', icon: 'fa-files-o', title: '面签' },
-        component: resolve => require(['../components/mianqian'], resolve),
+        name: 'visa',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-files-o', title: '面签' },
+        component: resolve => require(['../components/mortgageLoan/sign/index.vue'], resolve),
         children: [{
             path: 'confirmState',
-            meta: { roles: 'mianqian' },
-            component: resolve => require(['../components/mianqian/confirmState'], resolve),
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/sign/confirmState'], resolve),
         }, {
             path: ':id',
-            meta: { roles: 'mianqian' },
-            component: resolve => require(['../components/mianqian/sign-detail'], resolve),
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/sign/sign-detail'], resolve),
             children: [{
                 path: 'form',
-                meta: { roles: 'mianqian' },
-                component: resolve => require(['../components/mianqian/jymulu'], resolve),
+                meta: { roles: Permission.EMPLOYEE },
+                component: resolve => require(['../components/mortgageLoan/sign/jymulu'], resolve),
             }, {
                 path: 'application',
-                meta: { roles: 'mianqian' },
-                component: resolve => require(['../components/mianqian/application'], resolve),
+                name: 'application',
+                meta: { roles: Permission.EMPLOYEE },
+                component: resolve => require(['../components/mortgageLoan/sign/application'], resolve),
             }]
         }]
     }, {
         //评估下单
         path: '/evaluate',
-        name: 'evaluate',
-        meta: { roles: 'pinggu', icon: 'fa-calculator', title: '评估下单' },
-        component: resolve => require(['../components/pinggu/evaluate'], resolve),
+        name: 'order',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-calculator', title: '评估下单' },
+        component: resolve => require(['../components/mortgageLoan/valuations/evaluate'], resolve),
         children: [{
             path: 'placeOrder',
-            meta: { roles: 'pinggu' },
-            component: resolve => require(['../components/pinggu/placeOrder'], resolve)
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/valuations/placeOrder'], resolve)
         }, {
             path: 'reports',
-            meta: { roles: 'pinggu' },
-            component: resolve => require(['../components/pinggu/reports'], resolve)
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/valuations/reports'], resolve)
         }]
     },
     {
         //审批
         path: '/approve',
         name: 'approve',
-        meta: { roles: 'shengpi', icon: 'fa-pencil', title: '审批' },
-        component: resolve => require(['../components/shenpi/approve'], resolve),
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-pencil', title: '审批' },
+        component: resolve => require(['../components/mortgageLoan/approval/approve'], resolve),
         children: [{
             path: ':id',
-            meta: { roles: 'shengpi' },
-            component: resolve => require(['../components/shenpi/approve-detail'], resolve),
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/approval/approve-detail'], resolve),
             children: [{
                 path: 'mulu',
-                meta: { roles: 'shengpi' },
-                component: resolve => require(['../components/shenpi/mulu'], resolve),
+                meta: { roles: Permission.EMPLOYEE },
+                component: resolve => require(['../components/mortgageLoan/approval/mulu'], resolve),
             }, {
                 path: 'state',
-                meta: { roles: 'shengpi' },
-                component: resolve => require(['../components/shenpi/state'], resolve),
+                meta: { roles: Permission.EMPLOYEE },
+                component: resolve => require(['../components/mortgageLoan/approval/state'], resolve),
             }, {
                 path: 'baoshen',
-                meta: { roles: 'shengpi' },
-                component: resolve => require(['../components/shenpi/baoshen'], resolve),
-            }, {
+                meta: { roles: Permission.EMPLOYEE },
+                component: resolve => require(['../components/mortgageLoan/approval/baoshen'], resolve),
+            },{
                 path: 'zhengping',
-                meta: { roles: 'shengpi' },
-                component: resolve => require(['../components/shenpi/zhengping'], resolve),
+                meta: { roles: Permission.EMPLOYEE },
+                component: resolve => require(['../components/mortgageLoan/approval/reports'], resolve),
             }]
         }]
     },
@@ -123,92 +128,191 @@ export const asyncRouterMap = [{
         //抵押
         path: '/mortgage',
         name: 'mortgage',
-        meta: { roles: 'diya', icon: 'fa-university', title: '抵押' },
-        component: resolve => require(['../components/diya/mortgage'], resolve),
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-university', title: '抵押' },
+        component: resolve => require(['../components/mortgageLoan/diya/mortgage'], resolve),
         children: [{
-            path: 'timePicker',
-            component: resolve => require(['../components/diya/mortgage-time'], resolve),
-        }, {
             path: 'statusPicker',
-            component: resolve => require(['../components/diya/mortgage-status'], resolve),
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/diya/mortgage-status'], resolve),
+        }]
+    },{
+        //放款
+        path: '/charge',
+        name: 'charge',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-diamond', title: '收费' },
+        component: resolve => require(['../components/mortgageLoan/charge/index'], resolve),
+        children: [{
+            path: 'chargeState',
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/charge/chargeState'], resolve)
         }]
     },
     {
         //放款
         path: '/getmoney',
-        name: 'getmoney',
-        meta: { roles: 'fangkuan', icon: 'fa-money', title: '放款' },
-        component: resolve => require(['../components/section-one/getmoney/getmoney'], resolve),
+        name: 'loan',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-money', title: '放款' },
+        component: resolve => require(['../components/mortgageLoan/getmoney/getmoney'], resolve),
         children: [{
             path: 'fangkuan',
-            component: resolve => require(['../components/section-one/getmoney/fangkuan'], resolve)
-        }, {
-            path: 'danbao',
-            component: resolve => require(['../components/section-one/getmoney/danbao'], resolve)
+            meta: { roles: Permission.EMPLOYEE },
+            component: resolve => require(['../components/mortgageLoan/getmoney/fangkuan'], resolve)
         }]
     }, {
+        // 二手房路由
         path: '/erOrder',
-        name: 'erOrder',
-        meta: { roles: 'erJiedan', icon: 'fa-handshake-o', title: '接单' },
-        component: resolve => require(['../components/jiedan/erjiedan'], resolve),
+        name: 'erchecklist',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-handshake-o', title: '接单'},
+        component: resolve => require(['../components/secondHandLoan/getOrder/erjiedan'], resolve),
     }, {
         path: '/erSign',
-        name: 'erSign',
-        meta: { roles: 'erMianqian', icon: 'fa-files-o', title: '面签' },
-        component: resolve => require(['../components/section-two/er-sign/er-sign'], resolve),
+        name: 'ervisa',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-files-o', title: '面签' },
+        component: resolve => require(['../components/secondHandLoan/sign/index'], resolve),
         children: [{
-            path: 'dataGather',
-            component: resolve => require(['../components/section-two/er-sign/dataGather'], resolve)
+            path: 'mulu',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/sign/mulu'], resolve)
+        },{
+            path: 'confirmState',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/sign/confirmState'], resolve)
         }]
     }, {
         path: '/erEvaluate',
-        name: 'erEvaluate',
-        meta: { roles: 'erPingu', icon: 'fa-calculator', title: '评估下单' },
-        component: resolve => require(['../components/section-two/er-evaluate/er-evaluate'], resolve),
-    }, {
-        path: '/erWrite',
-        name: 'erWrite',
-        meta: { roles: 'erShuji', icon: 'fa-laptop', title: '整件输机' },
-        component: resolve => require(['../components/section-two/er-write/er-write'], resolve),
+        name: 'erorder',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-calculator', title: '评估下单' },
+        component: resolve => require(['../components/secondHandLoan/valuations/index'], resolve),
         children: [{
-            path: 'progress',
-            component: resolve => require(['../components/section-two/er-write/progress'], resolve)
+            path: 'placeOrder',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/valuations/placeOrder'], resolve)
+        }]
+    }, {
+        // 整件输机
+        path: '/erWrite',
+        name: 'erinput',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-laptop', title: '整件输机'},
+        component: resolve => require(['../components/secondHandLoan/shuji/index'], resolve),
+        children: [{
+            path: 'check',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/shuji/check'], resolve)
+        },{
+            path: 'catalog',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/shuji/catalog'], resolve)
+        },{
+            path: 'input',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/shuji/inputState'], resolve)
         }]
     }, {
         path: '/erApprove',
-        name: 'erApprove',
-        meta: { roles: 'erShenpi', icon: 'fa-pencil', title: '审批' },
-        component: resolve => require(['../components/section-two/er-approve/er-approve'], resolve),
+        name: 'erapprove',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-pencil', title: '审批' },
+        component: resolve => require(['../components/secondHandLoan/approve/index'], resolve),
         children: [{
-            path: ':id',
-            component: resolve => require(['../components/section-two/er-approve/apprData'], resolve)
+            path: 'baoshen',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/approve/baoshen'], resolve)
+        },{
+            path: 'approveState',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/approve/approveState'], resolve)
         }]
     }, {
         path: '/erGuohu',
-        name: 'erGuohu',
-        meta: { roles: 'erGuohu', icon: 'fa-building-o', title: '过户' },
-        component: resolve => require(['../components/section-two/er-guohu/er-guohu'], resolve),
+        name: 'ertransfer',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-building-o', title: '过户' },
+        component: resolve => require(['../components/secondHandLoan/guohu/index'], resolve),
         children: [{
-            path: 'customer',
-            component: resolve => require(['../components/section-two/er-guohu/customer'], resolve)
+            path: 'huizheng',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/guohu/huizheng'], resolve)
         }, {
-            path: 'quanzheng',
-            component: resolve => require(['../components/section-two/er-guohu/quanzheng'], resolve)
+            path: 'confirmState',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/guohu/confirmState'], resolve)
         }]
     }, {
         path: '/erMortgage',
-        name: 'erMortgage',
-        meta: { roles: 'erDiya', icon: 'fa-university', title: '抵押' },
-        component: resolve => require(['../components/section-two/er-mortgage/er-mortgage'], resolve),
+        name: 'ermortgageA',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-university', title: '抵押' },
+        component: resolve => require(['../components/secondHandLoan/mortgage/index'], resolve),
         children: [{
-            path: 'erMortDetail',
-            component: resolve => require(['../components/section-two/er-mortgage/er-mort-detail'], resolve)
+            path: 'mortgageState',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/mortgage/mortgageState'], resolve)
+        },{
+            path: 'getProof',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/mortgage/getProofTime'], resolve)
+        },{
+            path: 'returnTime',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/mortgage/returnTime'], resolve)
         }]
+    },{
+        path: '/erGuarantee',
+        name: 'erguarantee',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-gavel', title: '担保' },
+        component: resolve => require(['../components/secondHandLoan/guarantee/index'], resolve),
+        children: [{
+            path: 'process',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/guarantee/process'], resolve)
+        },{
+            path: 'zhengping',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/guarantee/zhengping'], resolve)
+        }]
+    },{
+        path: '/erGetmoney',
+        name: 'erloan',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-money', title: '放款' },
+        component: resolve => require(['../components/secondHandLoan/getmoney/index'], resolve),
+        children: [{
+            path: 'state',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/getmoney/state'], resolve)
+        }]
+    },{
+        path: '/erCharge',
+        name: 'ercharge',
+        meta: { roles: Permission.EMPLOYEE, icon: 'fa-diamond', title: '收费' },
+        component: resolve => require(['../components/secondHandLoan/charge/index'], resolve),
+        children: [{
+            path: 'state',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/secondHandLoan/charge/state'], resolve)
+        }]
+    },
+    /**查询组件路由 */
+    {
+        path: '/query',
+        name: 'query',
+        meta: { roles: Permission.EMPLOYEE },
+        component: resolve => require(['../components/query/index'], resolve),
+        hidden: true,
+        children: [{
+            path: 'result',
+            meta: { roles: Permission.EMPLOYEE},
+            component: resolve => require(['../components/query/result'], resolve)
+        }]
+    },
+    /**个人中心 */
+    {
+        path: '/personalCenter',
+        name: 'personalCenter',
+        meta: { roles: Permission.EMPLOYEE },
+        component: resolve => require(['../components/personalCenter/index'], resolve),
+        hidden: true
     }
 ]
 
 export default new Router({
-    // mode: 'history', // require service support
+    // require service support
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRouterMap
 })

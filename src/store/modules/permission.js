@@ -1,21 +1,11 @@
 import { asyncRouterMap, constantRouterMap } from '@/router'
 
 
-function hasPermission(roles, route) {
-    if (route.meta && route.meta.roles) {
-        return roles.some(role => role === route.meta.roles)
-    } else {
-        return false
-    }
-}
-
-function filterAsyncRouter(asyncRouterMap, roles) {
+function filterAsyncRouter(asyncRouterMap, role) {
     // roles为登录用户的权限数组
+    
     const accessedRouters = asyncRouterMap.filter(route => {
-        if (hasPermission(roles, route)) {
-            return true
-        }
-        return false
+        return role === route.meta.roles
     })
     return accessedRouters
 }
@@ -34,8 +24,9 @@ const permission = {
         GenerateRoutes({ commit }, data) {
             // data是登陆后返回的权限值为true的数组
             return new Promise((resolve) => {
-                const { roles } = data
-                let accessedRouters = filterAsyncRouter(asyncRouterMap, roles)
+                const role = data
+                /** asyncRouterMap为权限路由 */
+                let accessedRouters = filterAsyncRouter(asyncRouterMap, role)
                 commit('SET_ROUTERS', accessedRouters)
                 resolve()
             })

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="list-wrapper">
         <section>
             <slot name="body"></slot>  
         </section>
@@ -10,33 +10,51 @@
 </template>
 
 <script type='text/ecmascript-6'>
-  export default {
-    data () {
-      return {
-      }
-    }
-  }
+export default {
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style lang='stylus' scoped>
-@import '~common/stylus/variable'
-.list-header
-    height: 30px
-    line-height: 30px
-    padding-left: 20px
-    font-size: $font-size-small
-    background: $background-list-header
-    color: $font-color-list-header
-    border-bottom: none
-ul
-    background: $pure-white
-    font-size: $font-size-medium
-    li
-        border-bottom 1px solid $color-border
-    .no-border
-        border-bottom none
-    .placeholder
-        height: 10px
-        line-height: 10px
-        background: $background-list-header
+@import '~common/stylus/variable';
+
+.list-wrapper {
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    overflow: auto;
+
+    .list-header {
+        height: 30px;
+        line-height: 30px;
+        padding-left: 20px;
+        font-size: $font-size-small;
+        background: $background-list-header;
+        color: $font-color-list-header;
+        border-bottom: none;
+    }
+
+    ul {
+        background: $pure-white;
+        font-size: $font-size-medium;
+
+        li {
+            border-bottom: 1px solid $color-border;
+        }
+
+        .no-border {
+            border-bottom: none;
+        }
+
+        .placeholder {
+            height: 10px;
+            line-height: 10px;
+            background: $background-list-header;
+        }
+    }
+}
 </style>

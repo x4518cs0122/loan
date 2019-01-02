@@ -8,12 +8,12 @@
             <i class="el-icon-arrow-down collapse"></i>
         </div>
         <div class="password">
-            <input type="text" placeholder="密码" v-model="userInfo.password" class="input">
+            <input type="password" placeholder="密码" v-model="userInfo.password" class="input">
         </div>
         <div class="botton" @click="loginByUsername">
             <el-button type="danger" class="inner">登录</el-button>
         </div>
-        <p class="forget">忘记密码</p>
+        <!-- <p class="forget">忘记密码</p> -->
     </div>
 </template>
 
@@ -24,20 +24,20 @@ import {setToken} from 'common/js/utils'
      data(){
          return{
              userInfo:{
-                 name:'123456@qq.com',
-                 password:'123456'
+                 name:'',
+                 password:''
              },
              message:''
          }
      },
      methods:{
          clear(){
-             this.name = ""
+             this.userInfo.name = ""
          },
          loginByUsername(){  
-             const userInfo = this.userInfo      
+             const userInfo = this.userInfo;  
              this.$store.dispatch('setUserInfo',userInfo).then((res)=>{
-                 this.$router.push({ path: '/bussiness' })
+                 this.$router.push({ name: 'bussiness' })
              }).catch((err)=>{
                  console.log(err)
                  this.message = err

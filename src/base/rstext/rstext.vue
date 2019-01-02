@@ -12,10 +12,7 @@
             type:String,
             default: ''
         },
-        value:{
-            type:String,
-            default:''
-        }
+        value:{}
     },
     data () {
       return {
@@ -29,14 +26,15 @@
     height 20px
     line-height 20px
     padding 15px 20px
+    display flex
     background $pure-white
     font-size $font-size-medium
     .text
         float left
         width 100px       
     .val
-        padding-left 100px
-        width 100%
+        flex-grow 1
+        flex-shrink 1
     p
         margin 0
 </style>
