@@ -56,7 +56,7 @@ export default {
 
         &.router-link-active {
             .tab-link, .icon {
-                color: $color-theme;
+                color: $base-golden;
             }
         }
     }

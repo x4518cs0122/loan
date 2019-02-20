@@ -60,7 +60,8 @@ export default {
         line-height 50px
         text-align center
         font-size $font-size-medium
-        color $pure-white
+        // color $pure-white
+        color $base-golden
         background: -webkit-linear-gradient($background-color-header-top, $background-color-header); /* Safari 5.1 - 6.0 */
         background: -o-linear-gradient($background-color-header-top, $background-color-header); /* Opera 11.1 - 12.0 */
         background: -moz-linear-gradient($background-color-header-top, $background-color-header); /* Firefox 3.6 - 15 */
