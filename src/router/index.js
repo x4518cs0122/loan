@@ -15,13 +15,6 @@ export const constantRouterMap = [
     name: 'login',
     component: resolve => require(['../base/login/login'], resolve),
     hidden: true
-  },
-  {
-    //tab下的待办
-    path: '/todo',
-    meta: { roles: Permission.EMPLOYEE },
-    component: resolve => require(['../components/todo/todo'], resolve),
-    hidden: true
   }
 ];
 
@@ -356,25 +349,10 @@ export const asyncRouterMap = [
   },
   /**查询组件路由 */
   {
-    path: '/query',
-    name: 'query',
+    path: '/queryResult',
+    name: 'queryResult',
     meta: { roles: Permission.EMPLOYEE },
-    component: resolve => require(['../components/query/index'], resolve),
-    hidden: true,
-    children: [
-      {
-        path: 'result',
-        meta: { roles: Permission.EMPLOYEE },
-        component: resolve => require(['../components/query/result'], resolve)
-      }
-    ]
-  },
-  /**个人中心 */
-  {
-    path: '/personalCenter',
-    name: 'personalCenter',
-    meta: { roles: Permission.EMPLOYEE },
-    component: resolve => require(['../components/personalCenter/index'], resolve),
+    component: resolve => require(['../components/query/result'], resolve),
     hidden: true
   }
 ];

@@ -212,9 +212,10 @@ export default {
 @import '~common/stylus/variable';
 
 .page-bussiness {
-  background: #F3F3F3;
   display: flex;
   flex-direction: column;
+  height: 100%;
+  background: $pure-white;
 
   /* * 头部区域 */
   .biz-header {

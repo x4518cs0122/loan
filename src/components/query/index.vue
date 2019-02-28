@@ -23,9 +23,6 @@
     <div class="query-btn">
       <cube-button @click="_query">查询</cube-button>
     </div>
-    <rs-transition name="slide-left">
-      <router-view></router-view>
-    </rs-transition>
   </div>
 </template>
 <script>
@@ -34,7 +31,6 @@ import rsList from 'base/rslist/rslist';
 import rsInput from 'base/rsinput/rsinput';
 import numberInput from 'base/rsinput/rsNumberInput';
 import rsSelect from 'base/rsselect/rsselect';
-import rsTransition from 'base/transition/transition';
 import { commonValidations, messageTip } from '@/utils/Const.js';
 import { queryState } from '@/api/api';
 import tab from 'components/tab/tab';
@@ -136,7 +132,7 @@ export default {
       _this.showToastMask();
       this.$store.dispatch('_queryState', this.model).then(() => {
         _this.hideToastMask();
-        this.$router.push({ path: '/query/result' });
+        this.$router.push({ path: '/queryResult' });
       });
     },
     goback() {
@@ -181,8 +177,7 @@ export default {
     rsList,
     rsInput,
     numberInput,
-    tab,
-    rsTransition
+    tab
   }
 };
 </script>

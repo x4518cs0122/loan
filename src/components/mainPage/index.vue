@@ -19,6 +19,9 @@
         <div class="tab-text">{{item.label}}</div>
       </cube-tab>
     </cube-tab-bar>
+    <Transition name="slide-left">
+      <router-view></router-view>
+    </Transition>
   </div>
 </template>
 
@@ -27,6 +30,7 @@ import Bussiness from '../bussiness/bussiness';
 import Todos from '../todo/todo';
 import Query from '../query';
 import personalCenter from '../personalCenter';
+import { Transition } from 'base';
 export default {
   data() {
     return {
@@ -51,7 +55,7 @@ export default {
       ]
     };
   },
-  components: { Bussiness, Todos, Query, personalCenter },
+  components: { Bussiness, Todos, Query, personalCenter, Transition },
   methods: {
     clickHandler(label) {
       // if you clicked home tab, then print 'Home'

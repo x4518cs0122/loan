@@ -69,7 +69,7 @@
           :key="item.modelKey"
           class="self-form-item"
         ></cube-form-item>
-        <cube-form-item :field="fieldsTime" class="self-form-item">
+        <cube-form-item :field="proposedTime" class="self-form-item">
           <cube-button @click="showDatePicker('proposedTime')">{{ model.proposedTimeTxt }}></cube-button>
         </cube-form-item>
         <cube-form-item
