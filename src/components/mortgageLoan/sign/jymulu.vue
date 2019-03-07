@@ -627,7 +627,7 @@ export default {
               this.hideToastMask();
               this.$router.push({ path: `/sign/${this.customer.id}` });
             } else {
-                this.hideToastMask()
+              this.hideToastMask()
               this.$createToast({
                 mask: true,
                 txt: '参数走丢了，请重新提交'

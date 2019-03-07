@@ -1,24 +1,23 @@
 <template>
-    <div class="jy-mulu">
-        <v-header title="资料目录表" @goback="goback" next="提交" @submit="submit"></v-header>
-        <rs-list>
-            <ul slot="body">
-                <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-                <li><rs-select selectText="完成时间" model="finishTime" @selected="selected" :isDate="true" :initSelection="initTime"></rs-select></li>   
-                <li><catalog :list="formlist" :obj="obj"></catalog></li>         
-            </ul>
-        </rs-list>
-    </div>
+  <div class="jy-mulu">
+    <v-header title="资料目录表" @goback="goback" next="提交" @submit="submit"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="time" class="self-form-item">
+          <Date-picker :model="obj" modelKey="finishTime" :initTxt="initTime"></Date-picker>
+        </cube-form-item>
+      </cube-form-group>
+    </cube-form>
+    <catalog :list="formlist" :obj="obj"></catalog>
+  </div>
 </template>
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsText from 'base/rstext/rstext';
-import rsSelect from 'base/rsselect/rsselect';
 import catalog from 'components/mortgageLoan/sign/catalog';
-import {mapGetters} from 'vuex';
-import {transformNumberAndBoolean} from '@/utils/commonFunction.js';
-import {getCatalog, getProcess, confirmCatalog} from '@/api/api';
+import { mapGetters, mapActions } from 'vuex';
+import { transformNumberAndBoolean } from '@/utils/commonFunction.js';
+import { getCatalog, getProcess, confirmCatalog } from '@/api/api';
+import { DatePicker } from 'base';
 export default {
   data() {
     return {
@@ -28,7 +27,7 @@ export default {
           checked: 'hasClientIdCard',
           radio: 'clientIdCardDes',
           page: 'clientIdCardPage',
-          area: 'clientIdCardRemark',
+          area: 'clientIdCardRemark'
         },
         {
           name: '借款人户口',
@@ -37,19 +36,19 @@ export default {
           options: [
             {
               key: 'clientAccountHome',
-              value: '首页',
+              value: '首页'
             },
             {
               key: 'clientAccountHousehold',
-              value: '户主页',
+              value: '户主页'
             },
             {
               key: 'clientAccountMyself',
-              value: '本人页',
-            },
+              value: '本人页'
+            }
           ],
           page: 'clientAccountPage',
-          area: 'clientAccountRemark',
+          area: 'clientAccountRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -58,7 +57,7 @@ export default {
           radio: 'clientSpouseIdCardDes',
           checkList: [],
           page: 'clientSpouseIdCardPage',
-          area: 'clientSpouseIdCardRemark',
+          area: 'clientSpouseIdCardRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -68,20 +67,20 @@ export default {
           options: [
             {
               key: 'clientSpouseAccountHome',
-              value: '首页',
+              value: '首页'
             },
             {
               key: 'clientSpouseAccountHousehold',
-              value: '户主页',
+              value: '户主页'
             },
             {
               key: 'clientSpouseAccountMyself',
-              value: '本人页',
-            },
+              value: '本人页'
+            }
           ],
           checkList: [],
           page: 'clientSpouseAccountPage',
-          area: 'clientSpouseAccountRemark',
+          area: 'clientSpouseAccountRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -91,20 +90,20 @@ export default {
           options: [
             {
               key: 'marriageCertificate',
-              value: '结婚证',
+              value: '结婚证'
             },
             {
               key: 'divorceCertificate',
-              value: '离婚证',
+              value: '离婚证'
             },
             {
               key: 'divorceAgreement',
-              value: '离婚协议',
-            },
+              value: '离婚协议'
+            }
           ],
           checkList: [],
           page: 'marriageProofPage',
-          area: 'marriageProofRemark',
+          area: 'marriageProofRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -114,13 +113,13 @@ export default {
             {
               model: 'houseMortgage',
               label: '套数',
-              placeholder: '请输入抵押房产套数',
-            },
+              placeholder: '请输入抵押房产套数'
+            }
           ],
           radio: 'houseMortgageDes',
           checkList: [],
           page: 'houseMortgagePage',
-          area: 'houseMortgageRemark',
+          area: 'houseMortgageRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -130,37 +129,37 @@ export default {
           options: [
             {
               key: 'assetsHouseCertificate',
-              value: '房产证',
+              value: '房产证'
             },
             {
               key: 'assetsCarCertificate',
-              value: '车产证',
+              value: '车产证'
             },
             {
               key: 'assetsOther',
-              value: '其他资产',
-            },
+              value: '其他资产'
+            }
           ],
           checkList: [],
           moreInput: [
             {
               model: 'assetsHouseNumber',
               label: '房产证数量',
-              placeholder: '请输入抵押房产证数量，若没有不填写',
+              placeholder: '请输入抵押房产证数量，若没有不填写'
             },
             {
               model: 'assetsCarNumber',
               label: '车辆数量',
-              placeholder: '请输入抵押车辆数量，若没有不填写',
+              placeholder: '请输入抵押车辆数量，若没有不填写'
             },
             {
               model: 'assetsOtherRemark',
               label: '其他资产数量',
-              placeholder: '请输入其他资产名称及数量，用逗号隔开',
-            },
+              placeholder: '请输入其他资产名称及数量，用逗号隔开'
+            }
           ],
           page: 'assetsCertificatePage',
-          area: 'assetsCertificateRemark',
+          area: 'assetsCertificateRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -169,7 +168,7 @@ export default {
           radio: 'incomeProofDes',
           checkList: [],
           page: 'incomeProofPage',
-          area: 'incomeProofRemark',
+          area: 'incomeProofRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -178,7 +177,7 @@ export default {
           radio: 'businessLicenseDes',
           checkList: [],
           page: 'businessLicensePage',
-          area: 'businessLicenseRemark',
+          area: 'businessLicenseRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -187,7 +186,7 @@ export default {
           radio: 'legalRepresentativeDes',
           checkList: [],
           page: 'legalRepresentativePage',
-          area: 'legalRepresentativeRemark',
+          area: 'legalRepresentativeRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -196,7 +195,7 @@ export default {
           radio: 'companyStatuteDes',
           checkList: [],
           page: 'companyStatutePage',
-          area: 'companyStatuteRemark',
+          area: 'companyStatuteRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -205,7 +204,7 @@ export default {
           radio: 'grantDeedDes',
           checkList: [],
           page: 'grantDeedPage',
-          area: 'grantDeedRemark',
+          area: 'grantDeedRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -214,7 +213,7 @@ export default {
           radio: 'tradingContactDes',
           checkList: [],
           page: 'tradingContactPage',
-          area: 'tradingContactRemark',
+          area: 'tradingContactRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -223,8 +222,8 @@ export default {
           radio: 'purposeContactDes',
           checkList: [],
           page: 'purposeContactPage',
-          area: 'purposeContactRemark',
-        },
+          area: 'purposeContactRemark'
+        }
       ],
       xyList: [
         {
@@ -232,7 +231,7 @@ export default {
           checked: 'hasClientIdCard',
           radio: 'clientIdCardDes',
           page: 'clientIdCardPage',
-          area: 'clientIdCardRemark',
+          area: 'clientIdCardRemark'
         },
         {
           name: '借款人户口',
@@ -241,19 +240,19 @@ export default {
           options: [
             {
               key: 'clientAccountHome',
-              value: '首页',
+              value: '首页'
             },
             {
               key: 'clientAccountHousehold',
-              value: '户主页',
+              value: '户主页'
             },
             {
               key: 'clientAccountMyself',
-              value: '本人页',
-            },
+              value: '本人页'
+            }
           ],
           page: 'clientAccountPage',
-          area: 'clientAccountRemark',
+          area: 'clientAccountRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -262,7 +261,7 @@ export default {
           radio: 'clientSpouseIdCardDes',
           checkList: [],
           page: 'clientSpouseIdCardPage',
-          area: 'clientSpouseIdCardRemark',
+          area: 'clientSpouseIdCardRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -272,20 +271,20 @@ export default {
           options: [
             {
               key: 'clientSpouseAccountHome',
-              value: '首页',
+              value: '首页'
             },
             {
               key: 'clientSpouseAccountHousehold',
-              value: '户主页',
+              value: '户主页'
             },
             {
               key: 'clientSpouseAccountMyself',
-              value: '本人页',
-            },
+              value: '本人页'
+            }
           ],
           checkList: [],
           page: 'clientSpouseAccountPage',
-          area: 'clientSpouseAccountRemark',
+          area: 'clientSpouseAccountRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -295,20 +294,20 @@ export default {
           options: [
             {
               key: 'marriageCertificate',
-              value: '结婚证',
+              value: '结婚证'
             },
             {
               key: 'divorceCertificate',
-              value: '离婚证',
+              value: '离婚证'
             },
             {
               key: 'divorceAgreement',
-              value: '离婚协议',
-            },
+              value: '离婚协议'
+            }
           ],
           checkList: [],
           page: 'marriageProofPage',
-          area: 'marriageProofRemark',
+          area: 'marriageProofRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -318,13 +317,13 @@ export default {
             {
               model: 'houseMortgage',
               label: '套数',
-              placeholder: '请输入抵押房产套数',
-            },
+              placeholder: '请输入抵押房产套数'
+            }
           ],
           radio: 'houseMortgageDes',
           checkList: [],
           page: 'houseMortgagePage',
-          area: 'houseMortgageRemark',
+          area: 'houseMortgageRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -334,37 +333,37 @@ export default {
           options: [
             {
               key: 'assetsHouseCertificate',
-              value: '房产证',
+              value: '房产证'
             },
             {
               key: 'assetsCarCertificate',
-              value: '车产证',
+              value: '车产证'
             },
             {
               key: 'assetsOther',
-              value: '其他资产',
-            },
+              value: '其他资产'
+            }
           ],
           checkList: [],
           moreInput: [
             {
               model: 'assetsHouseNumber',
               label: '房产证数量',
-              placeholder: '请输入抵押房产证数量，若没有不填写',
+              placeholder: '请输入抵押房产证数量，若没有不填写'
             },
             {
               model: 'assetsCarNumber',
               label: '车辆数量',
-              placeholder: '请输入抵押车辆数量，若没有不填写',
+              placeholder: '请输入抵押车辆数量，若没有不填写'
             },
             {
               model: 'assetsOtherRemark',
               label: '其他资产数量',
-              placeholder: '请输入其他资产名称及数量，用逗号隔开',
-            },
+              placeholder: '请输入其他资产名称及数量，用逗号隔开'
+            }
           ],
           page: 'assetsCertificatePage',
-          area: 'assetsCertificateRemark',
+          area: 'assetsCertificateRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -373,7 +372,7 @@ export default {
           radio: 'incomeProofDes',
           checkList: [],
           page: 'incomeProofPage',
-          area: 'incomeProofRemark',
+          area: 'incomeProofRemark'
         },
         {
           class: 'collapse-wrapper',
@@ -382,26 +381,28 @@ export default {
           radio: 'purposeContactDes',
           checkList: [],
           page: 'purposeContactPage',
-          area: 'purposeContactRemark',
-        },
+          area: 'purposeContactRemark'
+        }
       ],
       initTime: '',
-      obj: {},
+      obj: {
+      },
+      time: {},
+      toast: null
     };
   },
   computed: {
     ...mapGetters(['customer']),
     formlist() {
-      return this.customer.loanVariety === '抵押经营'
-        ? this.jyList
-        : this.xyList;
-    },
+      return this.customer.loanVariety === '抵押经营' ? this.jyList : this.xyList;
+    }
   },
   methods: {
     /**根据rootid获取面签列表id，查询资料目录表信息 */
     async _getCatalog() {
       const rootId = this.customer.rootId;
       let visaId;
+      this.toastShow();
       await getProcess(rootId).then(res => {
         const visaInfo = res.data.find(process => {
           return process.name === 'visa';
@@ -412,44 +413,64 @@ export default {
       getCatalog(visaId).then(res => {
         if (res.result) {
           let time = new Date(res.data.catalog.finishTime);
-          this.initTime = `${time.getFullYear()}-${time.getMonth() +
-            1}-${time.getDate()}`;
+          this.initTime = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`;
           this.obj = transformNumberAndBoolean(res.data.catalog, true);
+          this.time = {
+            modelKey: 'finishTime',
+            label: '完成时间',
+            rules: {
+              required: true
+            }
+          };
         }
+        this.toastHide();
       });
     },
     goback() {
       this.$router.back();
     },
-    selected(key, model) {
-      this.obj[model] = new Date(key).getTime();
+    toastShow() {
+      if (!this.toast) {
+        this.toast = this.$createToast({
+          mask: true,
+          time: 0
+        });
+      }
+      this.toast.show();
+    },
+    toastHide() {
+      this.toast.hide();
     },
     submit() {
+      this.toastShow();
       let data = {
         approveId: this.customer.id,
-        catalog: JSON.stringify(transformNumberAndBoolean(this.obj, false)),
+        catalog: JSON.stringify(transformNumberAndBoolean(this.obj, false))
       };
 
       confirmCatalog(data).then(res => {
-        res.result && this.$router.push({path: `/approve/${this.customer.id}`});
+        res.result && this.$router.push({ path: `/approve/${this.customer.id}` });
+        this.toastHide();
+        this.getApprove()
       });
     },
+    ...mapActions(['getApprove'])
   },
   created() {
     this._getCatalog();
   },
-  components: {vHeader, rsList, rsText, rsSelect, catalog},
+  components: { vHeader, catalog, DatePicker }
 };
 </script>
 <style lang="stylus" scoped>
 @import '~common/stylus/variable';
 
 .jy-mulu {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: $color-background;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: $color-background;
 }
 </style>

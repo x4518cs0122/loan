@@ -201,6 +201,12 @@ export const asyncRouterMap = [
         component: resolve => require(['../components/secondHandLoan/sign/mulu'], resolve)
       },
       {
+        path:'confirmOrder',
+        /** sign用于面签复用二手房接单组件时，获取数据以及更新接口的调用判断 */
+        meta: { roles: Permission.EMPLOYEE, sign:true },
+        component: resolve => require(['../components/secondHandLoan/getOrder/erjiedan'], resolve)
+      },
+      {
         path: 'confirmState',
         meta: { roles: Permission.EMPLOYEE },
         component: resolve => require(['../components/secondHandLoan/sign/confirmState'], resolve)

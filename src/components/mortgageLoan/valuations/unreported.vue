@@ -1,58 +1,188 @@
 <template>
-    <div class="unreported" v-if="showForm">
-        <v-header title="出报告" @goback="hidden"></v-header>
-        <rs-list>
-            <ul slot="body">
-              <li v-show="currentProcess === 'approve' || currentProcess === 'erValuation'"><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-              <li v-show="currentProcess === 'approve' || currentProcess === 'erValuation'"><rs-select selectText="完成时间" model="time" @selected="selected" :isDate="true" :initSelection="obj.time"></rs-select></li>
-              <li v-if="currentProcess === 'erValuation'"><rs-select selectText="报告类型" model="reportType" @selected="selected" :options="options.type" :initSelection="obj.type"></rs-select></li>
-              <li class="list-header">房屋报告内容</li>
-              <li><rs-input @input="rsinput" inputText="权利人" model="reportObligee" :value="obj.reportObligee" required></rs-input></li>
-              <li><rs-input @input="rsinput" inputText="借款人" model="reportBorrower" :value="obj.reportBorrower" required></rs-input></li>
-              <li><rs-input @input="rsinput" inputText="座落" model="reportRepose" :value="obj.reportRepose" required></rs-input></li>
-              <li><rs-input @input="rsinput" inputText="房龄" model="reportHouseAge" :value="obj.reportHouseAge" required></rs-input></li>
-              <li><number-input @input="rsinput" inputText="面积" model="reportHouseArea" :value="obj.reportHouseArea" ></number-input></li>
-              <li><number-input @input="rsinput" inputText="单价" model="reportHouseSingle" :value="obj.reportHouseSingle"></number-input></li>
-              <li><number-input @input="rsinput" inputText="总价" model="reportHouseTotal" :value="obj.reportHouseTotal" ></number-input></li>
-              <li><number-input @input="rsinput" inputText="贷款金额" model="reportLoanAmount" :value="obj.reportLoanAmount" ></number-input></li>
-              <li><rs-input @input="rsinput" inputText="年限" model="reportLoanYear" :value="obj.reportLoanYear" tips="年" required></rs-input></li>
-              <li><rs-select selectText="首套/两套" :options="options.onetwo" model="reportFirst" @selected="selected" :initSelection="obj.reportFirst"></rs-select></li>
-            </ul>
-            <div class="botton" slot="footer">
-                <el-button type="danger" class="submit" @click="submit">提交</el-button>
-            </div>
-        </rs-list>
-    </div>
+  <div class="unreported" v-if="showForm">
+    <v-header title="出报告" @goback="hidden"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group >
+        <cube-form-item :field="time" class="self-form-item" v-show="currentProcess === 'approve' || currentProcess === 'erValuation'">
+          <Date-picker :model="obj" modelKey="time"></Date-picker>
+        </cube-form-item>
+        <cube-form-item :field="type" class="self-form-item" v-if="currentProcess === 'erValuation'" />
+      </cube-form-group>
+      <cube-form-group legend="房屋报告内容">
+        <cube-form-item
+          :field="item"
+          v-for="item in fields"
+          :key="item.modelKey"
+          class="self-form-item"
+        ></cube-form-item>
+        <cube-form-item class="self-form-item">
+          <cube-button class="self-submit-btn" @click="submit">提交</cube-button>
+        </cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsText from 'base/rstext/rstext';
-import rsInput from 'base/rsinput/rsinput';
-import numberInput from 'base/rsinput/rsNumberInput';
 import rsSelect from 'base/rsselect/rsselect';
-import {mapGetters} from 'vuex';
+import { mapGetters } from 'vuex';
+import {DatePicker} from 'base'
 export default {
   props: {
     obj: {
       type: Object,
       default: () => {
         return {};
-      },
+      }
     },
     currentProcess: {
       type: String,
-      default: '',
-    },
+      default: ''
+    }
   },
   data() {
     return {
       options: {
-        onetwo: [{id: '1', value: '首套'}, {id: '2', value: '两套'}],
-        type: [{id: 1, value: '预评'}, {id: 2, value: '正评'}],
+        onetwo: [{ id: '1', value: '首套' }, { id: '2', value: '两套' }],
+        type: [{ id: 1, value: '预评' }, { id: 2, value: '正评' }]
       },
       showForm: false,
+      time: {
+        modelKey: 'time',
+        label: '完成时间',
+        rules: {
+          required: true
+        }
+      },
+      type:{
+        type: 'select',
+        modelKey: 'reportType',
+        label: '报告类型',
+        props: {
+          options: [{ value: 1, text: '预评' }, { value: 2, text: '正评' }],
+        },
+        rules: {
+          required: true
+        }
+      },
+      fields: [
+        {
+          type: 'input',
+          modelKey: 'reportObligee',
+          label: '权利人',
+          props: {
+            placeholder: '请输入权利人姓名'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'reportBorrower',
+          label: '借款人',
+          props: {
+            placeholder: '请输入借款人姓名'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'reportRepose',
+          label: '坐落',
+          props: {
+            placeholder: '请输入房屋坐落'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'reportHouseAge',
+          label: '房龄',
+          props: {
+            placeholder: '请输入房龄'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'reportHouseArea',
+          label: '面积',
+          props: {
+            placeholder: '请输入房产面积'
+          },
+          rules: {
+            required: true,
+            type:'number'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'reportHouseSingle',
+          label: '单价',
+          props: {
+            placeholder: '请输入平方米单价'
+          },
+          rules: {
+            required: true,
+            type:'number'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'reportHouseTotal',
+          label: '总价',
+          props: {
+            placeholder: '请输入总价'
+          },
+          rules: {
+            required: true,
+            type:'number'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'reportLoanAmount',
+          label: '贷款金额',
+          props: {
+            placeholder: '请输入贷款金额'
+          },
+          rules: {
+            required: true,
+            type:'number'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'reportLoanYear',
+          label: '年限',
+          props: {
+            placeholder: '请输入房屋年限'
+          },
+          rules: {
+            required: true,
+            type:'number'
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'reportFirst',
+          label: '首套/两套',
+          props: {
+            options: [{ value: '1', text: '首套' }, { value: '2', text: '两套' }]
+          },
+          rules: {
+            required: true
+          }
+        }
+      ]
     };
   },
   methods: {
@@ -62,22 +192,12 @@ export default {
     hidden() {
       this.showForm = false;
     },
-    selected(key, model) {
-      if(model === 'time'){
-        this.obj[model] = key
-        return
-      }
-      this.obj[model] = parseInt(key);
-    },
-    rsinput(value, model) {
-      this.obj[model] = value;
-    },
     submit() {
-      if(this.currentProcess === 'approve' || this.currentProcess === 'erValuation'){
-        this.$emit('submit', this.customer.id)
-        return
+      if (this.currentProcess === 'approve' || this.currentProcess === 'erValuation') {
+        this.$emit('submit', this.customer.id);
+        return;
       }
-      this.hidden()
+      this.hidden();
     }
   },
   computed: {
@@ -85,12 +205,8 @@ export default {
   },
   components: {
     vHeader,
-    rsList,
-    rsText,
-    rsSelect,
-    rsInput,
-    numberInput,
-  },
+    DatePicker
+  }
 };
 </script>
 

@@ -1,7 +1,48 @@
 <template>
-    <div class="subbranch">
-      <v-header title="确定审批状态" next="提交" @goback="goback" @submit="submit"></v-header>
-      <rs-list>
+  <div class="subbranch">
+    <v-header title="确定审批状态" next="提交" @goback="goback" @submit="submit"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="state" class="self-form-item"></cube-form-item>
+      </cube-form-group>
+    </cube-form>
+    <cube-form
+      :model="obj"
+      :immediate-validate="false"
+      ref="passForm"
+      v-show="obj.approveState === 1"
+    >
+      <cube-form-group legend="报告内容">
+        <cube-form-item :field="passTime" class="self-form-item">
+          <Date-picker :model="obj" modelKey="approveTime"></Date-picker>
+        </cube-form-item>
+        <cube-form-item
+          :field="item"
+          v-for="item in pass"
+          :key="item.modelKey"
+          class="self-form-item"
+        ></cube-form-item>
+      </cube-form-group>
+    </cube-form>
+    <cube-form
+      :model="obj"
+      :immediate-validate="false"
+      ref="notPassForm"
+      v-show="obj.approveState === 0"
+    >
+      <cube-form-group legend="报告内容">
+        <cube-form-item :field="passTime" class="self-form-item">
+          <Date-picker :model="obj" modelKey="approveTime"></Date-picker>
+        </cube-form-item>
+        <cube-form-item
+          :field="item"
+          v-for="item in notpass"
+          :key="item.modelKey"
+          class="self-form-item"
+        ></cube-form-item>
+      </cube-form-group>
+    </cube-form>
+    <!-- <rs-list>
         <ul slot="body">
           <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
           <li><rs-select selectText="环节状态" model="approveState" @selected="selected" :options="options.state"></rs-select></li>
@@ -21,27 +62,23 @@
             <li><rs-select selectText="后续操作" valueType="20" model="laterAction" @selected="selected"></rs-select></li>
           </div>
         </ul>
-      </rs-list>
-    </div>
+    </rs-list>-->
+  </div>
 </template>
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsText from 'base/rstext/rstext';
-import rsInput from 'base/rsinput/rsinput';
-import numberInput from 'base/rsinput/rsNumberInput';
 import rsSelect from 'base/rsselect/rsselect';
-import {commonValidations, messageTip} from '@/utils/Const.js';
-import {changeState, skipZhengping} from 'api/api';
-import {mapGetters} from 'vuex';
+import { commonValidations, messageTip } from '@/utils/Const.js';
+import { changeState, skipZhengping, getOptions } from 'api/api';
+import { mapGetters, mapActions } from 'vuex';
+import { formatAxiosOptions } from '../utils';
+import { DatePicker } from 'base';
 export default {
   data() {
     return {
-      commonValidations: commonValidations,
-      messageTip: messageTip,
       obj: {
         id: null,
-        approveState: 2,
+        approveState: null,
         approveTime: null,
         amount: null,
         period: '',
@@ -51,47 +88,206 @@ export default {
         failReason: null,
         failReasonOther: '',
         laterAction: null,
-        loanId: null,
+        loanId: null
       },
-      options: {
-        state: [{id: 0, value: '未通过'}, {id: 1, value: '已通过'}],
+      state: {
+        type: 'select',
+        modelKey: 'approveState',
+        label: '环节状态',
+        props: {
+          options: [{ value: 0, text: '未通过' }, { value: 1, text: '已通过' }]
+        },
+        rules: {
+          required: true
+        }
       },
+      passTime: {
+        modelKey: 'approveTime',
+        label: '审批通过日期',
+        rules: {
+          required: true
+        }
+      },
+      pass: [],
+      notpass: [],
+      loanConditionOptions: [],
+      laterActionOptions: [],
+      failReasonOptions: []
     };
+  },
+  created() {
+    this.getOption();
   },
   methods: {
     goback() {
-      this.$router.push({path: `/approve/${this.customer.id}`});
+      this.$router.push({ path: `/approve/${this.customer.id}` });
     },
-    selected(key, model) {
-      if (model === 'approveTime') {
-        this.obj[model] = new Date(key).getTime();
-        return;
+    getOption() {
+      const loanCondition = getOptions(2);
+      const failReason = getOptions(19);
+      const laterAction = getOptions(20);
+      Promise.all([loanCondition, failReason, laterAction]).then(res => {
+        const [a, b, c] = res;
+        this.loanConditionOptions = formatAxiosOptions(a.data);
+        this.failReasonOptions = formatAxiosOptions(b.data);
+        this.laterActionOptions = formatAxiosOptions(c.data);
+        this.initFields();
+      });
+    },
+    initFields() {
+      this.pass = [
+        {
+          type: 'input',
+          modelKey: 'amount',
+          label: '金额',
+          props: {
+            placeholder: '请输入金额'
+          },
+          rules: {
+            required: true,
+            type: 'number'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'period',
+          label: '年限',
+          props: {
+            placeholder: '请输入年限'
+          },
+          rules: {
+            required: true,
+            type: 'number'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'rate',
+          label: '利率',
+          props: {
+            placeholder: '请输入利率'
+          },
+          rules: {
+            required: true,
+            type: 'number'
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'loanCondition',
+          label: '放款条件',
+          props: {
+            options: this.loanConditionOptions
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'remark',
+          label: '备注',
+          props: {
+            placeholder: '请输入备注'
+          }
+        }
+      ];
+      this.notpass = [
+        {
+          type: 'select',
+          modelKey: 'failReason',
+          label: '未通过原因',
+          props: {
+            options: this.failReasonOptions
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'failReasonOther',
+          label: '未通过原因',
+          props: {
+            placeholder: '如有,可备注未通过原因'
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'laterAction',
+          label: '后续操作',
+          props: {
+            options: this.laterActionOptions
+          },
+          rules: {
+            required: true
+          }
+        }
+      ];
+    },
+    toastShow() {
+      if (!this.toast) {
+        this.toast = this.$createToast({
+          mask: true,
+          time: 0
+        });
       }
-      this.obj[model] = parseInt(key);
+      this.toast.show();
     },
-    rsinput(value, model) {
-      this.obj[model] = value;
+    toastHide() {
+      this.toast.hide();
     },
     submit() {
-      this.obj.amount = parseFloat(this.obj.amount);
-      this.obj.loanId = this.customer.id;
-      changeState(this.customer.id, this.obj).then(res => {
-        if (res.result) {
-          if (this.customer.extra.commentType === '正评') {
-            skipZhengping(this.customer.id).then(
-              this.$router.push({path: '/approve'})
-            );
-            return;
+      let subForm = this.$refs.notPassForm;
+      this.$refs.form.validate(success => {
+        if (success) {
+          // this.obj.amount = parseFloat(this.obj.amount);
+          
+          if (this.obj.approveState === 1) {
+            subForm = this.$refs.passForm;
           }
-          this.goback();
+          /** 校验子表单状态 */
+          subForm.validate(subSuccess => {
+            if (subSuccess) {
+              this.obj.loanId = this.customer.id;
+              this.toastShow();
+              changeState(this.customer.id, this.obj).then(
+                res => {
+                  if (res.result) {
+                    if (this.customer.extra.commentType === '正评') {
+                      skipZhengping(this.customer.id).then(res => {
+                        this.toastHide();
+                        this.getApprove();
+                        this.$router.push({ path: '/approve' });
+                      });
+                      return;
+                    }
+                    this.goback();
+                  } else {
+                    this.toastHide();
+                    this.$createToast({
+                      mask: true,
+                      txt: '服务器故障'
+                    }).show();
+                  }
+                },
+                err => {
+                  this.toastHide();
+                }
+              );
+            }
+          });
+        } else {
+          this.toastHide();
         }
       });
     },
+    ...mapActions(['getApprove'])
   },
-  components: {vHeader, rsList, rsText, rsSelect, rsInput, numberInput},
+  components: { vHeader, DatePicker },
   computed: {
-    ...mapGetters(['customer']),
-  },
+    ...mapGetters(['customer'])
+  }
 };
 </script>
 <style lang="stylus" scoped>

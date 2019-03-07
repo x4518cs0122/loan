@@ -50,6 +50,7 @@ export default {
 <style lang="stylus" scoped>
 @import '~common/stylus/variable'
 .header
+    z-index:50;
     .placeholder
         height: 50px;
     .header-wrapper

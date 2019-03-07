@@ -10,13 +10,12 @@
           class="self-form-item"
         ></cube-form-item>
       </cube-form-group>
-      <div class="placeholder"></div>
       <cube-form-group>
         <cube-form-item :field="startTime" class="self-form-item">
-          <cube-button @click="showDatePicker('startDate')">{{ model.startDateTxt }}></cube-button>
+          <Date-picker :model="model" modelKey="startDate"></Date-picker>
         </cube-form-item>
         <cube-form-item :field="endTime" class="self-form-item">
-          <cube-button @click="showDatePicker('endDate')">{{ model.endDateTxt }}></cube-button>
+          <Date-picker :model="model" modelKey="endDate"></Date-picker>
         </cube-form-item>
       </cube-form-group>
     </cube-form>
@@ -27,13 +26,9 @@
 </template>
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsInput from 'base/rsinput/rsinput';
-import numberInput from 'base/rsinput/rsNumberInput';
-import rsSelect from 'base/rsselect/rsselect';
 import { commonValidations, messageTip } from '@/utils/Const.js';
 import { queryState } from '@/api/api';
-import tab from 'components/tab/tab';
+import {DatePicker} from 'base'
 
 export default {
   data() {
@@ -113,16 +108,10 @@ export default {
       startTime: {
         modelKey: 'startDate',
         label: '开始时间'
-        // rules: {
-        //   required: true
-        // }
       },
       endTime: {
         modelKey: 'endDate',
         label: '结束时间'
-        // rules: {
-        //   required: true
-        // }
       }
     };
   },
@@ -150,20 +139,6 @@ export default {
     hideToastMask() {
       this.toast && this.toast.hide();
     },
-    showDatePicker(type) {
-      this.currentType = type;
-      if (!this.datePicker) {
-        this.datePicker = this.$createDatePicker({
-          title: '请选择时间',
-          min: new Date(2008, 7, 8),
-          max: new Date(2020, 9, 20),
-          value: new Date(),
-          onSelect: this.dateSelectHandler
-        });
-      }
-
-      this.datePicker.show();
-    },
     dateSelectHandler(date, selectedVal, selectedText) {
       const type = `${this.currentType}Txt`;
       this.model[type] = selectedText.join('-');
@@ -173,11 +148,7 @@ export default {
   },
   components: {
     vHeader,
-    rsSelect,
-    rsList,
-    rsInput,
-    numberInput,
-    tab
+    DatePicker
   }
 };
 </script>
@@ -198,12 +169,6 @@ export default {
       line-height: 40px;
       padding: 0;
     }
-  }
-
-  .placeholder {
-    height: 10px;
-    line-height: 10px;
-    background: $background-list-header;
   }
 }
 </style>

@@ -1,22 +1,22 @@
 <template>
     <div class="jy-mulu">
         <v-header title="资料目录表" @goback="goback" next="保存" @submit="submit"></v-header>
-        <rs-list>
-            <ul slot="body">
-                <li class="placeholder"> </li>
-                <li><rs-select selectText="完成时间" model="finish_time" @selected="selected" :isDate="true"></rs-select></li>
-                <li class="placeholder"></li>
-                <li><rs-input @input="rsinput" inputText="贷款人姓名" model="borrower_name" required></rs-input></li>
-                <li><number-input @input="rsinput" inputText="贷款金额" model="loan_amount" required></number-input></li>
-                <li><rs-input @input="rsinput" inputText="接单人姓名" model="clerk_name" required></rs-input></li>
-                <li><rs-input @input="rsinput" inputText="接单人电话" model="clerk_phone" 
-                  required 
-                  :validation="commonValidations.phoneValidation"
-                  :message="messageTip.phoneValidation"></rs-input>
-                </li>   
-                <li><catalog :list="muluList" :obj="obj"></catalog></li>         
-            </ul>
-        </rs-list>
+        <cube-form :model="obj" :immediate-validate="false" ref="form1">
+          <cube-form-group>
+            <cube-form-item :field="time" class="self-form-item">
+              <Date-picker :model="obj" modelKey="finish_time"></Date-picker>
+            </cube-form-item>
+          </cube-form-group>
+          <cube-form-group>
+            <cube-form-item
+              :field="item"
+              v-for="item in fields"
+              :key="item.modelKey"
+              class="self-form-item"
+            ></cube-form-item>
+          </cube-form-group>
+        </cube-form>
+        <catalog :list="muluList" :obj="obj"></catalog>
     </div>
 </template>
 <script>
@@ -30,7 +30,8 @@ import {commonValidations, messageTip} from '@/utils/Const.js';
 import catalog from 'components/mortgageLoan/sign/catalog';
 import {transformNumberAndBoolean} from '@/utils/commonFunction.js';
 import {postSHCatalog} from 'api/api';
-import {mapGetters, mapMutations} from 'vuex';
+import {mapGetters, mapMutations, mapActions} from 'vuex';
+import {DatePicker} from 'base'
 export default {
   data() {
     return {
@@ -179,6 +180,53 @@ export default {
         input_finish_time: null,
         catalogOther: [],
       },
+      time:{
+        label:'完成时间',
+        modelKey:'finish_time'
+      },
+      fields: [{
+          type: 'input',
+          modelKey: 'borrower_name',
+          label: '贷款人姓名',
+          props: {
+            placeholder: '请输入贷款人姓名'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'loan_amount',
+          label: '贷款金额',
+          props: {
+            placeholder: '请输入贷款金额'
+          },
+          rules: {
+            required: true
+          }
+        },{
+          type: 'input',
+          modelKey: 'clerk_name',
+          label: '接单人姓名',
+          props: {
+            placeholder: '请输入接单人姓名'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'clerk_phone',
+          label: '接单人电话',
+          props: {
+            placeholder: '请输入接单人电话'
+          },
+          rules: {
+            required: true
+          }
+        }]
     };
   },
   computed: {
@@ -187,16 +235,6 @@ export default {
   methods: {
     goback() {
       this.$router.push({path: '/erSign'});
-    },
-    selected(id, model) {
-      if (model === 'finish_time') {
-        this.obj[model] = new Date(id).getTime();
-        return;
-      }
-      this.obj[model] = parInt(id);
-    },
-    rsinput(value, model) {
-      this.obj[model] = value;
     },
     /**添加其他文件 */
     addMore() {
@@ -214,24 +252,30 @@ export default {
     submit() {
       let muluData = transformNumberAndBoolean(this.obj, false);
       muluData.id = this.customer.id;
-
+      let toast = this.$createToast({
+        mask: true,
+        time: 0
+      });
+      toast.show();
       postSHCatalog(muluData).then(res => {
         if (res.result) {
+
+          this.getSignList()
           this.goback()
         }
+      }).finally(() =>{
+        toast.hide()
       });
     },
     ...mapMutations({
       setCustomer: 'SET_CUSTOMER',
     }),
+    ...mapActions(['getSignList'])
   },
   components: {
     vHeader,
     catalog,
-    rsList,
-    rsSelect,
-    rsInput,
-    numberInput,
+    DatePicker
   },
 };
 </script>

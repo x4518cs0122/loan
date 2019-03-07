@@ -254,6 +254,16 @@ export function postSecondOrder(id, data) {
   });
 }
 
+export function getSecondOrderInfo(visaId) {
+  const url = `/house/visa/${visaId}`
+  return axios.get(url)
+}
+
+export function updateSecondOrderInfo(checklistId, data) {
+  const url = `/house/checklist/update/${checklistId}`
+  return axios.post(url, {checklistId, checklist:JSON.stringify(data)})
+}
+
 /**二手房面签接口 */
 export function getSecondSignList() {
   const employeeId = store.getters.user.id;

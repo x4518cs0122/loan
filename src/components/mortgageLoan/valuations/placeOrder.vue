@@ -1,75 +1,105 @@
 <template>
-    <div class="placeOrder">
-        <v-header title="下单" @goback="goback" @submit="submit" next="提交"></v-header>
-        <rs-list>
-            <ul slot="body">
-                <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-                <li><rs-select selectText="完成时间" model="time" @selected="selected" :isDate="true"></rs-select></li>
-                <li><rs-select selectText="评估公司" valueType="1" model="company" @selected="selected"></rs-select></li>
-            </ul>
-        </rs-list>
-    </div>
+  <div class="placeOrder">
+    <v-header title="下单" @goback="goback" @submit="submit" next="提交"></v-header>
+    <cube-form :model="model" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="time" class="self-form-item">
+          <Date-picker :model="model" modelKey="time"></Date-picker>
+        </cube-form-item>
+        <cube-form-item
+          :field="item"
+          v-for="item in fields"
+          :key="item.modelKey"
+          class="self-form-item"
+        ></cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 
 <script>
-import vHeader from 'components/header/header'
-import rsList from 'base/rslist/rslist'
-import rsText from 'base/rstext/rstext'
-import rsSelect from 'base/rsselect/rsselect'
-import {mapGetters} from 'vuex'
-import {postEvaluateOrder} from 'api/api'
- export default {
-     data(){
-         return{
-             obj:{
-                time:'',
-                company:''
+import vHeader from 'components/header/header';
+import { DatePicker } from 'base';
+import { mapGetters, mapActions } from 'vuex';
+import { postEvaluateOrder, getOptions } from 'api/api';
+import { formatAxiosOptions } from '../utils';
+export default {
+  data() {
+    return {
+      model: {
+        time: '',
+        company: ''
+      },
+      fields: [],
+      time: {
+        modelKey: 'time',
+        label: '完成时间',
+        rules: {
+          required: true
+        }
+      }
+    };
+  },
+  created() {
+    getOptions(1).then(res => {
+      this.companyOptions = formatAxiosOptions(res.data);
+      this.initFields();
+    });
+  },
+  methods: {
+    goback() {
+      this.$router.push({ path: '/evaluate' });
+      this._getEvaluate()
+    },
+    initFields() {
+      this.fields = [
+        {
+          type: 'select',
+          modelKey: 'company',
+          label: '评估公司',
+          props: {
+            options: this.companyOptions
+          },
+          rules: {
+            required: true
+          }
+        }
+      ];
+    },
+    submit() {
+      this.$refs.form.validate(suc => {
+        if (suc) {
+          this.model.orderId = this.customer.id;
+          postEvaluateOrder(this.model).then(res => {
+            if (res.result) {
+              this.goback();
             }
-         }
-     },
-     methods:{
-         selected(id, model) {
-             if(model === 'time'){
-                 this.obj[model] = new Date(id).getTime()
-                 return
-             }
-            this.obj[model] = parseInt(id)
-         },
-         goback(){
-             this.$router.push({path:'/evaluate'})
-         },
-         submit(){
-             this.obj.orderId = this.customer.id
-             postEvaluateOrder(this.obj).then((res)=>{
-                 if(res.result){
-                     this.goback()
-                 }
-             })
-         }
-     },
-     computed:{
-         ...mapGetters([
-             'customer'
-         ])
-     },
-     components: {
-         vHeader,
-         rsList,
-         rsText,
-         rsSelect
-     }
- }
+          });
+        }
+      });
+    },
+    ...mapActions(['_getEvaluate'])
+  },
+  computed: {
+    ...mapGetters(['customer'])
+  },
+  components: {
+    vHeader,
+    DatePicker
+  }
+};
 </script>
 
 <style lang='stylus' scoped>
-@import '~common/stylus/variable'
-.placeOrder
-    position fixed 
-    top 0
-    bottom 0
-    left 0
-    right 0
-    overflow auto
-    background $color-background
- 
+@import '~common/stylus/variable';
+
+.placeOrder {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background: $color-background;
+}
 </style>

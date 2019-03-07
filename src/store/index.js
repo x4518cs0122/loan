@@ -7,7 +7,7 @@ import query from './modules/query';
 import getters from './getters';
 import createLogger from 'vuex/dist/logger';
 
-import { bizStore } from '../components/store';
+import * as Store from '../components/store';
 
 Vue.use(Vuex);
 
@@ -19,7 +19,7 @@ export default new Vuex.Store({
     user,
     permission,
     query,
-    bizStore
+    ...Store
   },
   getters,
   strict: debug,

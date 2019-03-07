@@ -1,5 +1,5 @@
 <template>
-  <cube-button @click="showDatePicker(modelKey)">{{ model.applicationTimeTxt }}></cube-button>
+  <cube-button @click="showDatePicker(modelKey)" class="date-picker-btn">{{ currentShowTime || initTxt }}></cube-button>
 </template>
 <script>
 export default {
@@ -8,16 +8,19 @@ export default {
       type: String,
       default: ''
     },
-    model: {}
+    model: {},
+    initTxt:{
+      type:String,
+      default:''
+    }
   },
   data() {
     return {
-      currentType: ''
+      currentShowTime: ''
     };
   },
   methods: {
     showDatePicker(type) {
-      this.currentType = type;
       if (!this.datePicker) {
         this.datePicker = this.$createDatePicker({
           title: '请选择时间',
@@ -31,10 +34,9 @@ export default {
       this.datePicker.show();
     },
     dateSelectHandler(date, selectedVal, selectedText) {
-      const type = `${this.currentType}Txt`;
-      this.model[type] = selectedText.join('-');
+      this.currentShowTime = selectedText.join('-');
 
-      this.model[this.currentType] = new Date(date).getTime();
+      this.model[this.modelKey] = new Date(date).getTime();
     }
   }
 };

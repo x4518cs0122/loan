@@ -1,6 +1,6 @@
 <template>
   <div class="page-main">
-    <cube-tab-panels v-model="selectedLabel">
+    <cube-tab-panels v-model="selectedLabel" class="white-bg">
       <cube-tab-panel label="主页">
         <Bussiness @changeTab="changeTab"></Bussiness>
       </cube-tab-panel>
@@ -69,6 +69,9 @@ export default {
 </script>
 <style lang="stylus" scoped>
 .page-main {
+  .white-bg {
+    background: #fff;
+  }
   .cube-tab-panels {
     position: fixed;
     top: 0;

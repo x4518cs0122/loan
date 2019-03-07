@@ -1,8 +1,6 @@
 <template>
   <div :class="`page-${name}`">
-    <div>
-      <slot></slot>
-    </div>
+    <slot></slot>
     <div v-if="loading" class="loading-opacity">
       <cube-loading :size="40"></cube-loading>
     </div>

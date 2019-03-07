@@ -1,7 +1,7 @@
 <template>
     <div class="getmoney">
         <v-header title="抵押收费列表" @goback="goback" back="主页"></v-header> 
-        <detail-list :list="list" @itemHandle="itemHandle" state="待确定收费状态"></detail-list>
+        <detail-list :list="chargeList" @itemHandle="itemHandle" state="待确定收费状态"></detail-list>
         <router-view></router-view>
     </div>
 </template>
@@ -10,46 +10,33 @@
 import {getCharge} from 'api/api';
 import vHeader from 'components/header/header';
 import detailList from 'base/detail-list/detail-list';
-import {mapMutations} from 'vuex';
+import {mapMutations, mapGetters, mapActions} from 'vuex';
 export default {
-  data() {
-    return {
-      list: [],
-    };
-  },
   created() {
-    this._getCharge();
+    this.getCharge();
   },
   methods: {
-    _getCharge() {
-      getCharge().then(res => {
-        if (res.result) {
-          this.list = res.data;
-        }
-      });
-    },
+    
     goback() {
       this.$router.push({path:'/bussiness'});
     },
     itemHandle(index) {
-      let customer = this.list[index];
+      let customer = this.chargeList[index];
       this.setCustomer(customer);
       this.$router.push({path: '/charge/chargeState'});
     },
     ...mapMutations({
       setCustomer: 'SET_CUSTOMER',
     }),
+    ...mapActions(['getCharge'])
+  },
+  computed:{
+    ...mapGetters(['chargeList'])
   },
   components: {
     detailList,
     vHeader,
-  },
-  watch: {
-    $route(to, from) {
-      let isChildrenRouter = /^\/charge\/.+$/.test(from.path);
-      isChildrenRouter && this._getCharge();
-    },
-  },
+  }
 };
 </script>
 

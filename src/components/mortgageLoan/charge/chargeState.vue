@@ -1,27 +1,40 @@
 <template>
-    <div class="fangkuan">
-        <v-header @goback="goback" @submit="submit" title="确定收费状态" next="提交"></v-header>
-        <rs-list>
-            <ul slot="body">
-                <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-                <li><rs-select selectText="完成收费时间" model="time" @selected="selected" :isDate="true"></rs-select></li>
-            </ul>
-        </rs-list>
-    </div>
+  <div class="fangkuan">
+    <v-header @goback="goback" @submit="submit" title="确定收费状态" next="提交"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="id" class="self-form-item">
+          <p>{{customer.id}}</p>
+        </cube-form-item>
+        <cube-form-item :field="time" class="self-form-item">
+          <Date-picker :model="obj" modelKey="time"></Date-picker>
+        </cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsText from 'base/rstext/rstext';
-import rsSelect from 'base/rsselect/rsselect';
-import {mapGetters} from 'vuex';
-import {changeChargeState} from '@/api/api'
+import { mapGetters, mapActions } from 'vuex';
+import { changeChargeState } from '@/api/api';
+import { DatePicker } from 'base';
 export default {
   data() {
     return {
-      obj:{
-          time: null
+      obj: {
+        time: null
+      },
+      time: {
+        modelKey: 'time',
+        label: '完成收费时间',
+        rules: {
+          required: true
+        }
+      },
+      id: {
+        modelKey: 'id',
+        label: '贷款编号'
       }
     };
   },
@@ -32,24 +45,43 @@ export default {
     selected(id, model) {
       this.obj[model] = new Date(id).getTime();
     },
-    submit() {
-      if(!this.obj.time){
-          return
+    toastShow() {
+      if (!this.toast) {
+        this.toast = this.$createToast({
+          mask: true,
+          time: 0
+        });
       }
-      changeChargeState(this.customer.id, this.obj.time).then(res =>{
-          res.result && this.goback()
-      })
+      this.toast.show();
     },
+    toastHide() {
+      this.toast.hide();
+    },
+    submit() {
+      this.$refs.form.validate(success => {
+        if (success) {
+          this.toastShow()
+          changeChargeState(this.customer.id, this.obj.time).then(res => {
+            if (res.result) {
+              this.getCharge();
+              this.goback();
+            }
+            this.toastHide()
+          }).catch(err =>{
+            this.toastHide()
+          });
+        }
+      });
+    },
+    ...mapActions(['getCharge'])
   },
   computed: {
-    ...mapGetters(['customer']),
+    ...mapGetters(['customer'])
   },
   components: {
-    rsList,
-    rsText,
-    rsSelect,
     vHeader,
-  },
+    DatePicker
+  }
 };
 </script>
 
@@ -57,12 +89,12 @@ export default {
 @import '~common/stylus/variable';
 
 .fangkuan {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: hidden;
-    background: $color-background;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  background: $color-background;
 }
 </style>

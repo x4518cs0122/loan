@@ -220,8 +220,9 @@ export default {
   /* * 头部区域 */
   .biz-header {
     position: relative;
-    height: 200px;
-    margin-bottom: 30px;
+    flex-basis:230px;
+    flex-shrink:0;
+    flex-grow:0;
 
     .placeholder {
       width: 100%;

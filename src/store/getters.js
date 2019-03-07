@@ -11,7 +11,14 @@ const getters = {
   queryCheckedorder: state => state.query.checkedOrder,
   /** 首页 */
   todos: state => state.bizStore.todos,
-  selectedLabel: state => state.bizStore.selectedLabel
+  selectedLabel: state => state.bizStore.selectedLabel,
+  evaluateList:state => state.evaStore.evaluateList,
+  approveList:state => state.approveStore.approveList,
+  mortgageList:state =>state.mortgageStore.mortgageList,
+  chargeList:state =>state.chargeStore.chargeList,
+
+  /** 二手房部分getters */
+  erSignList: state =>state.erSignStore.erSignList
 };
 
 export default getters;

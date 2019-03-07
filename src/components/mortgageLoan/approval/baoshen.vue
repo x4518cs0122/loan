@@ -1,63 +1,90 @@
 <template>
-    <div class="branch">
-      <v-header title="报审" next="提交" @goback="goback" @submit="submit"></v-header>
-      <rs-list>
-          <ul slot="body">
-            <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-            <li><rs-select selectText="上报审批时间" model="time" @selected="selected" :isDate="true"></rs-select></li>
-          </ul>
-      </rs-list>
-    </div>
+  <div class="branch">
+    <v-header title="报审" next="提交" @goback="goback" @submit="submit"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="time" class="self-form-item">
+          <Date-picker :model="obj" modelKey="time"></Date-picker>
+        </cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 <script>
-import vHeader from 'components/header/header'
-import rsList from 'base/rslist/rslist'
-import rsText from 'base/rstext/rstext'
-import rsSelect from 'base/rsselect/rsselect'
-import {mapGetters} from 'vuex'
-import {baoshen} from 'api/api'
+import vHeader from 'components/header/header';
+import {DatePicker} from 'base'
+import { mapGetters, mapActions } from 'vuex';
+import { baoshen } from 'api/api';
 export default {
-  data(){
-    return{
-      obj:{
-        time:''
+  data() {
+    return {
+      obj: {
+        time: ''
+      },
+      time: {
+        modelKey: 'time',
+        label: '完成时间',
+        rules: {
+          required: true
+        }
       }
-    }
+    };
   },
-  methods:{
-    goback(){
-      this.$router.push({path:`/approve/${this.customer.id}`})
+  methods: {
+    goback() {
+      this.$router.push({ path: `/approve/${this.customer.id}` });
     },
     selected(key, model) {
-        this.obj[model] = new Date(key).getTime()
+      this.obj[model] = new Date(key).getTime();
     },
-    submit(){
-      baoshen(this.obj.time, this.customer.id).then((res) =>{
-          res.result && this.goback()
-      })    
-    }
+    toastShow() {
+      if (!this.toast) {
+        this.toast = this.$createToast({
+          mask: true,
+          time: 0
+        });
+      }
+      this.toast.show();
+    },
+    toastHide() {
+      this.toast.hide();
+    },
+    submit() {
+      this.$refs.form.validate(success => {
+        if (success) {
+          this.toastShow()
+          baoshen(this.obj.time, this.customer.id).then(res => {
+            if(res.result){
+              this.goback();
+              this.getApprove()
+              this.toastHide()
+            } 
+          });
+        }
+
+      });
+    },
+    ...mapActions(['getApprove'])
   },
-  components:{
+  components: {
     vHeader,
-    rsList,
-    rsText,
-    rsSelect
+    DatePicker
   },
-  computed:{
-    ...mapGetters([
-      'customer'
-    ])
+  computed: {
+    ...mapGetters(['customer'])
   }
-}
+};
 </script>
 <style lang="stylus" scoped>
-@import '~common/stylus/variable'
-.branch
-    position absolute
-    top 0
-    bottom 0
-    left 0
-    right 0
-    overflow auto
-    background $color-background
+@import '~common/stylus/variable';
+
+.branch {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background: $color-background;
+}
 </style>

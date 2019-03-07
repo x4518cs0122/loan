@@ -1,179 +1,90 @@
 <template>
-    <div class="erjiedan">
-        <v-header :back="currentIndex === 1?'首页':'上一页'" title="二手房接单" @goback="goback" :next="currentIndex === 3? '提交':'下一步'" @submit="next"></v-header>
-        <div v-show="currentIndex === 1">
-            <rs-list>
-                <ul slot="body">
-                    <li class="list-header"> 
-                        <p>借款人基本信息</p>
-                    </li>
-                    <li><rs-select selectText="完成时间" model="finishTime" @selected="selected" :isDate="true"></rs-select></li>
-                    <li><rs-input @input="rsinput" inputText="姓名" model="borrowerName" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="联系方式" model="borrowerPhone"
-                      required 
-                      :validation="commonValidations.phoneValidation"
-                      :message="messageTip.phoneValidation"></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="工作单位" model="borrowerCompany" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="单位电话" model="borrowerCompanyPhone" 
-                        required
-                        :validation="commonValidations.numberValidation"
-                        :message="messageTip.numberMessage"></rs-input>
-                    </li>
-                    <li><number-input @input="rsinput" inputText="月均收入" model="borrowerSalary"
-                        required
-                        :validation="commonValidations.numberValidation"
-                        :message="messageTip.numberMessage"></number-input></li>
-                    <li><rs-input @input="rsinput" inputText="联系地址" model="borrowerAddress" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="户口所在地" model="borrowerResidentCity" required></rs-input></li>
-                    <li><rs-select selectText="证件类型" :options="options.idType" model="borrowerCertificateType" @selected="selected"></rs-select></li>
-                    <li class="no-border"><rs-input @input="rsinput" inputText="证件号码" model="borrowerCertificateNumber"
-                        required
-                        :validation="commonValidations.idCardValidation"
-                        message="请输入正确的证件号码"></rs-input>
-                    </li>
-                    <li><rs-select selectText="有无配偶" :options="options.has" @selected="selected" model="hasSpouse"></rs-select></li>
-                    <div v-show="obj.hasSpouse === 1">
-                        <li class="list-header"> 
-                            <p>借款人配偶基本信息</p>
-                        </li>
-                        <li><rs-input @input="rsinput" inputText="配偶姓名" model="borrowerSpouseName" required></rs-input></li>
-                        <li><rs-input @input="rsinput" inputText="联系方式" model="borrowerSpousePhone"
-                            required
-                            :validation="commonValidations.phoneValidation"
-                            :message="messageTip.phoneMessage"></rs-input></li>
-                        <li><rs-input @input="rsinput" inputText="工作单位" model="borrowerSpouseCompany" required></rs-input></li>
-                        <li><rs-input @input="rsinput" inputText="单位电话" model="borrowerSpouseCompanyPhone" 
-                            required
-                            :validation="commonValidations.numberValidation"
-                            :message="messageTip.numberMessage"></rs-input></li>
-                        <li><rs-input @input="rsinput" inputText="户口所在地" model="borrowerSpouseResidentCity" required></rs-input></li>
-                        <li><rs-select selectText="证件名称" valueType="14" @selected="selected" model="borrowerSpouseCertificateType"></rs-select></li>
-                        <li><rs-input @input="rsinput" inputText="证件号码" model="borrowerSpouseCertificateNumber"
-                            required
-                            :validation="commonValidations.idCardValidation"
-                            message="请输入正确的证件号码"></rs-input>
-                        </li>
-                    </div>
-                </ul>
-            </rs-list>
-        </div>
-        <div v-show="currentIndex === 2">
-            <rs-list>
-                <ul slot="body">
-                    <li class="list-header"> 
-                        <p>产权人基本情况</p>
-                    </li>
-                    <li><rs-input @input="rsinput" inputText="姓名" model="ownerName" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="联系方式" model="ownerPhone"
-                        required
-                        :validation="commonValidations.phoneValidation"
-                        :message="messageTip.phoneMessage"></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="身份证号" model="ownerIdCard"
-                        required
-                        :validation="commonValidations.idCardValidation"
-                        message="请输入正确的证件号码"></rs-input></li>
-                    <li><rs-select selectText="有无配偶" :options="options.has" @selected="selected" model="hasOwerSpouse"></rs-select></li>
-                    <li><rs-select selectText="有无保证人" :options="options.has" @selected="selected" model="hasGuarantor"></rs-select></li>
-                    <div v-show="obj.hasOwerSpouse === 1">
-                        <li class="list-header"> 
-                            <p>产权人配偶信息</p>
-                        </li>
-                        <li><rs-input @input="rsinput" inputText="配偶姓名" model="ownerSpouseName" required></rs-input></li>
-                        <li><rs-input @input="rsinput" inputText="联系方式" model="ownerSpousePhone"
-                            required
-                            :validation="commonValidations.phoneValidation"
-                            :message="messageTip.phoneMessage"></rs-input></li>
-                        <li class="no-border"><rs-input @input="rsinput" inputText="身份证号" model="ownerSpouseIdCard"
-                            required
-                            :validation="commonValidations.idCardValidation"
-                            message="请输入正确的证件号码"></rs-input></li>
-                    </div>
-                    <div v-show="obj.hasGuarantor === 1">
-                        <li class="list-header"> 
-                            <p>保证人基本情况</p>
-                        </li>
-                        <li><rs-input @input="rsinput" inputText="姓名" model="guarantorName" required></rs-input></li>
-                        <li><rs-input @input="rsinput" inputText="联系方式" model="guarantorPhone"
-                            required
-                            :validation="commonValidations.phoneValidation"
-                            :message="messageTip.phoneMessage"></rs-input></li>
-                        <li><rs-input @input="rsinput" inputText="身份证号" model="guarantorIdCard"
-                            required
-                            :validation="commonValidations.idCardValidation"
-                            message="请输入正确的证件号码"></rs-input></li>
-                        <li><rs-input @input="rsinput" inputText="工作单位" model="guarantorCompany"></rs-input></li>
-                    </div>
-                    <li class="list-header"> 
-                        <p>房屋基本情况</p>
-                    </li>
-                    <li><rs-input @input="rsinput" inputText="房屋地址" model="houseAddress" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="房产证号" model="houseCertificateNumber" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="土地证号" model="houseLandCertificateNumber" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="房屋所属区局" model="houseAffiliation" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="建成年份" model="houseBuiltTime" required></rs-input></li>
-                    <li><rs-select selectText="房屋类型" valueType="21" model="houseType" @selected="selected"></rs-select></li>                
-                    <li><rs-input @input="rsinput" inputText="建筑面积" model="houseArea" required></rs-input></li>
-                    <li><rs-select selectText="土地属性" valueType="22" model="houseLandType" @selected="selected"></rs-select></li>                
-                </ul>
-            </rs-list>
-        </div>
-        <div v-show="currentIndex === 3">
-            <rs-list>
-                <ul slot="body">
-                    <li class="list-header"> 
-                        <p>客户借款基本情况</p>
-                    </li>
-                    <li><rs-input @input="rsinput" inputText="贷款银行" model="loanBank" required></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="客户经理姓名" model="manager" required></rs-input>
-                    </li>
-                    <li><rs-input @input="rsinput" inputText="客户经理号码" model="managerPhone" 
-                        required
-                        :validation="commonValidations.phoneValidation"
-                        :message="messageTip.phoneMessage"></rs-input>
-                    </li>
-                    <li><rs-input @input="rsinput" inputText="评估公司" model="evaluationCompany" required></rs-input></li>
-                    <li><number-input @input="rsinput" inputText="房屋成交价" model="houseTransactionPrice" required></number-input></li>
-                    <li class="placeholder"></li>
-                    <li><number-input @input="rsinput" inputText="评估值" model="houseEvaluatePrice" required></number-input></li>
-                    <li><number-input @input="rsinput" inputText="贷款金额" model="loanAmount" required></number-input></li>
-                    <li class="no-border"><rs-input @input="rsinput" inputText="贷款年限" model="loanPeriod" 
-                        required
-                        :validation="commonValidations.numberValidation"
-                        :message="messageTip.numberMessage"></rs-input></li>
-                    <li><rs-input @input="rsinput" inputText="担保方式" model="guaranteeType" required></rs-input></li>
-                    <li><rs-select selectText="还款方式" valueType="23" model="payType" @selected="selected"></rs-select></li>
-                    <li><rs-select selectText="贷款类型" valueType="24" model="loanType" @selected="selected"></rs-select></li>
-                    <li><number-input @input="rsinput" inputText="首付金额" model="downPayAmount" required></number-input></li>
-                    <li><rs-input @input="rsinput" inputText="首付方式" model="downPayType" required></rs-input></li>
-                    <li><rs-select selectText="成交是否真实" :options="options.isreal" model="isDealReal" @selected="selected"></rs-select></li>
-                    <li><rs-select selectText="客户情况是否真实" :options="options.isreal" model="isClientSituationReal" @selected="selected"></rs-select></li>
-                    <li><rs-select selectText="卖方存折办理" valueType="25" model="sellerHandle" @selected="selected"></rs-select></li>
-                    <li><rs-input @input="rsinput" inputText="备注" model="remark"></rs-input></li>
-                </ul>
-            </rs-list>
-        </div>
-    </div>     
+  <div class="erjiedan">
+    <v-header
+      :back="currentIndex === 1?'首页':'上一页'"
+      title="二手房接单"
+      @goback="goback"
+      :next="currentIndex === 3? '提交':'下一步'"
+      @submit="next"
+    ></v-header>
+    <div v-show="currentIndex === 1">
+      <cube-form :model="obj" :immediate-validate="false" ref="form1">
+        <cube-form-group legend="客户基本信息">
+          <cube-form-item :field="time" class="self-form-item">
+            <Date-picker :model="obj" modelKey="finishTime" :initTxt="initTxt"></Date-picker>
+          </cube-form-item>
+          <cube-form-item
+            :field="item"
+            v-for="item in basicInfo"
+            :key="item.modelKey"
+            class="self-form-item"
+          ></cube-form-item>
+        </cube-form-group>
+      </cube-form>
+    </div>
+    <div v-show="currentIndex === 2">
+      <cube-form :model="obj" :immediate-validate="false" ref="form2">
+        <cube-form-group legend="产权人基本信息">
+          <cube-form-item
+            :field="item"
+            v-for="item in ownerInfo"
+            :key="item.modelKey"
+            class="self-form-item"
+          ></cube-form-item>
+        </cube-form-group>
+        <cube-form-group legend="产权人配偶信息" v-if="obj.hasOwerSpouse === 1">
+          <cube-form-item
+            :field="item"
+            v-for="item in ownerSpouseInfo"
+            :key="item.modelKey"
+            class="self-form-item"
+          ></cube-form-item>
+        </cube-form-group>
+        <cube-form-group legend="保证人基本情况" v-if="obj.hasGuarantor === 1">
+          <cube-form-item
+            :field="item"
+            v-for="item in guarantorInfo"
+            :key="item.modelKey"
+            class="self-form-item"
+          ></cube-form-item>
+        </cube-form-group>
+        <cube-form-group legend="房屋基本情况">
+          <cube-form-item
+            :field="item"
+            v-for="item in houseInfo"
+            :key="item.modelKey"
+            class="self-form-item"
+          ></cube-form-item>
+        </cube-form-group>
+      </cube-form>
+    </div>
+    <div v-show="currentIndex === 3">
+      <cube-form :model="obj" :immediate-validate="false" ref="form3">
+        <cube-form-group legend="客户借款基本情况">
+          <cube-form-item
+            :field="item"
+            v-for="item in clientLoanInfo"
+            :key="item.modelKey"
+            class="self-form-item"
+          ></cube-form-item>
+        </cube-form-group>
+      </cube-form>
+    </div>
+  </div>
 </template>
 
 <script type='text/ecmascript-6'>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsInput from 'base/rsinput/rsinput';
-import numberInput from 'base/rsinput/rsNumberInput';
-import rsSelect from 'base/rsselect/rsselect';
-import {commonValidations, messageTip} from '@/utils/Const.js';
-import {startHouse, postSecondOrder} from '@/api/api';
+import { commonValidations } from '@/utils/Const.js';
+import { startHouse, postSecondOrder, getOptions, getSecondOrderInfo, updateSecondOrderInfo } from '@/api/api';
+import { formatAxiosOptions } from '@/components/mortgageLoan/utils';
+import { DatePicker } from 'base';
+import * as _ from 'lodash';
+import {mapActions} from 'vuex';
 export default {
   data() {
     return {
-      commonValidations: commonValidations,
-      messageTip: messageTip,
       currentIndex: 1,
-      options: {
-        idType: [{id: 1, value: '身份证'}],
-        isreal: [{id: 0, value: '否'}, {id: 1, value: '是'}],
-        has:[{id:0, value:'无'}, {id:1, value: '有'}]
-      },
       obj: {
         id: null,
         finishTime: null,
@@ -212,8 +123,8 @@ export default {
         houseArea: '',
         houseLandType: '',
         loanBank: '',
-        manager:'',
-        managerPhone:'',
+        manager: '',
+        managerPhone: '',
         evaluationCompany: '',
         houseTransactionPrice: null,
         houseEvaluatePrice: null,
@@ -230,50 +141,745 @@ export default {
         remark: '',
 
         /**无效数据，用于判断显示 */
-        hasSpouse:0,
-        hasOwerSpouse:0,
-        hasGuarantor:0
+        hasSpouse: null,
+        hasOwerSpouse: null,
+        hasGuarantor: null
       },
+      time: {
+        modelKey: 'finishTime',
+        label: '完成时间',
+        rules: {
+          required: true
+        }
+      },
+      isSign:false,
+      initTxt:'',
+      basicInfo: [],
+      guarantorInfo: [],
+      houseInfo: [],
+      clientLoanInfo: [],
+      ownerInfo: [],
+      ownerSpouseInfo: [],
+      /** 下拉框内容 */
+      cardNameOptions: [],
+      houseLandOptions: [],
+      houseTypeOptions: [],
+      payTypeOptions: [],
+      loanTypeOptions: [],
+      sellerHandleOptions: []
     };
   },
-  components: {vHeader, rsList, rsSelect, rsInput, numberInput},
+  components: { vHeader, DatePicker },
+  created() {
+    this.getOption();
+    this.isSign = this.$route.meta.sign;
+    if (this.isSign) {
+      const visaId = _.get(this.$store.getters, 'customer.id', undefined);
+      getSecondOrderInfo(visaId).then(res => {
+        if (res.result) {
+          this.obj = Object.assign(this.obj, { ...res.data.checklist });
+          const finishTime = _.get(this.obj, 'finishTime')
+          const time = new Date(finishTime)
+          this.initTxt = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`;
+        }
+      });
+    }
+  },
   methods: {
-    selected(key, model) {
-      if (model === 'finishTime') {
-        this.obj[model] = new Date(key).getTime();
-        return;
-      }
-      this.obj[model] = parseInt(key);
-    },
     goback() {
       if (this.currentIndex === 1) {
-        this.$router.push({path: '/bussiness'});
+        this.$router.push({ path: '/bussiness' });
         return;
       }
       this.currentIndex--;
     },
     next() {
-      this.currentIndex === 3 ? this.submit() : this.currentIndex++;
+      this.$refs[`form${this.currentIndex}`].validate(success => {
+        if (success) {
+          /** 面签时，更新表单 */
+          this.currentIndex === 3 ? (this.isSign ? this.updateOrderForm() : this.submit()) : this.currentIndex++;
+        }
+      });
     },
-    rsinput(value, model) {
-      this.obj[model] = value;
+    updateOrderForm() {
+      let toast = this.$createToast({
+        mask: true,
+        time: 0
+      });
+      toast.show();
+      updateSecondOrderInfo(this.obj.id, this.obj)
+        .then(res => {
+          if (res.result) {
+              /** 面签编辑后，跳转至确认面签状态 */
+            this.$router.push({ path: '/erSign/confirmState' });
+          }
+          toast.hide();
+        })
+        .catch(() => {
+          toast.hide();
+          this.$createToast({
+            txt: '网络异常',
+            mask: true
+          });
+        })
+    },
+    getOption() {
+      const cardName = getOptions(14);
+      const houseType = getOptions(21);
+      const houseLand = getOptions(22);
+      const payType = getOptions(23);
+      const loanType = getOptions(24);
+      const sellerHandle = getOptions(25);
+      Promise.all([cardName, houseType, houseLand, payType, loanType, sellerHandle]).then(res => {
+        const [card, house, hl, py, lt, sh] = res;
+        this.cardNameOptions = formatAxiosOptions(card.data);
+        this.houseTypeOptions = formatAxiosOptions(house.data);
+        this.houseLandOptions = formatAxiosOptions(hl.data);
+        this.payTypeOptions = formatAxiosOptions(lt.data);
+        this.loanTypeOptions = formatAxiosOptions(sh.data);
+        this.sellerHandleOptions = formatAxiosOptions(sh.data);
+        this.initFields();
+      });
+    },
+    /** 初始化表单内容 */
+    initFields() {
+      this.basicInfo = [
+        {
+          type: 'input',
+          modelKey: 'borrowerName',
+          label: '姓名',
+          props: {
+            placeholder: '请输入客户姓名'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerPhone',
+          label: '联系方式',
+          props: {
+            placeholder: '请输入联系方式'
+          },
+          rules: {
+            required: true,
+            type: 'tel'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerCompany',
+          label: '工作单位',
+          props: {
+            placeholder: '请输入工作单位'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerCompanyPhone',
+          label: '单位电话',
+          props: {
+            placeholder: '请输入单位电话'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerSalary',
+          label: '月均收入',
+          props: {
+            placeholder: '请输入月均收入'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerAddress',
+          label: '联系地址',
+          props: {
+            placeholder: '请输入联系地址'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerResidentCity',
+          label: '户口所在地',
+          props: {
+            placeholder: '请输入户口所在地'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'borrowerCertificateType',
+          label: '证件类型',
+          props: {
+            options: [{ value: '1', text: '身份证' }]
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerCertificateNumber',
+          label: '证件号码',
+          props: {
+            placeholder: '请输入证件号码'
+          },
+          rules: {
+            required: this.isSign,
+            pattern: commonValidations.idCardValidation
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'loanVariety',
+          label: '有无配偶',
+          props: {
+            options: [{ value: 0, text: '无' }, { value: 1, text: '有' }]
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerSpouseName',
+          label: '配偶姓名',
+          props: {
+            placeholder: '请输入配偶姓名'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerSpousePhone',
+          label: '联系方式',
+          props: {
+            placeholder: '请输入联系方式'
+          },
+          rules: {
+            required: this.isSign,
+            type: 'tel'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerSpouseCompany',
+          label: '工作单位',
+          props: {
+            placeholder: '请输入工作单位'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerSpouseCompanyPhone',
+          label: '单位电话',
+          props: {
+            placeholder: '请输入单位电话'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerSpouseResidentCity',
+          label: '户口所在地',
+          props: {
+            placeholder: '请输入户口所在地'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'borrowerSpouseCertificateType',
+          label: '证件名称',
+          props: {
+            options: this.cardNameOptions
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'borrowerSpouseCertificateNumber',
+          label: '证件号码',
+          props: {
+            placeholder: '请输入证件号码'
+          },
+          rules: {
+            required: this.isSign,
+            pattern: commonValidations.idCardValidation
+          }
+        }
+      ];
+      this.ownerInfo = [
+        {
+          type: 'input',
+          modelKey: 'ownerName',
+          label: '姓名',
+          props: {
+            placeholder: '请输入产权人姓名'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'ownerPhone',
+          label: '联系方式',
+          props: {
+            placeholder: '请输入联系方式'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'ownerIdCard',
+          label: '身份证号',
+          props: {
+            placeholder: '请输入身份证号'
+          },
+          rules: {
+            required: this.isSign,
+            pattern: commonValidations.idCardValidation
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'hasOwerSpouse',
+          label: '有无配偶',
+          props: {
+            options: [{ value: 0, text: '无' }, { value: 1, text: '有' }]
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'hasGuarantor',
+          label: '有无保证人',
+          props: {
+            options: [{ value: 0, text: '无' }, { value: 1, text: '有' }]
+          },
+          rules: {
+            required: this.isSign
+          }
+        }
+      ];
+      this.ownerSpouseInfo = [
+        {
+          type: 'input',
+          modelKey: 'ownerSpouseName',
+          label: '姓名',
+          props: {
+            placeholder: '请输入产权人姓名'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'ownerSpousePhone',
+          label: '联系方式',
+          props: {
+            placeholder: '请输入联系方式'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'ownerSpouseIdCard',
+          label: '身份证号',
+          props: {
+            placeholder: '请输入身份证号'
+          },
+          rules: {
+            required: this.isSign,
+            pattern: commonValidations.idCardValidation
+          }
+        }
+      ];
+      this.guarantorInfo = [
+        {
+          type: 'input',
+          modelKey: 'guarantorName',
+          label: '姓名',
+          props: {
+            placeholder: '请输入客户姓名'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'guarantorPhone',
+          label: '联系方式',
+          props: {
+            placeholder: '请输入联系方式'
+          },
+          rules: {
+            required: this.isSign,
+            type: 'tel'
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'guarantorIdCard',
+          label: '身份证号',
+          props: {
+            placeholder: '请输入身份证号'
+          },
+          rules: {
+            required: this.isSign,
+            pattern: commonValidations.idCardValidation
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'guarantorCompany',
+          label: '工作单位',
+          props: {
+            placeholder: '请输入工作单位'
+          },
+          rules: {
+            required: this.isSign
+          }
+        }
+      ];
+      this.houseInfo = [
+        {
+          type: 'input',
+          modelKey: 'houseAddress',
+          label: '房屋地址',
+          props: {
+            placeholder: '请输入房屋地址'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'houseCertificateNumber',
+          label: '房产证号',
+          props: {
+            placeholder: '请输入房产证号'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'houseAffiliation',
+          label: '房屋所属区局',
+          props: {
+            placeholder: '请输入房屋所属区局'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'houseBuiltTime',
+          label: '建成年份',
+          props: {
+            placeholder: '请输入建成年份'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'houseType',
+          label: '房屋类型',
+          props: {
+            options: this.houseTypeOptions
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'houseArea',
+          label: '建筑面积',
+          props: {
+            placeholder: '请输入建筑面积'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'houseLandType',
+          label: '土地属性',
+          props: {
+            options: this.houseLandOptions
+          },
+          rules: {
+            required: this.isSign
+          }
+        }
+      ];
+      this.clientLoanInfo = [
+        {
+          type: 'input',
+          modelKey: 'loanBank',
+          label: '贷款银行',
+          props: {
+            placeholder: '请输入贷款银行'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'manager',
+          label: '客户经理姓名',
+          props: {
+            placeholder: '请输入客户经理姓名'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'managerPhone',
+          label: '客户经理号码',
+          props: {
+            placeholder: '请输入客户经理号码'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'evaluationCompany',
+          label: '评估公司',
+          props: {
+            placeholder: '请输入评估公司'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'houseTransactionPrice',
+          label: '房屋成交价',
+          props: {
+            placeholder: '请输入房屋成交价'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'houseEvaluatePrice',
+          label: '评估值',
+          props: {
+            placeholder: '请输入评估值'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'loanAmount',
+          label: '贷款金额',
+          props: {
+            placeholder: '请输入贷款金额'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'loanPeriod',
+          label: '贷款年限',
+          props: {
+            placeholder: '请输入贷款年限'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'guaranteeType',
+          label: '担保方式',
+          props: {
+            placeholder: '请输入担保方式'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'payType',
+          label: '还款方式',
+          props: {
+            options: this.payTypeOptions
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'loanType',
+          label: '贷款类型',
+          props: {
+            options: this.loanTypeOptions
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'downPayAmount',
+          label: '首付金额',
+          props: {
+            placeholder: '请输入首付金额'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'downPayType',
+          label: '首付款交付方式',
+          props: {
+            placeholder: '请输入首付款交付方式'
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'isDealReal',
+          label: '成交是否真实',
+          props: {
+            options: [{ value:'0', text: '否' }, { value: '1', text: '是' }]
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'isClientSituationReal',
+          label: '情况是否属实',
+          props: {
+            options: [{ value: '0', text: '否' }, { value: '1', text: '是' }]
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'select',
+          modelKey: 'sellerHandle',
+          label: '卖方存折办理',
+          props: {
+            options: this.sellerHandleOptions
+          },
+          rules: {
+            required: this.isSign
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'remark',
+          label: '备注',
+          props: {
+            placeholder: '请输入备注'
+          },
+          rules: {
+            required: this.isSign
+          }
+        }
+      ];
     },
     async submit() {
       let checklistId;
-      startHouse().then(res => {
-        const checklistId = res.data.id;
-        this.obj.id = checklistId;
-        postSecondOrder(checklistId, this.obj).then(res => {
-          if (res.result) {
-            this.$router.push({path: '/bussiness'});
-          }
-        });
+      let toast = this.$createToast({
+        mask: true,
+        time: 0
       });
+      toast.show();
+      startHouse()
+        .then(res => {
+          const checklistId = res.data.id;
+          this.obj.id = checklistId;
+          postSecondOrder(checklistId, this.obj).then(res => {
+            if (res.result) {
+              this.$router.push({ path: '/bussiness' });
+            }
+          });
+        })
+        .finally(() => {
+          toast.hide();
+        });
     },
-  },
-  created() {},
+    ...mapActions(['getSignList'])
+  }
 };
 </script>
 
 <style lang='stylus' scoped>
+.erjiedan {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: auto;
+}
 </style>

@@ -1,76 +1,112 @@
 <template>
-    <div class="confirm-state">
-        <v-header next="提交" title="确定面签状态" @submit="submit" @goback="goback"></v-header>
-        <rs-list>
-             <ul slot="body">
-                <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-                <li><rs-select selectText="完成时间" model="time" @selected="selected" :isDate="true"></rs-select></li>
-                <li><rs-select selectText="面签地点" valueType="0" model="address" @selected="selected"></rs-select></li>
-            </ul>
-        </rs-list>
-    </div>
+  <div class="confirm-state">
+    <v-header next="提交" title="确定面签状态" @submit="submit" @goback="goback"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="id" class="self-form-item">
+          <p>{{customer.id}}</p>
+        </cube-form-item>
+        <cube-form-item :field="time" class="self-form-item">
+          <Date-picker :model="obj" modelKey="time"></Date-picker>
+        </cube-form-item>
+        <cube-form-item :field="address" class="self-form-item"></cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 <script>
-import vHeader from 'components/header/header'
-import rsList from 'base/rslist/rslist'
-import rsText from 'base/rstext/rstext'
-import rsSelect from 'base/rsselect/rsselect'
-import {mapGetters} from 'vuex'
-import {postSHVisa} from 'api/api'
+import vHeader from 'components/header/header';
+import { mapGetters, mapActions } from 'vuex';
+import { postSHVisa, getOptions } from 'api/api';
+import { formatAxiosOptions } from '@/components/mortgageLoan/utils';
+import { DatePicker } from 'base';
 export default {
-  data(){
-      return{
-          obj:{
-              visaId:null,
-              time:null,
-              address:null
-          }
-      }
-  },
-  methods:{
-      goback(){
-        this.$router.push({path:'/sign'})
+  data() {
+    return {
+      obj: {
+        visaId: 1,
+        time: null,
+        address: null
       },
-      selected(id, model) {
-        if(model === 'time'){
-            this.obj[model] = new Date(id).getTime()
-            return 
+      id: {
+        label: '贷款编号',
+        modelKey: 'visaId'
+      },
+      time: {
+        label: '完成时间',
+        modelKey: 'time',
+        rules: {
+          required: true
         }
-        this.obj[model] = parseInt(id)
       },
-      submit(){
-        postSHVisa(this.customer.id, this.obj.time, this.obj.address).then((res)=>{
-            if(res.result){
-                this.$router.push({path:'/erSign'})
+      address: {}
+    };
+  },
+  created() {
+    this.initFileds();
+  },
+  methods: {
+    goback() {
+      this.$router.push({ path: '/sign' });
+    },
+    initFileds() {
+      getOptions(0).then(res => {
+        if (res.result) {
+          this.address = {
+            type: 'select',
+            modelKey: 'address',
+            label: '面签地点',
+            props: {
+              options: formatAxiosOptions(res.data)
             }
-        })
-      }
+          };
+        }
+      });
+    },
+    submit() {
+      this.$refs.form.validate(success => {
+        if (success) {
+          let toast = this.$createToast({
+            mask: true,
+            time: 0
+          });
+          toast.show();
+          postSHVisa(this.customer.id, this.obj.time, this.obj.address)
+            .then(res => {
+              if (res.result) {
+                this.getSignList();
+                this.$router.push({ path: '/erSign' });
+              }
+              toast.hide();
+            })
+            .catch(err => {
+              toast.hide();
+            });
+        }
+      });
+    },
+    ...mapActions(['getSignList'])
   },
-  computed:{
-      ...mapGetters([
-          'customer'
-      ]),
-      validate(){
-          return this.obj.time != null && this.obj.address !=null
-      },
+  computed: {
+    ...mapGetters(['customer'])
   },
-  components:{
-      vHeader,
-      rsSelect,
-      rsList,
-      rsText
+  components: {
+    vHeader,
+    DatePicker
   }
-}
+};
 </script>
 <style lang="stylus" scoped>
-@import '~common/stylus/variable'
-@import '~common/stylus/mixin'
-.confirm-state
-    position absolute
-    top 0
-    bottom 0
-    left 0
-    right 0
-    overflow auto
-    background $color-background
+@import '~common/stylus/variable';
+@import '~common/stylus/mixin';
+
+.confirm-state {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background: $color-background;
+}
 </style>

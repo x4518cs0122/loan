@@ -47,7 +47,8 @@ export default {
   box-shadow: 0 2px 2px #ccc;
   color: $color-text-l;
   text-align: center;
-  transform: translate3d(-50%, 0, 0);
+  /** 底部留30px空白 */
+  transform: translate3d(-50%, -30px, 0);
 
   .card-header {
     font-size: 14px;
