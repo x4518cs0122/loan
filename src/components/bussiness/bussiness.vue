@@ -201,9 +201,6 @@ export default {
           list: temp2
         }
       ];
-      // }else {
-      //   this.resetQueryResult()
-      // }
     }
   }
 };

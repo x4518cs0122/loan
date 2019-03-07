@@ -275,7 +275,7 @@ export default {
             placeholder: '请输入工作单位'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -286,7 +286,7 @@ export default {
             placeholder: '请输入单位电话'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -297,7 +297,7 @@ export default {
             placeholder: '请输入月均收入'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -308,7 +308,7 @@ export default {
             placeholder: '请输入联系地址'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -319,7 +319,7 @@ export default {
             placeholder: '请输入户口所在地'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -330,7 +330,7 @@ export default {
             options: [{ value: '1', text: '身份证' }]
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -341,7 +341,7 @@ export default {
             placeholder: '请输入证件号码'
           },
           rules: {
-            required: this.isSign,
+            required: false,
             pattern: commonValidations.idCardValidation
           }
         },
@@ -364,7 +364,7 @@ export default {
             placeholder: '请输入配偶姓名'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -375,7 +375,7 @@ export default {
             placeholder: '请输入联系方式'
           },
           rules: {
-            required: this.isSign,
+            required: false,
             type: 'tel'
           }
         },
@@ -387,7 +387,7 @@ export default {
             placeholder: '请输入工作单位'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -398,7 +398,7 @@ export default {
             placeholder: '请输入单位电话'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -409,7 +409,7 @@ export default {
             placeholder: '请输入户口所在地'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -420,7 +420,7 @@ export default {
             options: this.cardNameOptions
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -431,7 +431,7 @@ export default {
             placeholder: '请输入证件号码'
           },
           rules: {
-            required: this.isSign,
+            required: false,
             pattern: commonValidations.idCardValidation
           }
         }
@@ -467,7 +467,7 @@ export default {
             placeholder: '请输入身份证号'
           },
           rules: {
-            required: this.isSign,
+            required: false,
             pattern: commonValidations.idCardValidation
           }
         },
@@ -479,7 +479,7 @@ export default {
             options: [{ value: 0, text: '无' }, { value: 1, text: '有' }]
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -490,7 +490,7 @@ export default {
             options: [{ value: 0, text: '无' }, { value: 1, text: '有' }]
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         }
       ];
@@ -503,7 +503,7 @@ export default {
             placeholder: '请输入产权人姓名'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -514,7 +514,7 @@ export default {
             placeholder: '请输入联系方式'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -525,7 +525,7 @@ export default {
             placeholder: '请输入身份证号'
           },
           rules: {
-            required: this.isSign,
+            required: false,
             pattern: commonValidations.idCardValidation
           }
         }
@@ -539,7 +539,7 @@ export default {
             placeholder: '请输入客户姓名'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -550,7 +550,7 @@ export default {
             placeholder: '请输入联系方式'
           },
           rules: {
-            required: this.isSign,
+            required: false,
             type: 'tel'
           }
         },
@@ -562,7 +562,7 @@ export default {
             placeholder: '请输入身份证号'
           },
           rules: {
-            required: this.isSign,
+            required: false,
             pattern: commonValidations.idCardValidation
           }
         },
@@ -574,7 +574,7 @@ export default {
             placeholder: '请输入工作单位'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         }
       ];
@@ -598,7 +598,7 @@ export default {
             placeholder: '请输入房产证号'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -620,7 +620,7 @@ export default {
             placeholder: '请输入建成年份'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -631,7 +631,7 @@ export default {
             options: this.houseTypeOptions
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -653,7 +653,7 @@ export default {
             options: this.houseLandOptions
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         }
       ];
@@ -754,7 +754,7 @@ export default {
             placeholder: '请输入担保方式'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -765,7 +765,7 @@ export default {
             options: this.payTypeOptions
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -787,7 +787,7 @@ export default {
             placeholder: '请输入首付金额'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -798,7 +798,7 @@ export default {
             placeholder: '请输入首付款交付方式'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -809,7 +809,7 @@ export default {
             options: [{ value:'0', text: '否' }, { value: '1', text: '是' }]
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -820,7 +820,7 @@ export default {
             options: [{ value: '0', text: '否' }, { value: '1', text: '是' }]
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -831,7 +831,7 @@ export default {
             options: this.sellerHandleOptions
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         },
         {
@@ -842,7 +842,7 @@ export default {
             placeholder: '请输入备注'
           },
           rules: {
-            required: this.isSign
+            required: false
           }
         }
       ];

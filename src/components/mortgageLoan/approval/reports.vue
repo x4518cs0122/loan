@@ -52,7 +52,7 @@ import unreported from 'components/mortgageLoan/valuations/unreported';
 import rsList from 'base/rslist/rslist';
 import rsText from 'base/rstext/rstext';
 import rsSelect from 'base/rsselect/rsselect';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import { formalReport, getProcess, getReports } from 'api/api';
 import topTip from 'base/top-tip/top-tip';
 import { seprateArr } from '@/utils/commonFunction';

@@ -26,8 +26,10 @@ export default {
   data() {
     return {
       userInfo: {
-        name: '15972102336',
-        password: 'zyq123456'
+        // name: '15972102336',
+        // password: 'zyq123456'
+        name:'',
+        password:''
       },
       message: ''
     };

@@ -9,13 +9,14 @@
       <li v-for="(item, index) in list" :key="index" class="item-wrapper">
         <span class="name">{{item.name}}</span>
         <span class="state">
-          <el-checkbox v-model="obj[item.checked]"></el-checkbox>
+          <cube-checkbox v-model="obj[item.checked]"></cube-checkbox>
         </span>
         <span
           @click="showDetail(item)"
           class="detail"
           v-html="item.checked !== 'hasClientInformation'&&item.checked !== 'has_client_information'? '查看明细':''"
-        >&nbsp;
+        >
+          &nbsp;
           <i class="fa fa-angle-right" aria-hidden="true"></i>
         </span>
       </li>
@@ -33,10 +34,11 @@
             <li class="checkbox">
               <div class="text">说明：</div>
               <div class="check">
-                <el-radio v-model="obj[currentItem.radio]" :label=" false">原件</el-radio>
-                <el-radio v-model="obj[currentItem.radio]" :label=" true">复印件</el-radio>
+                <!-- <el-radio v-model="obj[currentItem.radio]" :label=" false">原件</el-radio>
+                <el-radio v-model="obj[currentItem.radio]" :label=" true">复印件</el-radio> -->
+                <cube-radio-group v-model="obj[currentItem.radio]" :options="options2" :hollow-style="true" />
                 <div class="multi" v-for="(mutilcheck, index) in currentItem.options" :key="index">
-                  <el-checkbox v-model="obj[mutilcheck.key]"></el-checkbox>
+                  <cube-checkbox v-model="obj[mutilcheck.key]"></cube-checkbox>
                   <span class="check-value">{{mutilcheck.value}}</span>
                 </div>
               </div>
@@ -95,7 +97,15 @@ export default {
   data() {
     return {
       currentItem: {},
-      detailShow: false
+      detailShow: false,
+      options2:[{
+          label: '原件',
+          value: false
+        },
+        {
+          label: '复印件',
+          value: true
+        }]
     };
   },
   components: { rsList, rsInput, vHeader },

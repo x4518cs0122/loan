@@ -25,7 +25,7 @@ export default {
     itemHandle(index) {
       let customer = this.erSignList[index];
       this.setCustomer(customer);
-      if (customer.currentState === '待填写资料目录表') {
+      if (customer.currentState === '未填写资料目录表') {
         this.$router.push({path: `/erSign/mulu`});
       } else {
         this.$router.push({path: `/erSign/confirmOrder`});
