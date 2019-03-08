@@ -9,7 +9,7 @@
       <li v-for="(item, index) in list" :key="index" class="item-wrapper">
         <span class="name">{{item.name}}</span>
         <span class="state">
-          <cube-checkbox v-model="obj[item.checked]"></cube-checkbox>
+          <cube-checkbox v-model="obj[item.checked]" :option="false"></cube-checkbox>
         </span>
         <span
           @click="showDetail(item)"
@@ -35,11 +35,18 @@
               <div class="text">说明：</div>
               <div class="check">
                 <!-- <el-radio v-model="obj[currentItem.radio]" :label=" false">原件</el-radio>
-                <el-radio v-model="obj[currentItem.radio]" :label=" true">复印件</el-radio> -->
-                <cube-radio-group v-model="obj[currentItem.radio]" :options="options2" :hollow-style="true" />
+                <el-radio v-model="obj[currentItem.radio]" :label=" true">复印件</el-radio>-->
+                <cube-radio-group
+                  v-model="obj[currentItem.radio]"
+                  :options="options2"
+                  :hollow-style="true"
+                />
                 <div class="multi" v-for="(mutilcheck, index) in currentItem.options" :key="index">
-                  <cube-checkbox v-model="obj[mutilcheck.key]"></cube-checkbox>
-                  <span class="check-value">{{mutilcheck.value}}</span>
+                  <cube-checkbox
+                    v-model="obj[mutilcheck.key]"
+                    :option="false"
+                    class="with-padding-reset"
+                  >{{getOption(mutilcheck)}}</cube-checkbox>
                 </div>
               </div>
             </li>
@@ -79,6 +86,7 @@
 import vHeader from 'components/header/header';
 import rsList from 'base/rslist/rslist';
 import rsInput from 'base/rsinput/rsinput';
+import * as _ from 'lodash';
 export default {
   props: {
     list: {
@@ -98,14 +106,16 @@ export default {
     return {
       currentItem: {},
       detailShow: false,
-      options2:[{
+      options2: [
+        {
           label: '原件',
           value: false
         },
         {
           label: '复印件',
           value: true
-        }]
+        }
+      ]
     };
   },
   components: { rsList, rsInput, vHeader },
@@ -123,6 +133,12 @@ export default {
         return;
       }
       this.detailShow = false;
+    },
+    getOption(multicheck) {
+      if (_.isEmpty(multicheck)) {
+        return '';
+      }
+      return _.get(multicheck, 'value', '');
     }
   }
 };
@@ -181,16 +197,18 @@ export default {
     background: $pure-white;
 
     .checkbox {
-      // line-height 18px
       padding: 15px 20px 15px 0;
       margin-left: 20px;
       display: flex;
       background: $color-white;
       font-size: $font-size-medium;
-      border-bottom: 1px solid $color-border;
 
       .text {
-        flex: 0 0 60px;
+        width: 60px;
+        display flex;
+        align-items center;
+        flex-shrink:0;
+        flex-grow:0;
       }
 
       .check {
@@ -199,13 +217,19 @@ export default {
     }
 
     .multi {
-      border-top: 1px solid $color-border;
       line-height: 18px;
       margin-top: 5px;
       padding-top: 5px;
 
       .check-value {
         padding-left: 10px;
+      }
+
+      
+    }
+    .with-padding-reset {
+      label {
+        padding-top: 0
       }
     }
   }

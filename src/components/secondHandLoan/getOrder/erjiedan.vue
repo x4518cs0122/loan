@@ -20,6 +20,14 @@
             class="self-form-item"
           ></cube-form-item>
         </cube-form-group>
+        <cube-form-group legend="客户配偶信息" v-if="obj.hasSpouse === 1">
+          <cube-form-item
+            :field="item"
+            v-for="item in spouseInfo"
+            :key="item.modelKey"
+            class="self-form-item"
+          ></cube-form-item>
+        </cube-form-group>
       </cube-form>
     </div>
     <div v-show="currentIndex === 2">
@@ -68,6 +76,14 @@
             class="self-form-item"
           ></cube-form-item>
         </cube-form-group>
+        <cube-form-group legend="其它">
+          <cube-form-item
+            :field="item"
+            v-for="item in restInfo"
+            :key="item.modelKey"
+            class="self-form-item"
+          ></cube-form-item>
+        </cube-form-group>
       </cube-form>
     </div>
   </div>
@@ -80,7 +96,7 @@ import { startHouse, postSecondOrder, getOptions, getSecondOrderInfo, updateSeco
 import { formatAxiosOptions } from '@/components/mortgageLoan/utils';
 import { DatePicker } from 'base';
 import * as _ from 'lodash';
-import {mapActions} from 'vuex';
+import { mapActions } from 'vuex';
 export default {
   data() {
     return {
@@ -139,6 +155,9 @@ export default {
         isClientSituationReal: '',
         sellerHandle: '',
         remark: '',
+        source: '',
+        agentName: '',
+        otherRemark: '',
 
         /**无效数据，用于判断显示 */
         hasSpouse: null,
@@ -152,21 +171,24 @@ export default {
           required: true
         }
       },
-      isSign:false,
-      initTxt:'',
+      isSign: false,
+      initTxt: '',
       basicInfo: [],
+      spouseInfo:[],
       guarantorInfo: [],
       houseInfo: [],
       clientLoanInfo: [],
       ownerInfo: [],
       ownerSpouseInfo: [],
+      restInfo:[],
       /** 下拉框内容 */
       cardNameOptions: [],
       houseLandOptions: [],
       houseTypeOptions: [],
       payTypeOptions: [],
       loanTypeOptions: [],
-      sellerHandleOptions: []
+      sellerHandleOptions: [],
+      orderFromOptions:[]
     };
   },
   components: { vHeader, DatePicker },
@@ -178,8 +200,8 @@ export default {
       getSecondOrderInfo(visaId).then(res => {
         if (res.result) {
           this.obj = Object.assign(this.obj, { ...res.data.checklist });
-          const finishTime = _.get(this.obj, 'finishTime')
-          const time = new Date(finishTime)
+          const finishTime = _.get(this.obj, 'finishTime');
+          const time = new Date(finishTime);
           this.initTxt = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`;
         }
       });
@@ -210,7 +232,7 @@ export default {
       updateSecondOrderInfo(this.obj.id, this.obj)
         .then(res => {
           if (res.result) {
-              /** 面签编辑后，跳转至确认面签状态 */
+            /** 面签编辑后，跳转至确认面签状态 */
             this.$router.push({ path: '/erSign/confirmState' });
           }
           toast.hide();
@@ -221,22 +243,24 @@ export default {
             txt: '网络异常',
             mask: true
           });
-        })
+        });
     },
     getOption() {
+      const orderFrom = getOptions(5)
       const cardName = getOptions(14);
       const houseType = getOptions(21);
       const houseLand = getOptions(22);
       const payType = getOptions(23);
       const loanType = getOptions(24);
       const sellerHandle = getOptions(25);
-      Promise.all([cardName, houseType, houseLand, payType, loanType, sellerHandle]).then(res => {
-        const [card, house, hl, py, lt, sh] = res;
+      Promise.all([orderFrom, cardName, houseType, houseLand, payType, loanType, sellerHandle]).then(res => {
+        const [rf, card, house, hl, py, lt, sh] = res;
+        this.orderFromOptions = formatAxiosOptions(rf.data)
         this.cardNameOptions = formatAxiosOptions(card.data);
         this.houseTypeOptions = formatAxiosOptions(house.data);
         this.houseLandOptions = formatAxiosOptions(hl.data);
-        this.payTypeOptions = formatAxiosOptions(lt.data);
-        this.loanTypeOptions = formatAxiosOptions(sh.data);
+        this.payTypeOptions = formatAxiosOptions(py.data);
+        this.loanTypeOptions = formatAxiosOptions(lt.data);
         this.sellerHandleOptions = formatAxiosOptions(sh.data);
         this.initFields();
       });
@@ -292,7 +316,7 @@ export default {
         {
           type: 'input',
           modelKey: 'borrowerSalary',
-          label: '月均收入',
+          label: '月均收入(元)',
           props: {
             placeholder: '请输入月均收入'
           },
@@ -347,7 +371,7 @@ export default {
         },
         {
           type: 'select',
-          modelKey: 'loanVariety',
+          modelKey: 'hasSpouse',
           label: '有无配偶',
           props: {
             options: [{ value: 0, text: '无' }, { value: 1, text: '有' }]
@@ -355,8 +379,9 @@ export default {
           rules: {
             required: true
           }
-        },
-        {
+        }
+      ];
+      this.spouseInfo = [{
           type: 'input',
           modelKey: 'borrowerSpouseName',
           label: '配偶姓名',
@@ -364,7 +389,7 @@ export default {
             placeholder: '请输入配偶姓名'
           },
           rules: {
-            required: false
+            required: true
           }
         },
         {
@@ -375,7 +400,7 @@ export default {
             placeholder: '请输入联系方式'
           },
           rules: {
-            required: false,
+            required: true,
             type: 'tel'
           }
         },
@@ -434,8 +459,7 @@ export default {
             required: false,
             pattern: commonValidations.idCardValidation
           }
-        }
-      ];
+        }]
       this.ownerInfo = [
         {
           type: 'input',
@@ -456,7 +480,8 @@ export default {
             placeholder: '请输入联系方式'
           },
           rules: {
-            required: true
+            required: true,
+            type:'tel'
           }
         },
         {
@@ -514,7 +539,8 @@ export default {
             placeholder: '请输入联系方式'
           },
           rules: {
-            required: false
+            required: false,
+            type:'tel'
           }
         },
         {
@@ -705,9 +731,9 @@ export default {
         {
           type: 'input',
           modelKey: 'houseTransactionPrice',
-          label: '房屋成交价',
+          label: '房屋成交价(万元)',
           props: {
-            placeholder: '请输入房屋成交价'
+            placeholder: '请输入房屋成交价:万元'
           },
           rules: {
             required: true
@@ -716,7 +742,7 @@ export default {
         {
           type: 'input',
           modelKey: 'houseEvaluatePrice',
-          label: '评估值',
+          label: '评估值(万元)',
           props: {
             placeholder: '请输入评估值'
           },
@@ -727,7 +753,7 @@ export default {
         {
           type: 'input',
           modelKey: 'loanAmount',
-          label: '贷款金额',
+          label: '贷款金额(万元)',
           props: {
             placeholder: '请输入贷款金额'
           },
@@ -738,7 +764,7 @@ export default {
         {
           type: 'input',
           modelKey: 'loanPeriod',
-          label: '贷款年限',
+          label: '贷款年限(年)',
           props: {
             placeholder: '请输入贷款年限'
           },
@@ -782,7 +808,7 @@ export default {
         {
           type: 'input',
           modelKey: 'downPayAmount',
-          label: '首付金额',
+          label: '首付金额(万元)',
           props: {
             placeholder: '请输入首付金额'
           },
@@ -806,7 +832,7 @@ export default {
           modelKey: 'isDealReal',
           label: '成交是否真实',
           props: {
-            options: [{ value:'0', text: '否' }, { value: '1', text: '是' }]
+            options: [{ value: '0', text: '否' }, { value: '1', text: '是' }]
           },
           rules: {
             required: false
@@ -846,6 +872,39 @@ export default {
           }
         }
       ];
+      this.restInfo = [
+          {
+          type: 'select',
+          modelKey: 'source',
+          label: '单子来源渠道',
+          props: {
+            options: this.orderFromOptions
+          },
+          rules: {
+            required: true
+          }
+        },{
+          type: 'input',
+          modelKey: 'agentName',
+          label: '中介名称',
+          props: {
+            placeholder: '请输入中介名称'
+          },
+          rules: {
+            required: true
+          }
+        },{
+          type: 'input',
+          modelKey: 'otherRemark',
+          label: '其他备注事项',
+          props: {
+            placeholder: '请输入其他备注事项'
+          },
+          rules: {
+            required: true
+          }
+        }
+      ]
     },
     async submit() {
       let checklistId;
