@@ -14,7 +14,6 @@
     "babel-polyfill": "^6.26.0",
     "better-scroll": "^1.4.0",
     "cube-ui": "^1.12.10",
-    "element-ui": "^2.3.2",
     "fastclick": "^1.0.6",
     "font-awesome": "^4.7.0",
     "js-cookie": "^2.2.0",

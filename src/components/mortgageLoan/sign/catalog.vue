@@ -34,8 +34,6 @@
             <li class="checkbox">
               <div class="text">说明：</div>
               <div class="check">
-                <!-- <el-radio v-model="obj[currentItem.radio]" :label=" false">原件</el-radio>
-                <el-radio v-model="obj[currentItem.radio]" :label=" true">复印件</el-radio>-->
                 <cube-radio-group
                   v-model="obj[currentItem.radio]"
                   :options="options2"

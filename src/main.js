@@ -9,14 +9,11 @@ import router from './router';
 import store from './store';
 // import './mock'
 import 'font-awesome/css/font-awesome.css';
-import ElementUI from 'element-ui';
-import 'element-ui/lib/theme-chalk/index.css';
 import './permission'; //permission control
 import Cube from 'cube-ui';
 
 fastclick.attach(document.body);
 Vue.config.productionTip = false;
-Vue.use(ElementUI);
 Vue.use(Cube);
 
 /* eslint-disable no-new */
