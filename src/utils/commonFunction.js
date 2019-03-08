@@ -1,3 +1,4 @@
+import * as _ from 'lodash'
 /**将数字转换成true/false */
 export function transformNumberAndBoolean(catalog, numberToBoolean) {
   let result = {}
@@ -71,6 +72,28 @@ export function seprateArr(arr) {
     }else{
         result.push([{...arr[i]}])
     }
+  }
+  return result
+}
+
+/** 将状态是finish和close的待办事项过滤 */
+export function filterUselessTodos(todos) {
+  
+  if(!_.isArray(todos)) {
+    return []
+  }
+  
+  const result = todos.filter(item =>{
+    return item.state !== 'finish' && item.state !== 'close'
+  })
+  return result
+} 
+
+/** 根据state得到目前的流程进度 */
+export function getState(item, states) {
+  const result = {
+    ...item,
+    currentState: _.get(states, item.state, undefined)
   }
   return result
 }

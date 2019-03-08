@@ -174,13 +174,13 @@ export default {
       isSign: false,
       initTxt: '',
       basicInfo: [],
-      spouseInfo:[],
+      spouseInfo: [],
       guarantorInfo: [],
       houseInfo: [],
       clientLoanInfo: [],
       ownerInfo: [],
       ownerSpouseInfo: [],
-      restInfo:[],
+      restInfo: [],
       /** 下拉框内容 */
       cardNameOptions: [],
       houseLandOptions: [],
@@ -188,24 +188,13 @@ export default {
       payTypeOptions: [],
       loanTypeOptions: [],
       sellerHandleOptions: [],
-      orderFromOptions:[]
+      orderFromOptions: []
     };
   },
   components: { vHeader, DatePicker },
   created() {
     this.getOption();
-    this.isSign = this.$route.meta.sign;
-    if (this.isSign) {
-      const visaId = _.get(this.$store.getters, 'customer.id', undefined);
-      getSecondOrderInfo(visaId).then(res => {
-        if (res.result) {
-          this.obj = Object.assign(this.obj, { ...res.data.checklist });
-          const finishTime = _.get(this.obj, 'finishTime');
-          const time = new Date(finishTime);
-          this.initTxt = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`;
-        }
-      });
-    }
+    this.checkSignState()
   },
   methods: {
     goback() {
@@ -222,6 +211,28 @@ export default {
           this.currentIndex === 3 ? (this.isSign ? this.updateOrderForm() : this.submit()) : this.currentIndex++;
         }
       });
+    },
+    checkSignState() {
+      this.isSign = this.$route.meta.sign;
+      if (this.isSign) {
+        const visaId = _.get(this.$store.getters, 'customer.id', undefined);
+        getSecondOrderInfo(visaId).then(res => {
+          if (res.result) {
+            this.obj = Object.assign(
+              this.obj,
+              { ...res.data.checklist },
+              {
+                hasSpouse: _.get(this.obj, 'borrowerSpouseName', undefined) ? 1 : 0,
+                hasOwerSpouse: _.get(this.obj, 'ownerSpouseName', undefined) ? 1 : 0,
+                hasGuarantor: _.get(this.obj, 'guarantorName', undefined) ? 1 : 0
+              }
+            );
+            const finishTime = _.get(this.obj, 'finishTime');
+            const time = new Date(finishTime);
+            this.initTxt = `${time.getFullYear()}-${time.getMonth() + 1}-${time.getDate()}`;
+          }
+        });
+      }
     },
     updateOrderForm() {
       let toast = this.$createToast({
@@ -246,7 +257,7 @@ export default {
         });
     },
     getOption() {
-      const orderFrom = getOptions(5)
+      const orderFrom = getOptions(5);
       const cardName = getOptions(14);
       const houseType = getOptions(21);
       const houseLand = getOptions(22);
@@ -255,7 +266,7 @@ export default {
       const sellerHandle = getOptions(25);
       Promise.all([orderFrom, cardName, houseType, houseLand, payType, loanType, sellerHandle]).then(res => {
         const [rf, card, house, hl, py, lt, sh] = res;
-        this.orderFromOptions = formatAxiosOptions(rf.data)
+        this.orderFromOptions = formatAxiosOptions(rf.data);
         this.cardNameOptions = formatAxiosOptions(card.data);
         this.houseTypeOptions = formatAxiosOptions(house.data);
         this.houseLandOptions = formatAxiosOptions(hl.data);
@@ -381,7 +392,8 @@ export default {
           }
         }
       ];
-      this.spouseInfo = [{
+      this.spouseInfo = [
+        {
           type: 'input',
           modelKey: 'borrowerSpouseName',
           label: '配偶姓名',
@@ -459,7 +471,8 @@ export default {
             required: false,
             pattern: commonValidations.idCardValidation
           }
-        }]
+        }
+      ];
       this.ownerInfo = [
         {
           type: 'input',
@@ -481,7 +494,7 @@ export default {
           },
           rules: {
             required: true,
-            type:'tel'
+            type: 'tel'
           }
         },
         {
@@ -540,7 +553,7 @@ export default {
           },
           rules: {
             required: false,
-            type:'tel'
+            type: 'tel'
           }
         },
         {
@@ -873,7 +886,7 @@ export default {
         }
       ];
       this.restInfo = [
-          {
+        {
           type: 'select',
           modelKey: 'source',
           label: '单子来源渠道',
@@ -883,7 +896,8 @@ export default {
           rules: {
             required: true
           }
-        },{
+        },
+        {
           type: 'input',
           modelKey: 'agentName',
           label: '中介名称',
@@ -893,7 +907,8 @@ export default {
           rules: {
             required: true
           }
-        },{
+        },
+        {
           type: 'input',
           modelKey: 'otherRemark',
           label: '其他备注事项',
@@ -904,7 +919,7 @@ export default {
             required: true
           }
         }
-      ]
+      ];
     },
     async submit() {
       let checklistId;

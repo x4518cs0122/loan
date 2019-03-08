@@ -65,13 +65,10 @@ export default {
 
 .page-personal-center {
   background: $pure-white;
-  padding-top: 20px;
-  height: 100%;
 
   .card-wrapper {
     position: relative;
     margin: 20px;
-    margin-top: 0;
     padding: 10px;
     display: flex;
     border: 1px solid $color-light-grey;
