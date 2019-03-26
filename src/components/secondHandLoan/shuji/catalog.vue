@@ -1,23 +1,20 @@
 <template>
     <div class="jy-mulu">
         <v-header title="确定资料收集情况" @goback="goback" next="提交" @submit="submit"></v-header>
-        <rs-list>
-            <ul slot="body">
-                <li class="placeholder"> </li>
-                <li><rs-select selectText="整件输机完成时间" model="finishTime" @selected="selected" :isDate="true" :initSelection="initTime"></rs-select></li>
-                <li class="list-header">
-                    <p>资料明细</p>
-                </li>
-                <li><catalog :list="muluList" :obj="obj"></catalog></li>         
-            </ul>
-        </rs-list>
+        <cube-form :model="obj" :immediate-validate="false" ref="form1">
+          <cube-form-group>
+            <cube-form-item :field="time" class="self-form-item">
+              <Date-picker :model="obj" modelKey="finishTime" ></Date-picker>
+            </cube-form-item>
+          </cube-form-group>
+        </cube-form>
+        <catalog :list="muluList" :obj="obj"></catalog>
     </div>
 </template>
 <script>
 import * as _ from 'lodash';
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsSelect from 'base/rsselect/rsselect';
+import {DatePicker} from 'base'
 import catalog from 'components/mortgageLoan/sign/catalog';
 import {transformNumberAndBoolean} from '@/utils/commonFunction.js';
 import {postShujiCatalog, getSHUJICatalog} from 'api/api';
@@ -26,7 +23,6 @@ export default {
   data() {
     return {
       options: [],
-      initTime: '',
       muluList: [
         {
           name: '客户情况登陆明细(共1份)',
@@ -172,6 +168,13 @@ export default {
         inputFinishTime: null,
         catalogOther: [],
       },
+      time:{
+          label: '整件完成时间',
+          modelKey: 'finishTime',
+          rules: {
+            required: true
+          }
+        }
     };
   },
   computed: {
@@ -183,16 +186,6 @@ export default {
   methods: {
     goback() {
       this.$router.push({path: '/erWrite'});
-    },
-    selected(id, model) {
-      if (model === 'finishTime') {
-        this.obj[model] = new Date(id).getTime();
-        return;
-      }
-      this.obj[model] = parInt(id);
-    },
-    rsinput(value, model) {
-      this.obj[model] = value;
     },
     /**添加其他文件 */
     addMore() {
@@ -235,8 +228,7 @@ export default {
   components: {
     vHeader,
     catalog,
-    rsList,
-    rsSelect,
+    DatePicker
   },
 };
 </script>

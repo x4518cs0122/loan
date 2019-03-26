@@ -1,13 +1,12 @@
 <template>
   <Page name="interview-detail">
     <v-header @goback="goback" @submit="submit" next="提交" title="抵押面谈"></v-header>
-    <cube-form :model="model" :immediate-validate="false" @validate="validateHandler" ref="form">
+    <cube-form :model="model" :immediate-validate="false" ref="form">
       <cube-form-group>
         <cube-form-item :field="fieldsTime" class="self-form-item">
-          <cube-button @click="showDatePicker('finishTime')">{{ model.finishTimeTxt }}></cube-button>
+          <Date-picker :model="model" modelKey="finishTime"></Date-picker>
         </cube-form-item>
       </cube-form-group>
-      <div class="placeholder"></div>
       <cube-form-group>
         <cube-form-item
           :field="item"
@@ -16,7 +15,7 @@
           class="self-form-item"
         ></cube-form-item>
         <cube-form-item :field="proposedTime" class="self-form-item">
-          <cube-button @click="showDatePicker('proposedTime')">{{ model.proposedTimeTxt }}></cube-button>
+          <Date-picker :model="model" modelKey="proposedTime"></Date-picker>
         </cube-form-item>
         <cube-form-item
           :field="item"
@@ -31,9 +30,7 @@
 </template>
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsInput from 'base/rsinput/rsinput';
-import rsSelect from 'base/rsselect/rsselect';
+import {DatePicker} from 'base'
 import { commonValidations } from '@/utils/Const.js';
 import { mapGetters } from 'vuex';
 import { postAdvice, killProcess, getOptions } from 'api/api';
@@ -66,12 +63,10 @@ export default {
       /** proposedTimeTxt与finishTimeTxt只控制显示，传参数不需要 */
       model: {
         finishTime: '',
-        finishTimeTxt: '',
         proposedInstitution: '',
         proposedClerk: '',
         proposedAmount: '',
         proposedTime: '',
-        proposedTimeTxt: '',
         rate: '',
         repaymentType: 0,
         clientPurposeType: 0,
@@ -83,7 +78,7 @@ export default {
   computed: {
     ...mapGetters(['customer'])
   },
-  components: { vHeader, rsSelect, rsInput, rsList, Page },
+  components: { vHeader, DatePicker, Page },
   created() {
     let paymentP = getOptions(8);
     let usageP = getOptions(9);
@@ -100,18 +95,8 @@ export default {
     );
   },
   methods: {
-    selected(id, model) {
-      if (model === 'finishTime' || model === 'proposedTime') {
-        this.obj[model] = new Date(id).getTime();
-        return;
-      }
-      this.obj[model] = parseInt(id);
-    },
     goback() {
       this.$router.push({ path: `/interview` });
-    },
-    rsinput(value, model) {
-      this.obj[model] = value;
     },
     /** cube 新方法 */
     initFields() {
@@ -192,6 +177,9 @@ export default {
           label: '客户用途',
           props: {
             placeholder: '请输入客户用途'
+          },
+          rules: {
+            required: true
           }
         },
         {
@@ -200,34 +188,12 @@ export default {
           label: '调查意见',
           props: {
             placeholder: '请输入调查意见'
+          },
+          rules: {
+            required: true
           }
         }
       ];
-    },
-    validateHandler(result) {
-      this.validity = result.validity;
-      this.valid = result.valid;
-      console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex);
-    },
-    showDatePicker(type) {
-      this.currentType = type;
-      if (!this.datePicker) {
-        this.datePicker = this.$createDatePicker({
-          title: '请选择时间',
-          min: new Date(2008, 7, 8),
-          max: new Date(2020, 9, 20),
-          value: new Date(),
-          onSelect: this.dateSelectHandler
-        });
-      }
-
-      this.datePicker.show();
-    },
-    dateSelectHandler(date, selectedVal, selectedText) {
-      const type = `${this.currentType}Txt`;
-      this.model[type] = selectedText.join('-');
-
-      this.model[this.currentType] = new Date(date).getTime();
     },
     confirmDelete() {
       this.$createDialog({
@@ -318,12 +284,6 @@ export default {
       color: #fff;
       font-size: 14px;
     }
-  }
-
-  .placeholder {
-    height: 10px;
-    line-height: 10px;
-    background: $background-list-header;
   }
 }
 </style>

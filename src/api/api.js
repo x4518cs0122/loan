@@ -1,7 +1,11 @@
 import axios from 'common/js/axios';
 import store from '../store';
 import qs from 'qs';
-import { getUrl } from '../utils/commonFunction.js';
+import {
+  getUrl
+} from '../utils/commonFunction.js';
+
+import normalAxios from 'axios';
 
 //通知api
 export function getNotice() {
@@ -220,11 +224,11 @@ export function getCharge() {
   return axios.get(url);
 }
 
-export function changeChargeState(chargeId, time) {
+export function changeChargeState(chargeId, obj) {
   const url = `/mortgage/charge/${chargeId}`;
   let data = {
     chargeId,
-    time
+    ...obj
   };
   return axios.post(url, data);
 }
@@ -261,7 +265,10 @@ export function getSecondOrderInfo(visaId) {
 
 export function updateSecondOrderInfo(checklistId, data) {
   const url = `/house/checklist/update/${checklistId}`
-  return axios.post(url, {checklistId, checklist:JSON.stringify(data)})
+  return axios.post(url, {
+    checklistId,
+    checklist: JSON.stringify(data)
+  })
 }
 
 /**二手房面签接口 */
@@ -369,6 +376,16 @@ export function postApproveState(approveId, approve) {
   });
 }
 
+export function postFile(data) {
+  const url = '/file/extra'
+  return axios.post(url, data, {
+    /** 序列化会影响文件的传递 */
+    transformRequest:(data) =>{
+      return data
+    }
+  })
+}
+
 /**二手房过户api */
 export function getGuohuList() {
   const employeeId = store.getters.user.id;
@@ -376,7 +393,7 @@ export function getGuohuList() {
   return axios.get(url);
 }
 
-export function postHuizheng(transferId, time) {
+export function postGuohuInfo(transferId, time) {
   const url = `/house/transfer/${transferId}`;
   return axios.post(url, {
     transferId,
@@ -456,10 +473,10 @@ export function getMoneyList() {
   return axios.get(url);
 }
 
-export function postMoneyState(loanId) {
+export function postMoneyState(loanId, data) {
   const url = `/house/loan/${loanId}`;
   return axios.post(url, {
-    loanId
+    ...data
   });
 }
 

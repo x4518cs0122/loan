@@ -44,14 +44,14 @@
       <Card :todos="todos" @changeTab="changeTab"></Card>
     </div>
     <div class="biz-content">
-      <cube-tab-bar v-model="selectedLabel">
+      <cube-tab-bar :value="loanTypeLabel" @change="changeLoanTypeLabel">
         <cube-tab v-for="(item) in tabs" :label="item.label" :key="item.label">
           <div slot="icon" class="img-wrapper" :style="{background:item.bg}">
             <img :src="item.img" width="30" height="30">
           </div>
         </cube-tab>
       </cube-tab-bar>
-      <cube-tab-panels v-model="selectedLabel" class="main-action">
+      <cube-tab-panels v-model="loanTypeLabel" class="main-action">
         <cube-tab-panel label="抵押贷款">
           <ul class="item-wrapper">
             <li class="item" v-for="x in list1" :key="x.meta.title" @click="push(x.path)">
@@ -100,7 +100,6 @@ export default {
       ],
       query: '',
       /** new feature */
-      selectedLabel: '抵押贷款',
       tabs: [
         {
           label: '抵押贷款',
@@ -173,10 +172,16 @@ export default {
     changeTab() {
       this.$emit('changeTab', '待办');
     },
-    ...mapActions(['getAnnounces', 'getTodos'])
+    changeLoanTypeLabel(label) {
+      this.setLoanTypeLabel(label)
+    },
+    ...mapActions(['getAnnounces', 'getTodos']),
+    ...mapMutations({
+      setLoanTypeLabel:'SET_LOANTYPELABEL'
+    })
   },
   computed: {
-    ...mapGetters(['permission_routers', 'announces', 'todos'])
+    ...mapGetters(['permission_routers', 'announces', 'todos', 'loanTypeLabel'])
   },
   watch: {
     query(newValue) {

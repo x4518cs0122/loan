@@ -1,22 +1,20 @@
 <template>
-    <div class="confirm-state">
-        <v-header next="提交" title="确定报审时间" @submit="submit" @goback="goback"></v-header>
-        <rs-list>
-             <ul slot="body">
-                <li class="list-header"> 
-                    <p>确定报审时间</p>
-                </li>
-                <li><rs-select selectText="上报审批时间" model="time" @selected="selected" :isDate="true"></rs-select></li>
-            </ul>
-        </rs-list>
-    </div>
+  <div class="confirm-state">
+    <v-header next="提交" title="确定报审时间" @submit="submit" @goback="goback"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group legend="确定报审时间">
+        <cube-form-item :field="time" class="self-form-item">
+          <Date-picker :model="obj" modelKey="time"></Date-picker>
+        </cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsSelect from 'base/rsselect/rsselect';
-import {mapGetters} from 'vuex';
-import {postApproveBaoshen} from 'api/api';
+import {DatePicker} from 'base'
+import { mapGetters } from 'vuex';
+import { postApproveBaoshen } from 'api/api';
 export default {
   data() {
     return {
@@ -24,42 +22,62 @@ export default {
         approveId: null,
         time: null
       },
+      time: {
+        label: '上报审批时间',
+        modelKey: 'time',
+        rules: {
+          required: true
+        }
+      }
     };
   },
   methods: {
     goback() {
-      this.$router.push({path: '/erApprove'});
-    },
-    selected(id, model) {
-      this.obj[model] = new Date(id).getTime();
+      this.$router.push({ path: '/erApprove' });
     },
     submit() {
-      postApproveBaoshen(this.customer.id, this.obj.time).then(res => {
-        if (res.result) {
-          this.goback()
-        }
-      });
-    },
+      this.$refs.form.validate(success =>{
+        let toast = this.$createToast({
+            mask: true,
+            time: 0
+          });
+          toast.show();
+          postApproveBaoshen(this.customer.id, this.obj.time).then(res => {
+            if (res.result) {
+              this.goback();
+            }
+            toast.hide()
+          },err =>{
+            toast.hide();
+            this.$createToast({
+              mask: true,
+              txt: err,
+              type: 'txt'
+            }).show()
+          });
+      })
+      
+    }
   },
   computed: {
     ...mapGetters(['customer'])
   },
   components: {
     vHeader,
-    rsSelect,
-    rsList
-  },
+    DatePicker
+  }
 };
 </script>
 <style lang="stylus" scoped>
 @import '~common/stylus/variable';
+
 .confirm-state {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: auto;
-    background: $color-background;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background: $color-background;
 }
 </style>

@@ -676,7 +676,7 @@ export default {
         {
           type: 'input',
           modelKey: 'houseArea',
-          label: '建筑面积',
+          label: '建筑面积(平米)',
           props: {
             placeholder: '请输入建筑面积'
           },

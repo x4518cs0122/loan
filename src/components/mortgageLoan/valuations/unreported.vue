@@ -1,10 +1,10 @@
 <template>
   <div class="unreported" v-if="showForm">
     <v-header title="出报告" @goback="hidden"></v-header>
-    <cube-form :model="obj" :immediate-validate="false" ref="form">
+    <cube-form :model="obj" :immediate-validate="false" ref="form" @validate="validateHandler">
       <cube-form-group >
         <cube-form-item :field="time" class="self-form-item" v-show="currentProcess === 'approve' || currentProcess === 'erValuation'">
-          <Date-picker :model="obj" modelKey="time"></Date-picker>
+          <Date-picker :model="obj" modelKey="time" :initTxt="obj.timeInitTxt"></Date-picker>
         </cube-form-item>
         <cube-form-item :field="type" class="self-form-item" v-if="currentProcess === 'erValuation'" />
       </cube-form-group>
@@ -28,6 +28,7 @@ import vHeader from 'components/header/header';
 import rsSelect from 'base/rsselect/rsselect';
 import { mapGetters } from 'vuex';
 import {DatePicker} from 'base'
+import * as _ from 'lodash'
 export default {
   props: {
     obj: {
@@ -43,10 +44,6 @@ export default {
   },
   data() {
     return {
-      options: {
-        onetwo: [{ id: '1', value: '首套' }, { id: '2', value: '两套' }],
-        type: [{ id: 1, value: '预评' }, { id: 2, value: '正评' }]
-      },
       showForm: false,
       time: {
         modelKey: 'time',
@@ -103,7 +100,7 @@ export default {
         {
           type: 'input',
           modelKey: 'reportHouseAge',
-          label: '房龄',
+          label: '房龄(年)',
           props: {
             placeholder: '请输入房龄'
           },
@@ -114,7 +111,7 @@ export default {
         {
           type: 'input',
           modelKey: 'reportHouseArea',
-          label: '面积',
+          label: '面积(平米)',
           props: {
             placeholder: '请输入房产面积'
           },
@@ -126,7 +123,7 @@ export default {
         {
           type: 'input',
           modelKey: 'reportHouseSingle',
-          label: '单价',
+          label: '单价(元/平米)',
           props: {
             placeholder: '请输入平方米单价'
           },
@@ -138,7 +135,7 @@ export default {
         {
           type: 'input',
           modelKey: 'reportHouseTotal',
-          label: '总价',
+          label: '总价(元)',
           props: {
             placeholder: '请输入总价'
           },
@@ -150,7 +147,7 @@ export default {
         {
           type: 'input',
           modelKey: 'reportLoanAmount',
-          label: '贷款金额',
+          label: '贷款金额(元)',
           props: {
             placeholder: '请输入贷款金额'
           },
@@ -159,18 +156,18 @@ export default {
             type:'number'
           }
         },
-        {
-          type: 'input',
-          modelKey: 'reportLoanYear',
-          label: '年限',
-          props: {
-            placeholder: '请输入房屋年限'
-          },
-          rules: {
-            required: true,
-            type:'number'
-          }
-        },
+        // {
+        //   type: 'input',
+        //   modelKey: 'reportLoanYear',
+        //   label: '年限(年)',
+        //   props: {
+        //     placeholder: '请输入房屋年限'
+        //   },
+        //   rules: {
+        //     required: true,
+        //     type:'number'
+        //   }
+        // },
         {
           type: 'select',
           modelKey: 'reportFirst',
@@ -191,6 +188,13 @@ export default {
     },
     hidden() {
       this.showForm = false;
+    },
+    /** 在每次输入时判断是否改变单价和平米，计算总价 */
+    validateHandler() {
+      const price = this.obj.reportHouseSingle
+      const area = this.obj.reportHouseArea
+      this.obj.reportHouseTotal = price && area? _.round(_.multiply(price, area),1):''
+      
     },
     submit() {
       if (this.currentProcess === 'approve' || this.currentProcess === 'erValuation') {

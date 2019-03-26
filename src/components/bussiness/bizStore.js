@@ -4,7 +4,8 @@ import * as _ from 'lodash';
 const bizStore = {
   state: {
     announces: [],
-    todos: []
+    todos: [],
+    loanTypeLabel: '抵押贷款'
   },
   mutations: {
     SET_ANNOUNCE: (state, announces) => {
@@ -13,8 +14,8 @@ const bizStore = {
     SET_TODOS: (state, todos) => {
       state.todos = todos;
     },
-    SET_SELECTEDLABEL: (state, label) => {
-      state.label = label;
+    SET_LOANTYPELABEL: (state, loanTypeLabel) => {
+      state.loanTypeLabel = loanTypeLabel;
     }
   },
   actions: {

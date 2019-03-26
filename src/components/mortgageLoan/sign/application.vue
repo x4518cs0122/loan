@@ -1,6 +1,6 @@
 <template>
   <div class="application">
-    <v-header @goback="goback" title="个人申请表" :next="nextTxt" @submit="next"></v-header>
+    <v-header @goback="goback" :title="pageTitle" :next="nextTxt" @submit="next"></v-header>
     <div class="scroll">
       <!-- 个人信息 index = 1 -->
       <div v-show="currentIndex === 1">
@@ -24,7 +24,7 @@
       <!-- 配偶信息 index = 2 -->
       <div v-show="currentIndex === 2">
         <cube-form :model="model" :immediate-validate="false" ref="form2">
-          <cube-form-group>
+          <cube-form-group legend="客户配偶基本信息">
             <cube-form-item
               :field="item"
               v-for="item in spouseFileds"
@@ -37,7 +37,7 @@
       <!-- 工作单位 index = 3 -->
       <div v-show="currentIndex === 3 && model.proposerJobType === 1">
         <cube-form :model="model" :immediate-validate="false" ref="form3">
-          <cube-form-group>
+          <cube-form-group legend="工作单位信息">
             <cube-form-item
               :field="item"
               v-for="item in sxFileds"
@@ -49,7 +49,7 @@
       </div>
       <div v-show="currentIndex === 3 && model.proposerJobType === 2">
         <cube-form :model="model" :immediate-validate="false" ref="form4">
-          <cube-form-group>
+          <cube-form-group legend="经营企业信息">
             <cube-form-item
               :field="item"
               v-for="item in zgFileds"
@@ -62,7 +62,7 @@
       <!-- 贷款信息 index = 4 -->
       <div v-show="currentIndex === 4">
         <cube-form :model="model" :immediate-validate="false" ref="form5">
-          <cube-form-group>
+          <cube-form-group legend="贷款信息">
             <cube-form-item
               :field="item"
               v-for="item in loanFileds"
@@ -74,38 +74,8 @@
       </div>
       <!-- 紧急联系人信息 index = 5 -->
       <div v-show="currentIndex === 5">
-        <!-- <rs-list>
-          <ul slot="body">
-            <li class="list-header">紧急联系人信息(无法律责任)</li>
-            <li>
-              <rs-input @input="rsinput" inputText="姓名" model="loanContactName" required></rs-input>
-            </li>
-            <li>
-              <rs-select
-                selectText="是您的"
-                :options="options.relation"
-                model="loanContactRela"
-                @selected="selected"
-                valuetype="18"
-              ></rs-select>
-            </li>
-            <li>
-              <rs-input @input="rsinput" inputText="住宅电话" model="loanContactTele"></rs-input>
-            </li>
-            <li>
-              <rs-input
-                @input="rsinput"
-                inputText="手机号码"
-                model="loanContactPhone"
-                required
-                :validation="commonValidations.phoneValidation"
-                :message="messageTip.phoneMessage"
-              ></rs-input>
-            </li>
-          </ul>
-        </rs-list>-->
         <cube-form :model="model" :immediate-validate="false" ref="form6">
-          <cube-form-group>
+          <cube-form-group legend="紧急联系人信息">
             <cube-form-item
               :field="item"
               v-for="item in contactFileds"
@@ -120,20 +90,15 @@
 </template>
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsSelect from 'base/rsselect/rsselect';
-import rsInput from 'base/rsinput/rsinput';
 import { mapGetters } from 'vuex';
 import { commonValidations, messageTip } from '@/utils/Const.js';
 import { postForm, getOptions } from 'api/api';
 import { DatePicker } from 'base';
 import { formatAxiosOptions } from '../utils';
-import { options } from './Constance';
+import { options, TITLE_MAP } from './Constance';
 export default {
   data() {
     return {
-      commonValidations: commonValidations,
-      messageTip: messageTip,
       currentIndex: 1,
       nextTxt: '下一步',
       model: {
@@ -205,13 +170,11 @@ export default {
       CompanyTypeOptions: [],
       CompanyDutyOptions: [],
       loanRepaymentTypeOptions: [],
-      loanContactRelaOptions: []
+      loanContactRelaOptions: [],
+      livingSituationOptions:[]
     };
   },
   components: {
-    rsSelect,
-    rsList,
-    rsInput,
     vHeader,
     DatePicker
   },
@@ -301,7 +264,6 @@ export default {
       this.model.hasProposerSpouseTogether === 0 ? false : true;
       this.model.id = this.customer.id;
       this.showToastMask();
-      console.log(this.model);
       postForm(this.model).then(
         res => {
           if (res.result) {
@@ -329,6 +291,7 @@ export default {
       for (let i = 10; i < 19; i++) {
         primiseArr.push(getOptions(i));
       }
+      primiseArr.push(getOptions(27))
       Promise.all(primiseArr).then(
         res => {
           const [
@@ -340,7 +303,8 @@ export default {
             proposerCompanyType,
             proposerCompanyDuty,
             loanRepaymentType,
-            loanContactRela
+            loanContactRela,
+            livingSituation
           ] = res;
           this.marriageOptions = formatAxiosOptions(marriageOptions.data);
           this.familyOptions = formatAxiosOptions(familyOptions.data);
@@ -351,6 +315,7 @@ export default {
           this.CompanyDutyOptions = formatAxiosOptions(proposerCompanyDuty.data);
           this.loanRepaymentTypeOptions = formatAxiosOptions(loanRepaymentType.data);
           this.loanContactRelaOptions = formatAxiosOptions(loanContactRela.data);
+          this.livingSituationOptions = formatAxiosOptions(livingSituation.data)
           this.initFields();
         },
         err => {
@@ -467,11 +432,11 @@ export default {
           }
         },
         {
-          type: 'input',
+          type: 'select',
           modelKey: 'proposerInhabitingInfo',
           label: '居住状况',
           props: {
-            placeholder: '请填写居住状况'
+            options: this.livingSituationOptions
           },
           rules: {
             required: true
@@ -548,7 +513,7 @@ export default {
         {
           type: 'input',
           modelKey: 'proposerIncomeMonth',
-          label: '月收入',
+          label: '月收入(元)',
           props: {
             placeholder: '请输入月收入'
           },
@@ -565,9 +530,6 @@ export default {
           label: '姓名',
           props: {
             placeholder: '请输入姓名'
-          },
-          rules: {
-            required: true
           }
         },
         {
@@ -578,7 +540,6 @@ export default {
             placeholder: '请输入联系方式'
           },
           rules: {
-            required: true,
             pattern: commonValidations.phoneValidation
           }
         },
@@ -588,17 +549,14 @@ export default {
           label: '证件类型',
           props: {
             options: this.SpousePaperIdOptions
-          },
-          rules: {
-            required: true
           }
         },
         {
           type: 'input',
           modelKey: 'proposerSpousePaperId',
-          label: '证件名称',
+          label: '证件号码',
           props: {
-            placeholder: '如选择其他，请填写证件全名'
+            placeholder: '请填写证件号码'
           }
         },
         {
@@ -607,9 +565,6 @@ export default {
           label: '是否共同申请',
           props: {
             options: options.shifou
-          },
-          rules: {
-            required: true
           }
         }
       ];
@@ -720,7 +675,7 @@ export default {
         {
           type: 'input',
           modelKey: 'loanAmount',
-          label: '申请金额',
+          label: '申请金额(元)',
           props: {
             placeholder: '请输入申请金额'
           },
@@ -732,7 +687,7 @@ export default {
         {
           type: 'input',
           modelKey: 'loanPeriod',
-          label: '申请期限',
+          label: '申请期限(月)',
           props: {
             placeholder: '请输入申请期限'
           },
@@ -833,7 +788,17 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['customer'])
+    ...mapGetters(['customer']),
+    pageTitle() {
+      let index = this.currentIndex - 1
+      /** 单位信息 */
+      if(index === 2) {
+        const [work, company] = TITLE_MAP[2].split('&')
+        return this.model.proposerJobType === 1? work:company
+      }else {
+        return TITLE_MAP[index]
+      }
+    }
   },
   watch: {
     currentIndex(newIndex) {

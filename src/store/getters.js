@@ -11,7 +11,7 @@ const getters = {
   queryCheckedorder: state => state.query.checkedOrder,
   /** 首页 */
   todos: state => state.bizStore.todos,
-  selectedLabel: state => state.bizStore.selectedLabel,
+  loanTypeLabel: state => state.bizStore.loanTypeLabel,
   evaluateList:state => state.evaStore.evaluateList,
   approveList:state => state.approveStore.approveList,
   mortgageList:state =>state.mortgageStore.mortgageList,

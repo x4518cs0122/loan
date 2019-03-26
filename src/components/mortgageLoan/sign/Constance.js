@@ -6,3 +6,4 @@ export const options = {
   shouxin: [{ value: 1, text: '抵押经营' }, { value: 2, text: '抵押消费' }],
   companyBelong: [{ value: 1, text: '自有' }, { value: 2, text: '租赁' }]
 };
+export const TITLE_MAP = ['客户基本信息','客户配偶信息','工作单位信息&经营企业信息', '贷款信息', '紧急联系人信息']

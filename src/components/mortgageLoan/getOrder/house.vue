@@ -2,7 +2,7 @@
   <ul class="page-add-house">
     <li v-for="(house, index) in houses" :key="index" class="item">
       <div class="header">
-        <span class="title">房产{{index+1}}总价:{{total(house)}}</span>
+        <span class="title">房产{{index+1}}总价(元):{{total(house)}}</span>
         <i
           class="fa fa-trash deleteHouseInfo"
           aria-hidden="true"
@@ -12,12 +12,16 @@
       </div>
       <div class="input-wrapper">
         <div class="input-item">
-          <span class="text">面积：</span>
-          <cube-input v-model="house.area" class="house-input" placeholder="请输入房产面积"></cube-input>
+          <span class="text">面积:</span>
+          <cube-input v-model="house.area" class="house-input" placeholder="请输入房产面积">
+            <span slot="append">平米</span>
+          </cube-input>
         </div>
         <div class="input-item">
-          <span class="text-4">询价结果：</span>
-          <cube-input v-model="house.enquiryResult" class="house-input" placeholder="请输入询价结果"></cube-input>
+          <span class="text">询价结果:</span>
+          <cube-input v-model="house.enquiryResult" class="house-input" placeholder="请输入询价结果">
+            <span slot="append">元/平米</span>
+          </cube-input>
         </div>
       </div>
     </li>
@@ -113,32 +117,27 @@ export default {
     }
 
     .input-wrapper {
-      display: flex;
-      margin: 10px 0;
-
+      padding: 10px;
       .input-item {
-        flex-shrink: 1;
-        flex-grow: 1;
         font-size: 12px;
+        margin-top: 10px;
         display: flex;
-        margin-right: 10px;
 
         .text {
-          min-width: 40px;
-        }
-
-        .text-4 {
-          min-width: 60px;
+          min-width: 100px;
         }
 
         .cube-input {
           flex-shrink: 1;
           flex-grow: 1;
-
+          &.house-input {
+            border-bottom: 1px solid #cccccc;
+            .cube-input-append {
+              font-size: 12px;
+            }
+          }
           input {
             padding: 0;
-            border: 1px solid #cccccc;
-            border-radius: 5px;
 
             &::-webkit-input-placeholder {
               /* placeholder颜色 */

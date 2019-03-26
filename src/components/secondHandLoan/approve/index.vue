@@ -45,15 +45,11 @@ export default {
       let id = this.list[index].id;
       let customer = this.list[index];
       this.setCustomer(customer);
-      switch(customer.currentState){
-          case '未报审':
-            this.$router.push({path: `/erApprove/baoshen`});
-            break;
-          case '未确定抵押状态': 
-            this.$router.push({path: `/erApprove/approveState`});
-            break;
-          default:
-            this.goback()
+      const isSendState = _.get(customer, 'extra.sendState.done', false)
+      if(isSendState) {
+        this.$router.push({path: `/erApprove/approveState`});
+      }else {
+        this.$router.push({path: `/erApprove/baoshen`});
       }
     },
     ...mapMutations({

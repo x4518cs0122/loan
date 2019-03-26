@@ -9,6 +9,12 @@
         <cube-form-item :field="time" class="self-form-item">
           <Date-picker :model="obj" modelKey="time"></Date-picker>
         </cube-form-item>
+        <cube-form-item
+          :field="item"
+          v-for="item in fields"
+          :key="item.modelKey"
+          class="self-form-item"
+        ></cube-form-item>
       </cube-form-group>
     </cube-form>
   </div>
@@ -23,11 +29,15 @@ export default {
   data() {
     return {
       obj: {
-        time: null
+        time: null,
+        type: '',
+        amount: '',
+        bank: '',
+        remitter: ''
       },
       time: {
         modelKey: 'time',
-        label: '完成收费时间',
+        label: '回款时间',
         rules: {
           required: true
         }
@@ -35,7 +45,53 @@ export default {
       id: {
         modelKey: 'id',
         label: '贷款编号'
-      }
+      },
+      fields: [
+        {
+          type: 'input',
+          modelKey: 'type',
+          label: '回款类型',
+          props: {
+            placeholder: '请输入回款类型'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'amount',
+          label: '回款金额(元)',
+          props: {
+            placeholder: '请输入回款金额'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'bank',
+          label: '转账银行',
+          props: {
+            placeholder: '请输入转账银行全称'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          type: 'input',
+          modelKey: 'remitter',
+          label: '转账人',
+          props: {
+            placeholder: '请输入转账人姓名'
+          },
+          rules: {
+            required: true
+          }
+        }
+      ]
     };
   },
   methods: {
@@ -60,16 +116,22 @@ export default {
     submit() {
       this.$refs.form.validate(success => {
         if (success) {
-          this.toastShow()
-          changeChargeState(this.customer.id, this.obj.time).then(res => {
-            if (res.result) {
-              this.getCharge();
-              this.goback();
-            }
-            this.toastHide()
-          }).catch(err =>{
-            this.toastHide()
-          });
+          this.toastShow();
+          changeChargeState(this.customer.id, this.obj)
+            .then(res => {
+              if (res.result) {
+                this.getCharge();
+                this.goback();
+              }
+              this.toastHide();
+            })
+            .catch(err => {
+              this.toastHide();
+              this.$createToast({
+                mask: true,
+                txt: '请求走丢了，请重新提交'
+              });
+            });
         }
       });
     },

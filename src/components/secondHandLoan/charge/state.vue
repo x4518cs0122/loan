@@ -1,33 +1,40 @@
 <template>
-    <div class="sign-detail">
-        <v-header @goback="goback" title="确定收费状态" next="提交" @submit="_postChargeDetail"></v-header>
-        <rs-list>
-            <ul slot="body">
-                <li class="placeholder"> </li>
-                <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-                <li><rs-text label="客户姓名" :value="customer.clientName"></rs-text></li>
-                <li><rs-text label="联系方式" :value="customer.clientPhone"></rs-text></li>
-                <li class="list-header">
-                    <p>收费明细</p>
-                </li> 
-                <li><rs-select selectText="费用A状态" model="isA" @selected="selected" :options="options.isgo"></rs-select></li> 
-                <li><rs-select selectText="收取费用A时间" model="timeA" @selected="selected" :isDate="true"></rs-select></li>   
-                <li><rs-select selectText="费用B状态" model="isB" @selected="selected" :options="options.isgo"></rs-select></li> 
-                <li><rs-select selectText="收取费用B时间" model="timeB" @selected="selected" :isDate="true"></rs-select></li>   
-                <li><rs-select selectText="费用C状态" model="isC" @selected="selected" :options="options.isgo"></rs-select></li> 
-                <li><rs-select selectText="收取费用C时间" model="timeC" @selected="selected" :isDate="true"></rs-select></li>   
-            </ul>
-        </rs-list>           
-    </div>
+  <div class="sign-detail">
+    <v-header @goback="goback" title="确定收费状态" next="提交" @submit="_postChargeDetail"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="{label:'贷款编号'}" class="self-form-item">
+          <p>{{customer.id}}</p>
+        </cube-form-item>
+        <cube-form-item :field="{label:'客户姓名'}" class="self-form-item">
+          <p>{{customer.clientName}}</p>
+        </cube-form-item>
+        <cube-form-item :field="{label:'联系方式'}" class="self-form-item">
+          <p>{{customer.clientPhone}}</p>
+        </cube-form-item>
+      </cube-form-group>
+      <cube-form-group v-for="item in fileds" :key="item.modelKey" :legend="item.label">
+        <cube-form-item :field="item" class="self-form-item"/>
+        <div v-if="obj[item.modelKey] === 1">
+          <cube-form-item
+            :field="f"
+            v-for="f in item.children"
+            :key="f.modelKey"
+            class="self-form-item"
+          >
+            <Date-picker :model="obj" :modelKey="f.modelKey" v-if="f.selfItem"></Date-picker>
+          </cube-form-item>
+        </div>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsText from 'base/rstext/rstext';
-import rsSelect from 'base/rsselect/rsselect';
-import {mapGetters, mapMutations} from 'vuex';
-import {postChargeDetail, allFinish} from '@/api/api';
+import { DatePicker } from 'base';
+import { mapGetters, mapMutations } from 'vuex';
+import { postChargeDetail, allFinish } from '@/api/api';
 export default {
   data() {
     return {
@@ -35,50 +42,232 @@ export default {
         chargeId: null,
         isA: null,
         timeA: null,
+        typeA: null,
+        amountA: null,
+        bankA: null,
+        remitterA: null,
         isB: null,
         timeB: null,
+        typeB: null,
+        amountB: null,
+        bankB: null,
+        remitterB: null,
         isC: null,
         timeC: null,
+        typeC: null,
+        amountC: null,
+        bankC: null,
+        remitterC: null
       },
-      options: {
-        isgo: [{id: '1', value: '是'}, {id: '0', value: '否'}],
-      },
+      fileds: [
+        {
+          type: 'select',
+          modelKey: 'isA',
+          label: '费用A状态',
+          props: {
+            options: [{ value: 0, text: '否' }, { value: 1, text: '是' }]
+          },
+          rules: {
+            required: true
+          },
+          children: [
+            {
+              type: 'select',
+              modelKey: 'timeA',
+              label: '回款时间',
+              selfItem: true,
+              rules: {
+                required: true
+              }
+            },
+            {
+              type: 'input',
+              label: '回款类型',
+              modelKey: 'typeA',
+              props: {
+                placeholder: '请输入回款类型'
+              }
+            },
+            {
+              type: 'input',
+              label: '回款金额(元)',
+              modelKey: 'amountA',
+              props: {
+                placeholder: '请输入回款金额'
+              }
+            },
+            {
+              type: 'input',
+              label: '转账银行',
+              modelKey: 'bankA',
+              props: {
+                placeholder: '请输入转账银行'
+              }
+            },
+            {
+              type: 'input',
+              label: '转账人',
+              modelKey: 'remitterA',
+              props: {
+                placeholder: '请输入转账人姓名'
+              }
+            }
+          ]
+        },
+        {
+          type: 'select',
+          modelKey: 'isB',
+          label: '费用B状态',
+          props: {
+            options: [{ value: 0, text: '否' }, { value: 1, text: '是' }]
+          },
+          rules: {
+            required: true
+          },
+          children: [
+            {
+              type: 'select',
+              modelKey: 'timeB',
+              label: '回款时间',
+              selfItem: true,
+              rules: {
+                required: true
+              }
+            },
+            {
+              type: 'input',
+              label: '回款类型',
+              modelKey: 'typeB',
+              props: {
+                placeholder: '请输入回款类型'
+              }
+            },
+            {
+              type: 'input',
+              label: '回款金额(元)',
+              modelKey: 'amountB',
+              props: {
+                placeholder: '请输入回款金额'
+              }
+            },
+            {
+              type: 'input',
+              label: '转账银行',
+              modelKey: 'bankB',
+              props: {
+                placeholder: '请输入转账银行'
+              }
+            },
+            {
+              type: 'input',
+              label: '转账人',
+              modelKey: 'remitterB',
+              props: {
+                placeholder: '请输入转账人姓名'
+              }
+            }
+          ]
+        },
+        {
+          type: 'select',
+          modelKey: 'isC',
+          label: '费用C状态',
+          props: {
+            options: [{ value: 0, text: '否' }, { value: 1, text: '是' }]
+          },
+          rules: {
+            required: true
+          },
+          children: [
+            {
+              type: 'select',
+              modelKey: 'timeC',
+              label: '回款时间',
+              selfItem: true,
+              rules: {
+                required: true
+              }
+            },
+            {
+              type: 'input',
+              label: '回款类型',
+              modelKey: 'typeC',
+              props: {
+                placeholder: '请输入回款类型'
+              }
+            },
+            {
+              type: 'input',
+              label: '回款金额(元)',
+              modelKey: 'amountC',
+              props: {
+                placeholder: '请输入回款金额'
+              }
+            },
+            {
+              type: 'input',
+              label: '转账银行',
+              modelKey: 'bankC',
+              props: {
+                placeholder: '请输入转账银行'
+              }
+            },
+            {
+              type: 'input',
+              label: '转账人',
+              modelKey: 'remitterC',
+              props: {
+                placeholder: '请输入转账人姓名'
+              }
+            }
+          ]
+        }
+      ]
     };
   },
   methods: {
     _postChargeDetail() {
       this.obj.chargeId = this.customer.id;
-      postChargeDetail(this.customer.id, this.obj).then(res => {
-        if (res.result) {
-          allFinish(this.customer.id).then(() => {
-            this.goback();
+      this.$refs.form.validate(success => {
+        if (success) {
+          let toast = this.$createToast({
+            mask: true,
+            time: 0
           });
+          toast.show();
+          postChargeDetail(this.customer.id, this.obj).then(
+            res => {
+              if (res.result) {
+                allFinish(this.customer.id).then(() => {
+                  this.goback();
+                  toast.hide();
+                });
+              }
+              toast.hide();
+            },
+            err => {
+              toast.hide();
+              this.$createToast({
+                mask: true,
+                txt: err,
+                type: 'txt'
+              }).show();
+            }
+          );
         }
       });
     },
     goback() {
-      this.$router.push({path: '/erCharge'});
-    },
-    selected(id, model) {
-      if (/^time[A-C]$/.test(model)) {
-        this.obj[model] = new Date(id).getTime();
-        return;
-      }
-      this.obj[model] = id;
-    },
-    ...mapMutations({
-      setCustomer: 'SET_CUSTOMER',
-    }),
+      this.$emit('hide');
+    }
   },
   computed: {
-    ...mapGetters(['customer']),
+    ...mapGetters(['customer'])
   },
   components: {
     vHeader,
-    rsText,
-    rsSelect,
-    rsList,
-  },
+    DatePicker
+  }
 };
 </script>
 
@@ -86,12 +275,12 @@ export default {
 @import '~common/stylus/variable';
 
 .sign-detail {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background: $color-background;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: $color-background;
 }
 </style>

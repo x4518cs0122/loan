@@ -43,8 +43,6 @@ export default {
         bank: '',
         startDate: '',
         endDate: '',
-        startDateTxt: '',
-        endDateTxt: '',
         page: 0
         // rows:null
       },
@@ -56,9 +54,6 @@ export default {
           props: {
             options: [{ value: 1, text: '抵押贷款' }, { value: 2, text: '二手房贷款' }]
           }
-          // rules: {
-          //   required: true
-          // }
         },
         {
           type: 'input',
@@ -67,9 +62,6 @@ export default {
           props: {
             placeholder: '请输入贷款编号'
           }
-          // rules: {
-          //   required: true
-          // }
         },
         {
           type: 'input',
@@ -78,9 +70,6 @@ export default {
           props: {
             placeholder: '请输入客户姓名'
           }
-          // rules: {
-          //   required: true
-          // }
         },
         {
           type: 'input',
@@ -89,9 +78,6 @@ export default {
           props: {
             placeholder: '请输入经办人员'
           }
-          // rules: {
-          //   required: true
-          // }
         },
         {
           type: 'select',
@@ -100,9 +86,6 @@ export default {
           props: {
             options: [{ value: 0, text: '哈哈哈银行' }]
           }
-          // rules: {
-          //   required: true
-          // }
         }
       ],
       startTime: {

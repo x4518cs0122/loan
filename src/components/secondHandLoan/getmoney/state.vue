@@ -1,64 +1,120 @@
 <template>
-    <div class="confirm-state">
-        <v-header next="提交" title="确定放款" @submit="submit" @goback="goback"></v-header>
-        <rs-list>
-             <ul slot="body">
-                <li class="list-header"> 
-                    <p>确定放款</p>
-                </li>
-                <li><rs-select selectText="是否放款" :options="options.isgo"></rs-select></li>
-            </ul>
-        </rs-list>
-    </div>
+  <div class="confirm-state">
+    <v-header next="提交" title="确定放款" @submit="submit" @goback="goback"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group legend="确定放款">
+        <cube-form-item
+          :field="item"
+          v-for="item in times"
+          :key="item.modelKey"
+          class="self-form-item"
+        >
+          <Date-picker :model="obj" :modelKey="item.modelKey"></Date-picker>
+        </cube-form-item>
+        <cube-form-item :field="fields" class="self-form-item"></cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsSelect from 'base/rsselect/rsselect';
-import {mapGetters} from 'vuex';
-import {postMoneyState} from 'api/api';
+import { DatePicker } from 'base';
+import { mapGetters } from 'vuex';
+import { postMoneyState } from 'api/api';
 export default {
   data() {
     return {
-      options:{
-          isgo:[{id:1, value:'是'}, {id:0, value:'否'}]
+      obj: {
+        loanId: null,
+        result:null,
+        loanTime: null,
+        backTime: null,
+        name: null
+      },
+      times: [
+        {
+          type: 'input',
+          label: '回款情况',
+          modelKey: 'result',
+          props: {
+            placeholder: '请输入领证人姓名'
+          },
+          rules: {
+            required: true
+          }
+        },
+        {
+          label: '放款时间',
+          modelKey: 'loanTime',
+          rules: {
+            required: true
+          }
+        },
+        {
+          label: '证回公司时间',
+          modelKey: 'backTime'
+        }
+      ],
+      fields: {
+        type: 'input',
+        modelKey: 'name',
+        label: '领证人姓名',
+        props: {
+          placeholder: '请输入领证人姓名'
+        },
+        rules: {
+          required: true
+        }
       }
     };
   },
   methods: {
     goback() {
-      this.$router.push({path: '/erGetmoney'});
-    },
-    selected(id, model) {
-      this.obj[model] = new Date(id).getTime();
+      this.$router.push({ path: '/erGetmoney' });
     },
     submit() {
-      postMoneyState(this.customer.id).then(res => {
-        if (res.result) {
-          this.goback()
-        }
+      let toast = this.$createToast({
+        mask: true,
+        time: 0
       });
-    },
+      toast.show();
+      postMoneyState(this.customer.id, this.obj).then(
+        res => {
+          if (res.result) {
+            this.goback();
+          }
+          toast.hide();
+        },
+        err => {
+          toast.hide();
+          this.$createToast({
+            mask: true,
+            txt: err,
+            type: 'txt'
+          }).show();
+        }
+      );
+    }
   },
   computed: {
     ...mapGetters(['customer'])
   },
   components: {
     vHeader,
-    rsSelect,
-    rsList
-  },
+    DatePicker
+  }
 };
 </script>
 <style lang="stylus" scoped>
 @import '~common/stylus/variable';
+
 .confirm-state {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    overflow: auto;
-    background: $color-background;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: auto;
+  background: $color-background;
 }
 </style>

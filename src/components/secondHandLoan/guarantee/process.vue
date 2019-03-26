@@ -1,53 +1,125 @@
 <template>
-    <div class="sign-detail">
-        <v-header @goback="goback" title="担保流程" next="提交" @submit="_postGuaranteeProcess"></v-header>
-        <rs-list>
-            <ul slot="body">
-                <li class="placeholder"> </li>
-                <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-                <li><rs-text label="客户姓名" :value="customer.clientName"></rs-text></li>
-                <li><rs-text label="联系方式" :value="customer.clientPhone"></rs-text></li>
-                <li class="placeholder"></li> 
-                <li><rs-select selectText="是否需要盖章" :options="options.needStamp" model="isNeedStamp" @selected="selected"></rs-select></li>  
-                <li v-show="obj.isNeedStamp === 1"><rs-select selectText="盖章通过时间" model="stampTime" @selected="selected" :isDate="true"></rs-select></li>  
-                <li><rs-select selectText="出担保函日期" model="guaranteeTime" @selected="selected" :isDate="true"></rs-select></li>  
-            </ul>
-        </rs-list>           
-    </div>
+  <div class="sign-detail">
+    <v-header @goback="goback" title="担保流程" next="提交" @submit="_postGuaranteeProcess"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="{label:'贷款编号'}" class="self-form-item">
+          <p>{{customer.id}}</p>
+        </cube-form-item>
+        <cube-form-item :field="{label:'客户姓名'}" class="self-form-item">
+          <p>{{customer.clientName}}</p>
+        </cube-form-item>
+        <cube-form-item :field="{label:'联系方式'}" class="self-form-item">
+          <p>{{customer.clientPhone}}</p>
+        </cube-form-item>
+      </cube-form-group>
+      <cube-form-group>
+        <cube-form-item :field="stamp" class="self-form-item"></cube-form-item>
+        <cube-form-item :field="stampTime" class="self-form-item" v-if="obj.isNeedStamp">
+          <Date-picker :model="obj" modelKey="stampTime"></Date-picker>
+        </cube-form-item>
+        <cube-form-item :field="guaranteeTime" class="self-form-item">
+          <Date-picker :model="obj" modelKey="guaranteeTime"></Date-picker>
+        </cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsText from 'base/rstext/rstext';
-import rsSelect from 'base/rsselect/rsselect';
-import {mapGetters, mapMutations} from 'vuex';
-import {postGuaranteeProcess, postSkipZhengping} from '@/api/api';
+import { DatePicker } from 'base';
+import { mapGetters, mapMutations } from 'vuex';
+import { postGuaranteeProcess, postSkipZhengping } from '@/api/api';
 export default {
   data() {
     return {
       obj: {
         guaranteeId: null,
         isNeedStamp: null,
-        stampTime: 0,
-        guaranteeTime: null,
+        stampTime: null,
+        guaranteeTime: null
       },
-      options: {
-        needStamp: [{id: 0, value: '否'}, {id: 1, value: '是'}],
+      stamp: {
+        type: 'select',
+        modelKey: 'isNeedStamp',
+        label: '是否需要盖章',
+        props: {
+          options: [{ value: 0, text: '否' }, { value: 1, text: '是' }]
+        },
+        rules: {
+          required: true
+        }
       },
+      stampTime: {
+        modelKey: 'stampTime',
+        label: '盖章通过时间',
+        rules: {
+          required: true
+        }
+      },
+      guaranteeTime: {
+        modelKey: 'guaranteeTime',
+        label: '出担保函日期',
+        rules: {
+          required: true
+        }
+      }
     };
   },
   methods: {
+    showToast() {
+      if (!this.toast) {
+        this.toast = this.$createToast({
+          mask: true,
+          time: 0
+        });
+      }
+      this.toast.show();
+    },
+    hideToast() {
+      this.toast.hide();
+    },
     _postGuaranteeProcess() {
-      this.obj.guaranteeId = this.customer.id;
-      postGuaranteeProcess(this.customer.id, this.obj).then(res => {
-        if (res.result) {
-          if(this.customer.extra.commentType === '正评') {
-              postSkipZhengping(this.customer.id);
-              this.goback()
-          }else{
-              this.goback()
-          }        
+      this.$refs.form.validate(success => {
+        if (success) {
+          this.showToast();
+          this.obj.guaranteeId = this.customer.id;
+          postGuaranteeProcess(this.customer.id, this.obj).then(
+            res => {
+              if (res.result) {
+                if (this.customer.extra.commentType === '正评') {
+                  postSkipZhengping(this.customer.id).then(
+                    res => {
+                      if (res.result) {
+                        this.hideToast();
+                        this.goback();
+                      }
+                    },
+                    err => {
+                      this.hideToast();
+                      this.$createToast({
+                        mask: true,
+                        txt: err,
+                        type: 'txt'
+                      }).show();
+                    }
+                  );
+                } else {
+                  this.hideToast();
+                  this.goback();
+                }
+              }
+            },
+            err => {
+              this.hideToast();
+              this.$createToast({
+                mask: true,
+                txt: err,
+                type: 'txt'
+              }).show();
+            }
+          );
         }
       });
     },
@@ -59,21 +131,19 @@ export default {
       this.obj[model] = new Date(id).getTime();
     },
     goback() {
-      this.$router.push({path: '/erGuarantee'});
+      this.$router.push({ path: '/erGuarantee' });
     },
     ...mapMutations({
-      setCustomer: 'SET_CUSTOMER',
-    }),
+      setCustomer: 'SET_CUSTOMER'
+    })
   },
   computed: {
-    ...mapGetters(['customer']),
+    ...mapGetters(['customer'])
   },
   components: {
     vHeader,
-    rsText,
-    rsSelect,
-    rsList,
-  },
+    DatePicker
+  }
 };
 </script>
 
@@ -81,12 +151,12 @@ export default {
 @import '~common/stylus/variable';
 
 .sign-detail {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background: $color-background;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: $color-background;
 }
 </style>

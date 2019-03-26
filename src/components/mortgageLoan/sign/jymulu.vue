@@ -1,48 +1,28 @@
 <template>
   <div class="jy-mulu">
     <v-header title="资料目录表" @goback="goback" next="保存" @submit="submit"></v-header>
-    <rs-list>
-      <ul slot="body">
-        <!-- <li class="placeholder"> </li>
-                <li><rs-select selectText="完成时间" model="finishTime" @selected="selected" :isDate="true"></rs-select></li>
-                <li class="placeholder"></li>
-                <li><rs-input @input="rsinput" inputText="贷款人姓名" model="clientName" required></rs-input></li>
-                <li><rs-input @input="rsinput" inputText="贷款金额" model="loanAmount" required 
-                    :validation="commonValidations.numberValidation" 
-                    message="贷款金额为数字"></rs-input>
-                </li>
-                <li><rs-input @input="rsinput" inputText="接单人姓名" model="clerkName" required></rs-input></li>
-                <li><rs-input @input="rsinput" inputText="接单人电话" model="clerkPhone" required 
-                    :validation="commonValidations.phoneValidation"
-                    :message="messageTip.phoneMessage"></rs-input>
-        </li>-->
-        <cube-form :model="model" :immediate-validate="false" ref="form">
-          <cube-form-group>
-            <cube-form-item :field="fieldsTime" class="self-form-item">
-              <cube-button @click="showDatePicker">{{ model.finishTimeTxt }}></cube-button>
-            </cube-form-item>
-          </cube-form-group>
-          <div class="placeholder"></div>
-          <cube-form-group>
-            <cube-form-item
-              :field="item"
-              v-for="item in fields"
-              :key="item.modelKey"
-              class="self-form-item"
-            ></cube-form-item>
-          </cube-form-group>
-        </cube-form>
-        <li>
-          <catalog :list="formlist" :obj="obj"></catalog>
-        </li>
-      </ul>
-    </rs-list>
+    <cube-form :model="model" :immediate-validate="false" ref="form">
+      <cube-form-group>
+        <cube-form-item :field="fieldsTime" class="self-form-item">
+          <Date-Picker :model="model" modelKey="finishTime"></Date-Picker>
+        </cube-form-item>
+      </cube-form-group>
+      <cube-form-group>
+        <cube-form-item
+          :field="item"
+          v-for="item in fields"
+          :key="item.modelKey"
+          class="self-form-item"
+        ></cube-form-item>
+      </cube-form-group>
+    </cube-form>
+    <catalog :list="formlist" :obj="obj"></catalog>
   </div>
 </template>
 <script>
 import * as _ from 'lodash';
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
+import { DatePicker } from 'base';
 import catalog from './catalog';
 import { postCatalog } from 'api/api';
 import { commonValidations } from '@/utils/Const.js';
@@ -414,77 +394,77 @@ export default {
         }
       ],
       obj: {
-        id: 0,
-        hasClientIdCard: 0,
-        clientIdCardDes: 0,
+        id: null,
+        hasClientIdCard: false,
+        clientIdCardDes: false,
         clientIdCardPage: '',
         clientIdCardRemark: '',
-        hasClientAccount: 0,
-        clientAccountHome: 0,
-        clientAccountHousehold: 0,
-        clientAccountMyself: 0,
-        clientAccountDes: 0,
+        hasClientAccount: false,
+        clientAccountHome: false,
+        clientAccountHousehold: false,
+        clientAccountMyself: false,
+        clientAccountDes: false,
         clientAccountPage: '',
         clientAccountRemark: '',
-        hasClientSpouseIdCard: 0,
-        clientSpouseIdCardDes: 0,
+        hasClientSpouseIdCard: false,
+        clientSpouseIdCardDes: false,
         clientSpouseIdCardPage: '',
         clientSpouseIdCardRemark: '',
-        hasClientSpouseAccount: 0,
-        clientSpouseAccountHome: 0,
-        clientSpouseAccountHousehold: 0,
-        clientSpouseAccountMyself: 0,
-        clientSpouseAccountDes: 0,
+        hasClientSpouseAccount: false,
+        clientSpouseAccountHome: false,
+        clientSpouseAccountHousehold: false,
+        clientSpouseAccountMyself: false,
+        clientSpouseAccountDes: false,
         clientSpouseAccountPage: '',
         clientSpouseAccountRemark: '',
-        hasMarriageProof: 0,
-        marriageCertificate: 0,
-        divorceCertificate: 0,
-        divorceAgreement: 0,
+        hasMarriageProof: false,
+        marriageCertificate: false,
+        divorceCertificate: false,
+        divorceAgreement: false,
         marriageProofDes: '',
         marriageProofPage: '',
         marriageProofRemark: '',
-        hasHouseMortgage: 0,
+        hasHouseMortgage: false,
         houseMortgage: '',
-        houseMortgageDes: 0,
+        houseMortgageDes: false,
         houseMortgagePage: '',
         houseMortgageRemark: '',
-        hasAssetsCertificate: 0,
-        assetsHouseCertificate: 0,
+        hasAssetsCertificate: false,
+        assetsHouseCertificate: false,
         assetsHouseNumber: '',
-        assetsOther: 0,
+        assetsOther: false,
         assetsOtherRemark: '',
-        assetsCarCertificate: 0,
+        assetsCarCertificate: false,
         assetsCarNumber: '',
-        assetsCertificateDes: 0,
+        assetsCertificateDes: false,
         assetsCertificatePage: '',
         assetsCertificateRemark: '',
-        hasIncomeProof: 0,
-        incomeProofDes: 0,
+        hasIncomeProof: false,
+        incomeProofDes: false,
         incomeProofPage: '',
         incomeProofRemark: '',
-        hasBusinessLicense: 0,
-        businessLicenseDes: 0,
+        hasBusinessLicense: false,
+        businessLicenseDes: false,
         businessLicensePage: '',
         businessLicenseRemark: '',
-        hasLegalRepresentative: 0,
-        legalRepresentativeDes: 0,
+        hasLegalRepresentative: false,
+        legalRepresentativeDes: false,
         legalRepresentativePage: '',
         legalRepresentativeRemark: '',
-        hasCompanyStatute: 0,
-        companyStatuteDes: 0,
+        hasCompanyStatute: false,
+        companyStatuteDes: false,
         companyStatutePage: '',
         companyStatuteRemark: '',
-        hasGrantDeed: 0,
-        grantDeedDes: 0,
+        hasGrantDeed: false,
+        grantDeedDes: false,
         grantDeedPage: '',
         grantDeedRemark: '',
-        hasTradingContact: 0,
-        tradingContactDes: 0,
+        hasTradingContact: false,
+        tradingContactDes: false,
         tradingContactPage: '',
         tradingContactRemark: '',
-        hasPurposeContact: 0,
-        purposeContactDes: 0,
+        hasPurposeContact: false,
+        purposeContactDes: false,
         purposeContactPage: '',
         purposeContactRemark: '',
         catalogOther: []
@@ -498,8 +478,7 @@ export default {
         }
       },
       model: {
-        finishTime: 0,
-        finishTimeTxt: '',
+        finishTime: null,
         clientName: '',
         loanAmount: '',
         clerkName: '',
@@ -521,7 +500,7 @@ export default {
         {
           type: 'input',
           modelKey: 'loanAmount',
-          label: '贷款金额',
+          label: '贷款金额(元)',
           props: {
             placeholder: '请输入贷款金额'
           },
@@ -554,28 +533,18 @@ export default {
           }
         }
       ],
-      commonValidations: commonValidations
+      formList: []
     };
   },
   computed: {
-    ...mapGetters(['customer', 'signListUpdate']),
-    formlist() {
-      return this.customer.loanVariety === '抵押消费' ? this.xyList : this.jyList;
-    }
+    ...mapGetters(['customer', 'signListUpdate', 'user'])
+  },
+  created() {
+    this.initFields();
   },
   methods: {
     goback() {
       this.$router.push({ path: '/sign' });
-    },
-    selected(id, model) {
-      if (model === 'finishTime') {
-        this.obj[model] = new Date(id).getTime();
-        return;
-      }
-      this.obj[model] = parInt(id);
-    },
-    rsinput(value, model) {
-      this.obj[model] = value;
     },
     addMore() {
       let others = {
@@ -588,14 +557,24 @@ export default {
       };
       this.mortgageCatalogOthers.push(others);
     },
+    initFields() {
+      this.formlist = this.customer.loanVariety === '抵押消费' ? this.xyList : this.jyList;
+      this.model = Object.assign(this.model, {
+        clientName: _.get(this.customer, 'clientName', ''),
+        clerkName: _.get(this.user, 'name', ''),
+        clerkPhone: _.get(this.user, 'phone', '')
+      });
+    },
     normalize() {
       let checkObj = { ...this.obj };
       Object.keys(checkObj).forEach(item => {
-        let value = checkObj[item].toString();
-        if (value === 'true') {
-          checkObj[item] = 1;
-        } else if (value === 'false') {
-          checkObj[item] = 0;
+        let value = checkObj[item];
+        if (_.isBoolean(value)) {
+          if (value) {
+            checkObj[item] = 1;
+          } else {
+            checkObj[item] = 0;
+          }
         }
       });
       return checkObj;
@@ -617,6 +596,7 @@ export default {
         if (success) {
           let muluData = this.normalize();
           muluData.id = this.customer.id;
+          const data = Object.assign({...muluData}, {...this.model})
           this.showToastMask();
           postCatalog(muluData).then(res => {
             if (res.result) {
@@ -627,7 +607,7 @@ export default {
               this.hideToastMask();
               this.$router.push({ path: `/sign/${this.customer.id}` });
             } else {
-              this.hideToastMask()
+              this.hideToastMask();
               this.$createToast({
                 mask: true,
                 txt: '参数走丢了，请重新提交'
@@ -639,29 +619,12 @@ export default {
     },
     ...mapMutations({
       setCustomer: 'SET_CUSTOMER'
-    }),
-    showDatePicker() {
-      if (!this.datePicker) {
-        this.datePicker = this.$createDatePicker({
-          title: '请选择时间',
-          min: new Date(2008, 7, 8),
-          max: new Date(2020, 9, 20),
-          value: new Date(),
-          onSelect: this.dateSelectHandler
-        });
-      }
-
-      this.datePicker.show();
-    },
-    dateSelectHandler(date, selectedVal, selectedText) {
-      this.model.finishTimeTxt = selectedText.join('-');
-      this.model.finishTime = new Date(date).getTime();
-    }
+    })
   },
   components: {
     vHeader,
     catalog,
-    rsList
+    DatePicker
   }
 };
 </script>
@@ -732,12 +695,6 @@ export default {
     .icon {
       font-size: 20px;
     }
-  }
-
-  .placeholder {
-    height: 10px;
-    line-height: 10px;
-    background: $background-list-header;
   }
 }
 </style>

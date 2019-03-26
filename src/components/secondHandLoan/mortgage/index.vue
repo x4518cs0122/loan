@@ -1,15 +1,15 @@
 <template>
   <div class="interview">
-        <v-header @goback="goback" title="二手房抵押列表" back="主页"></v-header>
-        <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
-        <router-view></router-view>
+    <v-header @goback="goback" title="二手房抵押列表" back="主页"></v-header>
+    <detail-list :list="list" @itemHandle="itemHandle"></detail-list>
+    <router-view></router-view>
   </div>
 </template>
 <script>
 import detailList from 'base/detail-list/detail-list';
-import {getMortgageList} from 'api/api';
+import { getMortgageList } from 'api/api';
 import vHeader from 'components/header/header';
-import {mapMutations} from 'vuex';
+import { mapMutations } from 'vuex';
 
 const keys = ['mortgageState', 'takeEvidence', 'returnEvidence'];
 
@@ -17,7 +17,7 @@ export default {
   data() {
     return {
       list: [],
-      detail: false,
+      detail: false
     };
   },
   created() {
@@ -39,7 +39,7 @@ export default {
       });
     },
     goback() {
-      this.$router.push({path: '/bussiness'});
+      this.$router.push({ path: '/bussiness' });
     },
     itemHandle(index) {
       let id = this.list[index].id;
@@ -47,32 +47,32 @@ export default {
       this.setCustomer(customer);
       switch (customer.currentState) {
         case '未确定抵押状态':
-          this.$router.push({path: `/erMortgage/mortgageState`});
+          this.$router.push({ path: `/erMortgage/mortgageState` });
           break;
         case '未确定取证时间':
-          this.$router.push({path: `/erMortgage/getProof`});
+          this.$router.push({ path: `/erMortgage/getProof` });
           break;
         case '未确定返证时间':
-          this.$router.push({path: `/erMortgage/returnTime`});
+          this.$router.push({ path: `/erMortgage/returnTime` });
           break;
         default:
           this.goback();
       }
     },
     ...mapMutations({
-      setCustomer: 'SET_CUSTOMER',
-    }),
+      setCustomer: 'SET_CUSTOMER'
+    })
   },
   components: {
     detailList,
-    vHeader,
+    vHeader
   },
   watch: {
     $route(to, from) {
       let isChildrenRouter = /^\/erMortgage\/.+$/.test(from.path);
       isChildrenRouter && this._getMortgageList();
-    },
-  },
+    }
+  }
 };
 </script>
 <style lang="stylus" scoped>

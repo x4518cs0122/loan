@@ -30,7 +30,7 @@ axiosIns.interceptors.response.use(function(response) {
   let status = response.status;
   if (status === 200) {
     return Promise.resolve(response);
-  } else {
+  } else{
     return Promise.reject(response);
   }
 });
@@ -49,7 +49,10 @@ ajaxMethod.forEach(method => {
           resolve(response.data);
         })
         .catch(response => {
-          alert('something wrong' + response.status);
+          if(/Network\s?Error/.test(response)) {
+            reject('网络出问题啦，请检查')
+          }
+          reject('服务器故障')
         });
     });
   };

@@ -1,61 +1,86 @@
 <template>
-    <div class="sign-detail">
-        <v-header @goback="goback" title="确定过户状态" next="提交" @submit="_postHuizheng"></v-header>
-        <rs-list>
-            <ul slot="body">
-                <li class="placeholder"> </li>
-                <li><rs-text label="贷款编号" :value="customer.id"></rs-text></li>
-                <li><rs-text label="客户姓名" :value="customer.clientName"></rs-text></li>
-                <li><rs-text label="联系方式" :value="customer.clientPhone"></rs-text></li>
-                <li class="placeholder"></li> 
-                <li><rs-select selectText="完成时间" model="time" @selected="selected" :isDate="true"></rs-select></li>  
-            </ul>
-        </rs-list>           
-    </div>
+  <div class="sign-detail">
+    <v-header @goback="goback" title="确定过户状态" next="提交" @submit="_postHuizheng"></v-header>
+    <cube-form :model="obj" :immediate-validate="false" ref="form">
+       <cube-form-group>
+        <cube-form-item :field="{label:'贷款编号'}" class="self-form-item">
+          <p>{{customer.id}}</p>
+        </cube-form-item>
+        <cube-form-item :field="{label:'客户姓名'}" class="self-form-item">
+          <p>{{customer.clientName}}</p>
+        </cube-form-item>
+        <cube-form-item :field="{label:'联系方式'}" class="self-form-item">
+          <p>{{customer.clientPhone}}</p>
+        </cube-form-item>
+      </cube-form-group>
+      <cube-form-group>
+        <cube-form-item :field="time" class="self-form-item">
+          <Date-picker :model="obj" modelKey="time"></Date-picker>
+        </cube-form-item>
+      </cube-form-group>
+    </cube-form>
+  </div>
 </template>
 
 <script>
 import vHeader from 'components/header/header';
-import rsList from 'base/rslist/rslist';
-import rsText from 'base/rstext/rstext';
-import rsSelect from 'base/rsselect/rsselect';
-import {mapGetters, mapMutations} from 'vuex';
-import {postHuizheng} from '@/api/api';
+import { mapGetters } from 'vuex';
+import { DatePicker } from 'base';
+import { postGuohuInfo } from '@/api/api';
 export default {
   data() {
     return {
       obj: {
-        time: null,
+        time: null
       },
+      time: {
+        label: '输机完成时间',
+        modelKey: 'time',
+        rules: {
+          required: true
+        }
+      }
     };
   },
   methods: {
     _postHuizheng() {
-      postHuizheng(this.customer.id, this.obj.time).then(res =>{
-          if(res.result){
-              this.goback()
-          }
-      })
+      this.$refs.form.validate(success => {
+        if (success) {
+          let toast = this.$createToast({
+            mask: true,
+            time: 0
+          });
+          toast.show();
+          postGuohuInfo(this.customer.id, this.obj.time).then(
+            res => {
+              if (res.result) {
+                this.goback();
+              }
+              toast.hide();
+            },
+            err => {
+              toast.hide();
+              this.$createToast({
+                mask: true,
+                txt: err,
+                type: 'txt'
+              }).show();
+            }
+          );
+        }
+      });
     },
     goback() {
-      this.$router.push({path: '/erGuohu'});
-    },
-    selected(id, model) {
-      this.obj[model] = new Date(id).getTime();
-    },
-    ...mapMutations({
-      setCustomer: 'SET_CUSTOMER',
-    }),
+      this.$router.push({ path: '/erGuohu' });
+    }
   },
   computed: {
-    ...mapGetters(['customer']),
+    ...mapGetters(['customer'])
   },
   components: {
     vHeader,
-    rsText,
-    rsSelect,
-    rsList
-  },
+    DatePicker
+  }
 };
 </script>
 
@@ -63,12 +88,12 @@ export default {
 @import '~common/stylus/variable';
 
 .sign-detail {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background: $color-background;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background: $color-background;
 }
 </style>

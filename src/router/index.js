@@ -319,11 +319,6 @@ export const asyncRouterMap = [
         path: 'process',
         meta: { roles: Permission.EMPLOYEE },
         component: resolve => require(['../components/secondHandLoan/guarantee/process'], resolve)
-      },
-      {
-        path: 'zhengping',
-        meta: { roles: Permission.EMPLOYEE },
-        component: resolve => require(['../components/secondHandLoan/guarantee/zhengping'], resolve)
       }
     ]
   },

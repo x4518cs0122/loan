@@ -53,8 +53,9 @@ export function getUrl(url, data) {
 function param(data) {
   let url = ''
   for (var k in data) {
-    let value = data[k] !== undefined ? data[k] : ''
-    url += `&${k}=${encodeURIComponent(value)}`
+    if(data[k]) {
+      url += `&${k}=${encodeURIComponent(data[k])}`
+    }
   }
   return url ? url.substring(1) : ''
 }

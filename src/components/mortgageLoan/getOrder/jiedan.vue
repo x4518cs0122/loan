@@ -2,7 +2,7 @@
   <transition name="fade">
     <Page name="order" :loading="loading">
       <v-header title="抵押接单" @goback="goback" next="提交" @submit="submit"></v-header>
-      <cube-form :model="model" :immediate-validate="false" @validate="validateHandler" ref="form">
+      <cube-form :model="model" :immediate-validate="false" ref="form">
         <cube-form-group>
           <cube-form-item :field="fieldsTime" class="self-form-item">
             <cube-button @click="showDatePicker" class="date-picker-btn">{{ model.datetime }}></cube-button>
@@ -112,11 +112,6 @@ export default {
         }
       });
     },
-    validateHandler(result) {
-      this.validity = result.validity;
-      this.valid = result.valid;
-      console.log('validity', result.validity, result.valid, result.dirty, result.firstInvalidFieldIndex);
-    },
     showDatePicker() {
       if (!this.datePicker) {
         this.datePicker = this.$createDatePicker({
@@ -225,7 +220,7 @@ export default {
         {
           type: 'input',
           modelKey: 'loanAmount',
-          label: '贷款金额',
+          label: '贷款金额(万元)',
           props: {
             placeholder: '请输入贷款金额'
           },
@@ -237,7 +232,7 @@ export default {
         {
           type: 'input',
           modelKey: 'loanPeriod',
-          label: '贷款期限',
+          label: '贷款期限(月)',
           props: {
             placeholder: '请输入贷款期限'
           },
